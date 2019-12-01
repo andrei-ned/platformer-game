@@ -20,10 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{5a545c2a-efad-4129-9056-c4cb67d73761}</ProjectGuid>
-    <RootNamespace>Pong</RootNamespace>
+    <ProjectGuid>{CE783970-894D-4097-BF37-5E87F9E4E578}</ProjectGuid>
+    <RootNamespace>PlatformerGame</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <ProjectName>Platformer Game</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

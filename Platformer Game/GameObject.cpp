@@ -103,6 +103,10 @@ sf::Vector2f PhysicsGameObject::getDimensions() const {
 	sf::FloatRect bounds = mSprite.getGlobalBounds();
 	return sf::Vector2f(bounds.width, bounds.height);
 }
+
+sf::FloatRect PhysicsGameObject::getBounds() const {
+	return mSprite.getGlobalBounds();
+}
 #pragma endregion
 
 #pragma region TextGameObject

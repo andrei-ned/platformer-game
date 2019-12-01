@@ -51,6 +51,8 @@ public:
 	bool checkForCollision(const PhysicsGameObject& other) const;
 	// Returns size in world space
 	sf::Vector2f getDimensions() const;
+	// Returns bounds (i.e. position and size in world space)
+	sf::FloatRect getBounds() const;
 private:
 	sf::Vector2f mVelocity;
 };

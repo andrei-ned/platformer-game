@@ -1,6 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "GameObject.h"
+#include <vector>
 
 class Game
 {
@@ -13,5 +14,10 @@ public:
 	// Draw things on screen, should be called every frame
 	void render(sf::RenderWindow& window);
 private:
+	PhysicsGameObject mPlayer;
+	std::vector<PhysicsGameObject> mTerrain;
+	int x;
+	sf::Texture mPlayerIdleTexture;
+	sf::Texture mWallTexture;
 };
 
