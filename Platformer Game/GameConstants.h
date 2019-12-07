@@ -11,5 +11,5 @@ namespace GameConstants {
 	// Gravity to be applied to player, in pixels per second
 	const float GRAVITY = 700.0f;
 	// Movement speed of player, in pixels per second
-	const float PLAYER_SPEED = 20.0f;
+	const float PLAYER_MAX_SPEED = 750.0f;
 }
