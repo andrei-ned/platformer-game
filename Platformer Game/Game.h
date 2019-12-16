@@ -14,8 +14,8 @@ public:
 	// Draw things on screen, should be called every frame
 	void render(sf::RenderWindow& window);
 private:
-	enum class CollisionType { None, Top, Right, Bottom, Left};
-	CollisionType getCollision(PhysicsGameObject o1, PhysicsGameObject o2) const;
+	//enum class CollisionType { None, Top, Right, Bottom, Left};
+	//CollisionType getCollision(PhysicsGameObject o1, PhysicsGameObject o2) const;
 
 	PhysicsGameObject mPlayer;
 	std::vector<PhysicsGameObject> mTerrain;

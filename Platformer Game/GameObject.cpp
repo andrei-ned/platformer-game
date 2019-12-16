@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include <cassert>
+#include <algorithm>
 
 #pragma region GameObject
 GameObject::GameObject() {}
@@ -84,7 +85,13 @@ void SpriteGameObject::setTexture(const sf::Texture& t, const sf::IntRect& rect)
 PhysicsGameObject::PhysicsGameObject() {}
 
 void PhysicsGameObject::update(const sf::Time& deltaTime) {
-	mSprite.move(mVelocity * deltaTime.asSeconds());
+	float delta = deltaTime.asSeconds();
+	if (mMaxTimeSet)
+	{
+		delta = std::max(delta, mMaxVelocityTime);
+	}
+	mSprite.move(mVelocity * delta);
+	mMaxTimeSet = false;
 }
 
 sf::Vector2f PhysicsGameObject::getVelocity() const {
@@ -95,10 +102,6 @@ void PhysicsGameObject::setVelocity(const sf::Vector2f& v) {
 	mVelocity = v;
 }
 
-bool PhysicsGameObject::checkForCollision(const PhysicsGameObject& other) const {
-	return mSprite.getGlobalBounds().intersects(other.mSprite.getGlobalBounds());
-}
-
 sf::Vector2f PhysicsGameObject::getDimensions() const {
 	sf::FloatRect bounds = mSprite.getGlobalBounds();
 	return sf::Vector2f(bounds.width, bounds.height);
@@ -106,6 +109,75 @@ sf::Vector2f PhysicsGameObject::getDimensions() const {
 
 sf::FloatRect PhysicsGameObject::getBounds() const {
 	return mSprite.getGlobalBounds();
+}
+
+bool PhysicsGameObject::checkForCollision(const PhysicsGameObject& other) const {
+	return mSprite.getGlobalBounds().intersects(other.mSprite.getGlobalBounds());
+}
+
+void PhysicsGameObject::resolveCollision(const PhysicsGameObject& other) {
+	//sweep.hit = this.intersectSegment(box.pos, delta, box.half.x, box.half.y);
+
+	mMaxTimeSet = true;
+
+	sf::Vector2f pos = getPos();
+	sf::FloatRect bounds = getBounds();
+
+	//const scaleX = 1.0 / delta.x;
+	//const scaleY = 1.0 / delta.y;
+	//const signX = sign(scaleX);
+	//const signY = sign(scaleY);
+	//const nearTimeX = (this.pos.x - signX * (this.half.x + paddingX) - pos.x) * scaleX;
+	//const nearTimeY = (this.pos.y - signY * (this.half.y + paddingY) - pos.y) * scaleY;
+	//const farTimeX = (this.pos.x + signX * (this.half.x + paddingX) - pos.x) * scaleX;
+	//const farTimeY = (this.pos.y + signY * (this.half.y + paddingY) - pos.y) * scaleY;
+
+	float nearX;
+	float nearY;
+	float farX;
+	float farY;
+
+	if (mVelocity.x > 0)
+	{
+		nearX = bounds.left;
+		farX = bounds.left + bounds.width;
+	}
+	else
+	{
+		nearX = bounds.left + bounds.width;
+		farX = bounds.left;
+	}
+	if (mVelocity.y > 0)
+	{
+		nearY = bounds.top;
+		farY = bounds.top + bounds.height;
+	}
+	else
+	{
+		nearY = bounds.top + bounds.height;
+		farY = bounds.top;
+	}
+
+
+	//if (sweep.hit) {
+	//	sweep.time = clamp(sweep.hit.time - EPSILON, 0, 1);
+	//	sweep.pos.x = box.pos.x + delta.x * sweep.time;
+	//	sweep.pos.y = box.pos.y + delta.y * sweep.time;
+	//	const direction = delta.clone();
+	//	direction.normalize();
+	//	sweep.hit.pos.x = clamp(
+	//		sweep.hit.pos.x + direction.x * box.half.x,
+	//		this.pos.x - this.half.x, this.pos.x + this.half.x);
+	//	sweep.hit.pos.y = clamp(
+	//		sweep.hit.pos.y + direction.y * box.half.y,
+	//		this.pos.y - this.half.y, this.pos.y + this.half.y);
+	//}
+	//else {
+	//	sweep.pos.x = box.pos.x + delta.x;
+	//	sweep.pos.y = box.pos.y + delta.y;
+	//	sweep.time = 1;
+	//}
+	//return sweep;
 }
 #pragma endregion
 
