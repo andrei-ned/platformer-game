@@ -56,63 +56,16 @@ void Game::update(const sf::Time& deltaTime) {
 		playerVel.y += GameConstants::PLAYER_MAX_SPEED;
 	}
 
+	mPlayer.setVelocity(playerVel);
+
 	// Check for collisions
-	sf::FloatRect playerBounds = mPlayer.getBounds();
-	// Checking against every terrain object is inefficient, possibly change later
+	// Note: Checking against every terrain object is inefficient, possibly change later
 	for (unsigned int i = 0; i < mTerrain.size(); i++)
 	{
-		// Collide playe against terrain
-		switch (getCollision(mPlayer, mTerrain.at(i)))
-		{
-		case CollisionType::Top:
-			break;
-		case CollisionType::Right:
-			if (playerVel.x > 0)
-				playerVel.x = 0;
-			break;
-		case CollisionType::Bottom:
-			if (playerVel.y > 0)
-				playerVel.y = 0;
-			break;
-		case CollisionType::Left:
-			if (playerVel.x < 0)
-				playerVel.x = 0;
-			break;
-		}
-		//if (mPlayer.checkForCollision(mTerrain.at(i)))
-		//{
-		//	sf::FloatRect terrainBounds = mTerrain.at(i).getBounds();
-		//	// Collision against floor
-		//	if (playerBounds.top + playerBounds.height > terrainBounds.top)
-		//	{
-		//		if (playerVel.y > 0)
-		//		{
-		//			playerVel.y = 0;
-		//		}
-		//	}
-		//	else
-		//	{
-		//		// Collision against wall to the left
-		//		if (playerBounds.left < terrainBounds.left + terrainBounds.width)
-		//		{
-		//			if (playerVel.x < 0)
-		//			{
-		//				playerVel.x = 0;
-		//			}
-		//		}
-		//		// Collision against wall to the right
-		//		if (playerBounds.left + playerBounds.width > terrainBounds.left)
-		//		{
-		//			if (playerVel.x > 0)
-		//			{
-		//				playerVel.x = 0;
-		//			}
-		//		}
-		//	}
-		//}
+		// Collide player against terrain
+		mPlayer.resolveCollision(mTerrain.at(i));
 	}
 
-	mPlayer.setVelocity(playerVel);
 	mPlayer.update(deltaTime);
 }
 

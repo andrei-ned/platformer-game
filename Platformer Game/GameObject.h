@@ -47,14 +47,18 @@ public:
 	void update(const sf::Time& deltaTime);
 	sf::Vector2f getVelocity() const;
 	void setVelocity(const sf::Vector2f& v);
-	// Returns true if the 2 objects intersect
-	bool checkForCollision(const PhysicsGameObject& other) const;
 	// Returns size in world space
 	sf::Vector2f getDimensions() const;
 	// Returns bounds (i.e. position and size in world space)
 	sf::FloatRect getBounds() const;
+	// Returns true if the 2 objects intersect
+	bool intersects(const PhysicsGameObject& other) const;
+	// 
+	void resolveCollision(const PhysicsGameObject& other);
 private:
 	sf::Vector2f mVelocity;
+	bool mMaxTimeSet;
+	float mMaxVelocityTime;
 };
 
 // Game object that uses text
