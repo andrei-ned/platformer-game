@@ -43,8 +43,9 @@ class PhysicsGameObject : public SpriteGameObject
 {
 public:
 	PhysicsGameObject();
-	// Should be called every frame to apply velocity
-	void update(const sf::Time& deltaTime);
+	/// <summary> To be called every frame to apply velocity</summary>
+	/// <param name="deltaTime"> Time since last frame </param>
+	void updatePhysics(const sf::Time& deltaTime);
 	sf::Vector2f getVelocity() const;
 	void setVelocity(const sf::Vector2f& v);
 	// Returns size in world space

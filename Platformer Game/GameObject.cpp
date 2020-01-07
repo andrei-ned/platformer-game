@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include <cassert>
 #include <algorithm>
+#include "Helpers.h"
 
 #pragma region GameObject
 GameObject::GameObject() {}
@@ -84,7 +85,7 @@ void SpriteGameObject::setTexture(const sf::Texture& t, const sf::IntRect& rect)
 #pragma region PhysicsGameObject
 PhysicsGameObject::PhysicsGameObject() {}
 
-void PhysicsGameObject::update(const sf::Time& deltaTime) {
+void PhysicsGameObject::updatePhysics(const sf::Time& deltaTime) {
 	float delta = deltaTime.asSeconds();
 	if (mMaxTimeSet)
 	{
@@ -121,24 +122,50 @@ void PhysicsGameObject::resolveCollision(const PhysicsGameObject& other) {
 	sf::FloatRect otherBounds = other.getBounds();
 	sf::FloatRect intersection;
 
-	if (bounds.intersects(otherBounds, intersection))
+	if (bounds.intersects(otherBounds, intersection)) // There is a collision, may have to contrain velocity
 	{
-		sf::Vector2f pos(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
 		sf::Vector2f intersectionPos(intersection.left + intersection.width / 2, intersection.top + intersection.height / 2);
-		sf::Vector2f direction(intersectionPos - pos);
-		if (std::abs(direction.x) > std::abs(direction.y))
+		sf::Vector2f otherPos(otherBounds.left + otherBounds.width / 2, otherBounds.top + otherBounds.height / 2);
+		sf::Vector2f direction(otherPos - intersectionPos);
+
+		bool constrainX = false;
+		bool constrainY = false;
+
+		// Check if moving towards other object
+		float signX = sign(mVelocity.x);
+		float signY = sign(mVelocity.y);
+		if (sign(direction.x) == signX)
 		{
-			if (direction.x > 0 && mVelocity.x > 0 || direction.x < 0 && mVelocity.x < 0)
+			constrainX = true;
+		}
+		if (sign(direction.y) == signY)
+		{
+			constrainY = true;
+		}
+
+		// Only constrain smallest distance
+		if (constrainX && constrainY)
+		{
+			float xDist = abs(intersectionPos.x - otherPos.x + signX * otherBounds.width * 0.5f);
+			float yDist = abs(intersectionPos.y - otherPos.y + signY * otherBounds.height * 0.5f);
+			if (xDist < yDist)
 			{
-				mVelocity.x = 0;
+				constrainY = false;
+			}
+			else
+			{
+				constrainX = false;
 			}
 		}
-		else
+
+		// Apply constraint
+		if (constrainX)
 		{
-			if (direction.y > 0 && mVelocity.y > 0 || direction.y < 0 && mVelocity.y < 0)
-			{
-				mVelocity.y = 0;
-			}
+			mVelocity.x = 0;
+		}
+		if (constrainY)
+		{
+			mVelocity.y = 0;
 		}
 	}
 }

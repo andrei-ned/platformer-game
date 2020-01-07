@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "GameObject.h"
 #include "GameConstants.h"
 #include <cassert>
 //#include <iostream>
@@ -34,29 +33,7 @@ Game::~Game() {
 }
 
 void Game::update(const sf::Time& deltaTime) {
-	// **NO GRAVITY FOR TESTING
-	sf::Vector2f playerVel(0, 0);//GameConstants::GRAVITY);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-	{
-		playerVel.x -= GameConstants::PLAYER_MAX_SPEED;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-	{
-		playerVel.x += GameConstants::PLAYER_MAX_SPEED;
-	}
-
-	// **FOR TESTING ONLY
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-	{
-		playerVel.y -= GameConstants::PLAYER_MAX_SPEED;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-	{
-		playerVel.y += GameConstants::PLAYER_MAX_SPEED;
-	}
-
-	mPlayer.setVelocity(playerVel);
+	mPlayer.updateInput(deltaTime);
 
 	// Check for collisions
 	// Note: Checking against every terrain object is inefficient, possibly change later
@@ -66,7 +43,7 @@ void Game::update(const sf::Time& deltaTime) {
 		mPlayer.resolveCollision(mTerrain.at(i));
 	}
 
-	mPlayer.update(deltaTime);
+	mPlayer.updatePhysics(deltaTime);
 }
 
 void Game::render(sf::RenderWindow& window) {
