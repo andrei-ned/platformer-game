@@ -87,13 +87,7 @@ PhysicsGameObject::PhysicsGameObject() {}
 
 void PhysicsGameObject::updatePhysics(const sf::Time& deltaTime) {
 	float delta = deltaTime.asSeconds();
-	if (mMaxTimeSet)
-	{
-		delta = std::max(delta, mMaxVelocityTime);
-		std::cout << mMaxVelocityTime << std::endl;
-	}
 	mSprite.move(mVelocity * delta);
-	mMaxTimeSet = false;
 }
 
 sf::Vector2f PhysicsGameObject::getVelocity() const {
