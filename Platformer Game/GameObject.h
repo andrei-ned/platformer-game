@@ -58,8 +58,6 @@ public:
 	void resolveCollision(const PhysicsGameObject& other);
 private:
 	sf::Vector2f mVelocity;
-	bool mMaxTimeSet;
-	float mMaxVelocityTime;
 };
 
 // Game object that uses text
