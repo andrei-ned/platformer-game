@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "GameConstants.h"
+#include "Helpers.h"
 
 Player::Player() {
 }
@@ -15,20 +16,28 @@ void Player::update(const sf::Time& deltaTime) {
 	// Apply gravity
 	playerVel.y += GameConstants::GRAVITY * delta;
 	playerVel.y = std::min(playerVel.y, GameConstants::MAX_FALL_SPEED);
-	playerVel.x *= std::powf(GameConstants::PLAYER_DECELARATION_MULTIPLIER, delta);
+
+	float moveInput = 0;
 
 	// Apply horizontal acceleration from inputs
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
 	{
+		moveInput -= 1;
 		//playerVel.x = -GameConstants::PLAYER_MAX_MOVE_SPEED;
 		playerVel.x -= GameConstants::PLAYER_MOVE_ACCELERATION * delta;
 		playerVel.x = std::max(playerVel.x, -GameConstants::PLAYER_MAX_MOVE_SPEED);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
 	{
+		moveInput += 1;
 		//playerVel.x = GameConstants::PLAYER_MAX_MOVE_SPEED;
 		playerVel.x += GameConstants::PLAYER_MOVE_ACCELERATION * delta;
 		playerVel.x = std::min(playerVel.x, GameConstants::PLAYER_MAX_MOVE_SPEED);
+	}
+
+	if (moveInput == 0 || sign(playerVel.x) != sign(moveInput))
+	{
+		playerVel.x *= std::powf(GameConstants::PLAYER_DECELARATION_MULTIPLIER, delta);
 	}
 
 	// Handle jumping

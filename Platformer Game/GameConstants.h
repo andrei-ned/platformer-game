@@ -13,11 +13,11 @@ namespace GameConstants {
 	// Max fall speed
 	const float MAX_FALL_SPEED = 10000.0f;
 	// Acceleration to be applied to player on movement input
-	const float PLAYER_MOVE_ACCELERATION = 10000.0f;
+	const float PLAYER_MOVE_ACCELERATION = 6000.0f;
 	// Max horizontal move velocity
 	const float PLAYER_MAX_MOVE_SPEED = 1000.0f;
 	// Horizontal velocity is multiplied by this per second
-	const float PLAYER_DECELARATION_MULTIPLIER = .0001f;
+	const float PLAYER_DECELARATION_MULTIPLIER = .00001f;
 	// Vertical velocity is set to this on jump input
 	const float PLAYER_JUMP_SPEED = -2500.0f;
 	// Vertical velocity is set to this when letting go of jump input (holding the jump button means a higher jump)

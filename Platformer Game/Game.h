@@ -19,5 +19,8 @@ private:
 	std::vector<PhysicsGameObject> mTerrain;
 	sf::Texture mPlayerIdleTexture;
 	sf::Texture mWallTexture;
+	// **DEBUG
+	TextGameObject mDebugText;
+	sf::Font mDebugFont;
 };
 

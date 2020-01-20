@@ -3,13 +3,15 @@
 #include <cassert>
 
 Game::Game() : mTerrain(5) {
-	//if (!mSpriteAtlas.loadFromFile("../Assets/atlas.png"))
-	//	assert(false);
 	if (!mPlayerIdleTexture.loadFromFile("../Assets/Player/Idle.png"))
 		assert(false);
 	if (!mWallTexture.loadFromFile("../Assets/Tiles/Dirt.png"))
 		assert(false);
 	mWallTexture.setRepeated(true);
+
+	// **DEBUG
+	if (!mDebugFont.loadFromFile("../Assets/Fonts/arial.ttf"))
+		assert(false);
 
 	mPlayer.setTexture(mPlayerIdleTexture, sf::IntRect(43, 28, 74, 74));
 	mPlayer.setPos(sf::Vector2f(200, 0));
@@ -26,6 +28,10 @@ Game::Game() : mTerrain(5) {
 	mTerrain.at(3).setPos(sf::Vector2f(500, 300));
 	mTerrain.at(4).setTexture(mWallTexture, sf::IntRect(0, 0, 256, 64));
 	mTerrain.at(4).setPos(sf::Vector2f(700, 500));
+
+	// **DEBUG
+	mDebugText.setFont(mDebugFont);
+	//mDebugText.setPos(sf::Vector2f(500, 300));
 }
 
 Game::~Game() {
@@ -43,6 +49,8 @@ void Game::update(const sf::Time& deltaTime) {
 	}
 
 	mPlayer.PhysicsGameObject::update(deltaTime);
+
+	mDebugText.setString(std::to_string(mPlayer.getVelocity().x));
 }
 
 void Game::render(sf::RenderWindow& window) {
@@ -51,4 +59,7 @@ void Game::render(sf::RenderWindow& window) {
 		mTerrain.at(i).render(window);
 	}
 	mPlayer.render(window);
+
+	// **DEBUG
+	mDebugText.render(window);
 }
