@@ -17,7 +17,6 @@ public:
 private:
 	Player mPlayer;
 	std::vector<PhysicsGameObject> mTerrain;
-	int x;
 	sf::Texture mPlayerIdleTexture;
 	sf::Texture mWallTexture;
 };

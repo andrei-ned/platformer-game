@@ -34,6 +34,12 @@ public:
 	SpriteGameObject(const sf::Texture& t, const sf::IntRect& rect);
 	void setTexture(const sf::Texture& t);
 	void setTexture(const sf::Texture& t, const sf::IntRect& rect);
+	// Returns size in world space
+	sf::Vector2f getDimensions() const;
+	// Returns bounds (i.e. position and size in world space)
+	sf::FloatRect getBounds() const;
+	// Returns true if the 2 objects intersect
+	bool intersects(const SpriteGameObject& other) const;
 protected:
 	sf::Sprite mSprite;
 };
@@ -45,17 +51,15 @@ public:
 	PhysicsGameObject();
 	/// <summary> To be called every frame to apply velocity</summary>
 	/// <param name="deltaTime"> Time since last frame </param>
-	void updatePhysics(const sf::Time& deltaTime);
+	void update(const sf::Time& deltaTime);
 	sf::Vector2f getVelocity() const;
 	void setVelocity(const sf::Vector2f& v);
-	// Returns size in world space
-	sf::Vector2f getDimensions() const;
-	// Returns bounds (i.e. position and size in world space)
-	sf::FloatRect getBounds() const;
-	// Returns true if the 2 objects intersect
-	bool intersects(const PhysicsGameObject& other) const;
-	// 
-	void resolveCollision(const PhysicsGameObject& other);
+	// If other game object is in the way of movement, sets velocity in that direction to 0
+	void resolveCollision(const SpriteGameObject& other);
+	// Check if touching the ground (used for e.g. checking if player can jump)
+	bool isGrounded() const;
+protected:
+	bool mIsGrounded;
 private:
 	sf::Vector2f mVelocity;
 };

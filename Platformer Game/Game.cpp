@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "GameConstants.h"
 #include <cassert>
-//#include <iostream>
 
 Game::Game() : mTerrain(5) {
 	//if (!mSpriteAtlas.loadFromFile("../Assets/atlas.png"))
@@ -13,7 +12,7 @@ Game::Game() : mTerrain(5) {
 	mWallTexture.setRepeated(true);
 
 	mPlayer.setTexture(mPlayerIdleTexture, sf::IntRect(43, 28, 74, 74));
-	mPlayer.setPos(sf::Vector2f(500, 600));
+	mPlayer.setPos(sf::Vector2f(200, 0));
 	// Floor
 	mTerrain.at(0).setTexture(mWallTexture, sf::IntRect(0, 0, GameConstants::SCREEN_RES_X, 128));
 	mTerrain.at(0).setPos(sf::Vector2f(0, GameConstants::SCREEN_RES_Y - 128));
@@ -33,7 +32,7 @@ Game::~Game() {
 }
 
 void Game::update(const sf::Time& deltaTime) {
-	mPlayer.updateInput(deltaTime);
+	mPlayer.update(deltaTime);
 
 	// Check for collisions
 	// Note: Checking against every terrain object is inefficient, possibly change later
@@ -43,7 +42,7 @@ void Game::update(const sf::Time& deltaTime) {
 		mPlayer.resolveCollision(mTerrain.at(i));
 	}
 
-	mPlayer.updatePhysics(deltaTime);
+	mPlayer.PhysicsGameObject::update(deltaTime);
 }
 
 void Game::render(sf::RenderWindow& window) {
@@ -53,29 +52,3 @@ void Game::render(sf::RenderWindow& window) {
 	}
 	mPlayer.render(window);
 }
-
-//Game::CollisionType Game::getCollision(PhysicsGameObject o1, PhysicsGameObject o2) const {
-//	if (o1.checkForCollision(o2)) // objects are intersecting
-//	{
-//		sf::FloatRect o1Bounds = o1.getBounds();
-//		float o1Top = o1Bounds.top, o1Bottom = o1Bounds.top + o1Bounds.height, o1Left = o1Bounds.left, o1Right = o1Bounds.left + o1Bounds.width;
-//		sf::FloatRect o2Bounds = o2.getBounds();
-//		float o2Top = o2Bounds.top, o2Bottom = o2Bounds.top + o2Bounds.height, o2Left = o2Bounds.left, o2Right = o2Bounds.left + o2Bounds.width;
-//
-//		//std::cout << "o1: left:" << o1Bounds.left << " top:" << o1Bounds.top << " width:" << o1Bounds.width << " height:" << o1Bounds.height << "\n";
-//		//std::cout << "o2: left:" << o2Bounds.left << " top:" << o2Bounds.top << " width:" << o2Bounds.width << " height:" << o2Bounds.height << "\n";
-//		
-//		if (o1Bottom > o2Top && o1Top < o2Top)
-//			return CollisionType::Bottom;
-//
-//		//if (o1Bounds.top + o1Bounds.height > o2Bounds.top && o1Bounds.top < o2Bounds.top)
-//		//	return CollisionType::Bottom;
-//		//if (o1Bounds.left < o2Bounds.left + o2Bounds.width && o1Bounds.left + o1Bounds.width > o2Bounds.left + o2Bounds.width)
-//		//	return CollisionType::Left;
-//		//if (o1Bounds.left + o1Bounds.width > o2Bounds.left && o1Bounds.left < o2Bounds.left)
-//		//	return CollisionType::Right;
-//		//if (o1Bounds.top < o2Bounds.top + o2Bounds.height && o1Bounds.top + o1Bounds.height < o2Bounds.top + o2Bounds.top)
-//		//	return CollisionType::Top;
-//	}
-//	return CollisionType::None;
-//}
