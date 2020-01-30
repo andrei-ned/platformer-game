@@ -43,9 +43,18 @@ void Player::update(const sf::Time& deltaTime) {
 	// Handle jumping
 	if (isGrounded())
 	{
+		mCurrentCoyoteTime = 0;
+	}
+	else
+	{
+		mCurrentCoyoteTime += delta;
+	}
+	if (isGrounded() || mCurrentCoyoteTime < GameConstants::PLAYER_COYOTE_TIME)
+	{
 		if (playerVel.y > 0) mIsGrounded = false;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
 		{
+			mCurrentCoyoteTime += GameConstants::PLAYER_COYOTE_TIME;
 			playerVel.y = GameConstants::PLAYER_JUMP_SPEED;
 			mIsGrounded = false;
 			mIsJumping = true;

@@ -22,4 +22,6 @@ namespace GameConstants {
 	const float PLAYER_JUMP_SPEED = -2500.0f;
 	// Vertical velocity is set to this when letting go of jump input (holding the jump button means a higher jump)
 	const float PLAYER_MIN_JUMP_SPEED = -1000.0f;
+	// If player walks off a ledge and jumps still allow jumping within this timeframe (in seconds)
+	const float PLAYER_COYOTE_TIME = 0.1f;
 }

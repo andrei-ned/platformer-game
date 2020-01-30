@@ -11,5 +11,7 @@ public:
 	~Player();
 private:
 	bool mIsJumping;
+	// Used to track time since last on ground in order to allow coyote time jumps
+	float mCurrentCoyoteTime;
 };
 
