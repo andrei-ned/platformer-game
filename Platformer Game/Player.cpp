@@ -23,14 +23,12 @@ void Player::update(const sf::Time& deltaTime) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
 	{
 		moveInput -= 1;
-		//playerVel.x = -GameConstants::PLAYER_MAX_MOVE_SPEED;
 		playerVel.x -= GameConstants::PLAYER_MOVE_ACCELERATION * delta;
 		playerVel.x = std::max(playerVel.x, -GameConstants::PLAYER_MAX_MOVE_SPEED);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
 	{
 		moveInput += 1;
-		//playerVel.x = GameConstants::PLAYER_MAX_MOVE_SPEED;
 		playerVel.x += GameConstants::PLAYER_MOVE_ACCELERATION * delta;
 		playerVel.x = std::min(playerVel.x, GameConstants::PLAYER_MAX_MOVE_SPEED);
 	}
