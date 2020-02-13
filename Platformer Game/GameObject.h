@@ -58,6 +58,7 @@ public:
 	void resolveCollision(const SpriteGameObject& other);
 	// Check if touching the ground (used for e.g. checking if player can jump)
 	bool isGrounded() const;
+	sf::Vector2f mMaxVelDelta;
 protected:
 	bool mIsGrounded;
 private:

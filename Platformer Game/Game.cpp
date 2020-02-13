@@ -48,9 +48,13 @@ void Game::update(const sf::Time& deltaTime) {
 		mPlayer.resolveCollision(mTerrain.at(i));
 	}
 
+	//// **DEBUG
+	//mDebugText.setString(std::to_string(mPlayer.mMaxVelDelta.x) + " x:" + std::to_string(mPlayer.getPos().x) + " y:" + std::to_string(mPlayer.getPos().y));
+
 	mPlayer.PhysicsGameObject::update(deltaTime);
 
-	mDebugText.setString(std::to_string(mPlayer.getVelocity().x));
+	// **DEBUG
+	mDebugText.setString(std::to_string(mPlayer.getVelocity().x) + "\n" + std::to_string(mPlayer.getVelocity().y));
 }
 
 void Game::render(sf::RenderWindow& window) {
