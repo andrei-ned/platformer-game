@@ -1,6 +1,7 @@
 #pragma once
-#include "SFML/Graphics.hpp"
-#include "GameObject.h"
+//#include "SFML/Graphics.hpp"
+#include "PhysicsGameObject.h"
+#include "TextGameObject.h"
 #include "Player.h"
 #include <vector>
 
@@ -11,16 +12,16 @@ public:
 	~Game();
 	/// <summary> Game logic happens in here, should be called every frame </summary>
 	/// <param name="deltaTime"> Time since last frame </param>
-	void update(const sf::Time& deltaTime);
+	//void update(const sf::Time& deltaTime);
 	// Draw things on screen, should be called every frame
-	void render(sf::RenderWindow& window);
+	//void render(sf::RenderWindow& window);
 private:
 	Player mPlayer;
 	std::vector<PhysicsGameObject> mTerrain;
-	sf::Texture mPlayerIdleTexture;
-	sf::Texture mWallTexture;
+	//sf::Texture mPlayerIdleTexture;
+	//sf::Texture mWallTexture;
 	// **DEBUG
 	TextGameObject mDebugText;
-	sf::Font mDebugFont;
+	//sf::Font mDebugFont;
 };
 

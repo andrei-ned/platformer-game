@@ -1,7 +1,9 @@
+#include <windows.h>
 #include "Application.h"
-int main()
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
 {
 	Application app;
-	app.run();
+	app.run(hInstance);
 	return 0;
 }
