@@ -98,5 +98,8 @@
     <ClInclude Include="D3DHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WinData.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -145,6 +145,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="SpriteGameObject.h" />
     <ClInclude Include="TextGameObject.h" />
+    <ClInclude Include="WinData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,46 +2,33 @@
 #include <d3d11.h>
 #include "SimpleMath.h"
 //#include "TexCache.h"
+#include "DirectXColors.h"
+#include "WinData.h"
 
 class D3DHandler
 {
 public:
-	D3DHandler();
+	D3DHandler(WinData winData);
 	~D3DHandler();
 	//main start up function
-	bool InitDirect3D(void(*pOnResize)(int, int, D3DHandler&));
+	//bool InitDirect3D();
 	//default minimum behaviour when ALT+ENTER or drag or resize
 	//parameters are new width and height of window
-	void OnResize_Default(int clientWidth, int clientHeight);
+	void OnResize(int clientWidth, int clientHeight);
 	//main shutdown function, don't forget to call it
 	//extraReporting gives a bit more information about any objects
 	//that we haven't released properly
-	void ReleaseD3D(bool extraReporting = true);
+	//void ReleaseD3D(bool extraReporting);
 	//is the screen/window square or letterbox or?
 	//float GetAspectRatio();
-	void BeginRender(const DirectX::SimpleMath::Vector4& colour);
+	//void BeginRender(const DirectX::SimpleMath::Vector4& color);
+	void BeginRender(const DirectX::SimpleMath::Color color = DirectX::Colors::Black.v);
 	void EndRender();
-	ID3D11Device& GetDevice() {
-		assert(mpd3dDevice);
-		return *mpd3dDevice;
-	}
-	ID3D11DeviceContext& GetDeviceCtx() {
-		assert(mpd3dImmediateContext);
-		return *mpd3dImmediateContext;
-	}
-	bool GetDeviceReady() const {
-		return mpd3dDevice != nullptr;
-	}
-	//see mpOnResize
-	void OnResize(int sw, int sh, D3DHandler& d3d) {
-		assert(mpOnResize);
-		mpOnResize(sw, sh, d3d);
-	}
+	ID3D11Device& GetDevice();
+	ID3D11DeviceContext& GetDeviceCtx();
+	bool GetDeviceReady() const;
+	ID3D11SamplerState& GetWrapSampler();
 	//TexCache& GetCache() { return mTexCache; }
-	ID3D11SamplerState& GetWrapSampler() {
-		assert(mpWrapSampler);
-		return *mpWrapSampler;
-	}
 
 private:
 	//TexCache mTexCache;
@@ -67,9 +54,6 @@ private:
 	ID3D11DepthStencilView* mpDepthStencilView = nullptr;
 	//position, height, width, min+max depth of the view we are rendering
 	D3D11_VIEWPORT mScreenViewport;
-	//a function to call when we ALT+ENTER or drag the window
-	//two parameters are width/height of the new window and this
-	void(*mpOnResize)(int, int, D3DHandler&) = nullptr;
 
 	ID3D11SamplerState* mpWrapSampler = nullptr;
 

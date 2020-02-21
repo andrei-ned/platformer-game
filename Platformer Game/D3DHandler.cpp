@@ -1,14 +1,71 @@
 #include "D3DHandler.h"
 #include "D3DHelpers.h"
+#include "DirectXColors.h"
 #include <vector>
 #include <cassert>
-
+	
 
 using namespace std;
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
 
+D3DHandler::D3DHandler(WinData winData)
+{
+	// Create the device and device context.
+	CreateD3D();
+
+	CheckMultiSamplingSupport(m4xMsaaQuality);
+
+	//int w, h;
+	//WinUtil::Get().GetClientExtents(w, h);
+	DXGI_SWAP_CHAIN_DESC sd;
+	CreateSwapChainDescription(sd, winData.hMainWnd, true, winData.clientWidth, winData.clientHeight);
+	CreateSwapChain(sd);
+
+
+	// The remaining steps that need to be carried out for d3d creation
+	// also need to be executed every time the window is resized.  So
+	// just call the OnResize method here to avoid code duplication.
+	OnResize(winData.clientWidth, winData.clientHeight);
+
+	CreateWrapSampler(mpWrapSampler);
+}
+
+D3DHandler::~D3DHandler()
+{
+	//mTexCache.Release();
+	//check if full screen - not advisable to exit in full screen mode
+	if (mpSwapChain)
+	{
+		BOOL fullscreen = false;
+		HR(mpSwapChain->GetFullscreenState(&fullscreen, nullptr));
+		if (fullscreen) //go for a window
+			mpSwapChain->SetFullscreenState(false, nullptr);
+	}
+
+	ReleaseCOM(mpRenderTargetView);
+	ReleaseCOM(mpDepthStencilView);
+	ReleaseCOM(mpSwapChain);
+	ReleaseCOM(mpDepthStencilBuffer);
+
+	// Restore all default settings.
+	if (mpd3dImmediateContext)
+	{
+		mpd3dImmediateContext->ClearState();
+		mpd3dImmediateContext->Flush();
+	}
+
+	ReleaseCOM(mpd3dImmediateContext);
+	//if (extraReporting)
+	//{
+		ID3D11Debug* pd3dDebug;
+		HR(mpd3dDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&pd3dDebug)));
+		HR(pd3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY));
+		ReleaseCOM(pd3dDebug);
+	//}
+	ReleaseCOM(mpd3dDevice);
+}
 
 //float D3DHandler::GetAspectRatio()
 //{
@@ -17,9 +74,9 @@ using namespace DirectX::SimpleMath;
 //	return w / (float)h;
 //}
 
-void D3DHandler::BeginRender(const Vector4 & colour)
+void D3DHandler::BeginRender(const Color color)
 {
-	mpd3dImmediateContext->ClearRenderTargetView(mpRenderTargetView, reinterpret_cast<const float*>(&colour));
+	mpd3dImmediateContext->ClearRenderTargetView(mpRenderTargetView, color);
 	mpd3dImmediateContext->ClearDepthStencilView(mpDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
@@ -28,7 +85,21 @@ void D3DHandler::EndRender()
 	HR(mpSwapChain->Present(0, 0));
 }
 
-
+ID3D11Device& D3DHandler::GetDevice() {
+	assert(mpd3dDevice);
+	return *mpd3dDevice;
+}
+ID3D11DeviceContext& D3DHandler::GetDeviceCtx() {
+	assert(mpd3dImmediateContext);
+	return *mpd3dImmediateContext;
+}
+bool D3DHandler::GetDeviceReady() const {
+	return mpd3dDevice != nullptr;
+}
+ID3D11SamplerState& D3DHandler::GetWrapSampler() {
+	assert(mpWrapSampler);
+	return *mpWrapSampler;
+}
 
 // Resize the swap chain and recreate the render target view.
 void D3DHandler::ResizeSwapChain(int screenWidth, int screenHeight)
@@ -68,13 +139,11 @@ void D3DHandler::CreateDepthStencilDescription(D3D11_TEXTURE2D_DESC& dsd, int sc
 	dsd.MiscFlags = 0;
 }
 
-
 void D3DHandler::CreateDepthStencilBufferAndView(D3D11_TEXTURE2D_DESC& dsd)
 {
 	HR(mpd3dDevice->CreateTexture2D(&dsd, 0, &mpDepthStencilBuffer));
 	HR(mpd3dDevice->CreateDepthStencilView(mpDepthStencilBuffer, 0, &mpDepthStencilView));
 }
-
 
 void D3DHandler::BindRenderTargetViewAndDepthStencilView()
 {
@@ -93,7 +162,6 @@ void D3DHandler::SetViewportDimensions(int screenWidth, int screenHeight)
 
 	mpd3dImmediateContext->RSSetViewports(1, &mScreenViewport);
 }
-
 
 //start your engines!
 void D3DHandler::CreateD3D(D3D_FEATURE_LEVEL desiredFeatureLevel)
@@ -148,7 +216,6 @@ void D3DHandler::CreateD3D(D3D_FEATURE_LEVEL desiredFeatureLevel)
 
 }
 
-
 void D3DHandler::CheckMultiSamplingSupport(UINT& quality4xMsaa)
 {
 	// Check 4X MSAA quality support for our back buffer format.
@@ -162,7 +229,7 @@ void D3DHandler::CheckMultiSamplingSupport(UINT& quality4xMsaa)
 	assert(quality4xMsaa > 0);
 }
 
-//we need appropriately sized buffers to render into
+// We need appropriately sized buffers to render into
 void D3DHandler::CreateSwapChainDescription(DXGI_SWAP_CHAIN_DESC& sd, HWND hMainWnd, bool windowed, int screenWidth, int screenHeight)
 {
 	// Fill out a DXGI_SWAP_CHAIN_DESC to describe our swap chain.
@@ -221,8 +288,7 @@ void D3DHandler::CreateSwapChain(DXGI_SWAP_CHAIN_DESC& sd)
 	ReleaseCOM(dxgiFactory);
 }
 
-
-void D3DHandler::OnResize_Default(int clientWidth, int clientHeight)
+void D3DHandler::OnResize(int clientWidth, int clientHeight)
 {
 	assert(mpd3dImmediateContext);
 	assert(mpd3dDevice);
@@ -248,69 +314,65 @@ void D3DHandler::OnResize_Default(int clientWidth, int clientHeight)
 
 }
 
+//bool D3DHandler::InitDirect3D()
+//{
+//	// Create the device and device context.
+//	CreateD3D();
+//
+//	CheckMultiSamplingSupport(m4xMsaaQuality);
+//
+//	//int w, h;
+//	//WinUtil::Get().GetClientExtents(w, h);
+//	DXGI_SWAP_CHAIN_DESC sd;
+//	//CreateSwapChainDescription(sd, WinUtil::Get().GetMainWnd(), true, w, h); // <- IMPORTANT
+//	CreateSwapChain(sd);
+//
+//
+//	// The remaining steps that need to be carried out for d3d creation
+//	// also need to be executed every time the window is resized.  So
+//	// just call the OnResize method here to avoid code duplication.
+//
+//	//mpOnResize(w, h, *this);
+//
+//	CreateWrapSampler(mpWrapSampler);
+//
+//	return true;
+//}
 
-bool D3DHandler::InitDirect3D(void(*pOnResize)(int, int, D3DHandler&))
-{
-	assert(pOnResize);
-	mpOnResize = pOnResize;
-
-	// Create the device and device context.
-	CreateD3D();
-
-	CheckMultiSamplingSupport(m4xMsaaQuality);
-
-	int w, h;
-	//WinUtil::Get().GetClientExtents(w, h);
-	DXGI_SWAP_CHAIN_DESC sd;
-	//CreateSwapChainDescription(sd, WinUtil::Get().GetMainWnd(), true, w, h); // <- IMPORTANT
-	CreateSwapChain(sd);
-
-
-	// The remaining steps that need to be carried out for d3d creation
-	// also need to be executed every time the window is resized.  So
-	// just call the OnResize method here to avoid code duplication.
-
-	//mpOnResize(w, h, *this);
-
-	CreateWrapSampler(mpWrapSampler);
-
-	return true;
-}
-
-void D3DHandler::ReleaseD3D(bool extraReporting)
-{
-	//mTexCache.Release();
-	//check if full screen - not advisable to exit in full screen mode
-	if (mpSwapChain)
-	{
-		BOOL fullscreen = false;
-		HR(mpSwapChain->GetFullscreenState(&fullscreen, nullptr));
-		if (fullscreen) //go for a window
-			mpSwapChain->SetFullscreenState(false, nullptr);
-	}
-
-	ReleaseCOM(mpRenderTargetView);
-	ReleaseCOM(mpDepthStencilView);
-	ReleaseCOM(mpSwapChain);
-	ReleaseCOM(mpDepthStencilBuffer);
-
-	// Restore all default settings.
-	if (mpd3dImmediateContext)
-	{
-		mpd3dImmediateContext->ClearState();
-		mpd3dImmediateContext->Flush();
-	}
-
-	ReleaseCOM(mpd3dImmediateContext);
-	if (extraReporting)
-	{
-		ID3D11Debug* pd3dDebug;
-		HR(mpd3dDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&pd3dDebug)));
-		HR(pd3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY));
-		ReleaseCOM(pd3dDebug);
-	}
-	ReleaseCOM(mpd3dDevice);
-}
+//void D3DHandler::ReleaseD3D(bool extraReporting = true)
+//{
+//	//mTexCache.Release();
+//	//check if full screen - not advisable to exit in full screen mode
+//	if (mpSwapChain)
+//	{
+//		BOOL fullscreen = false;
+//		HR(mpSwapChain->GetFullscreenState(&fullscreen, nullptr));
+//		if (fullscreen) //go for a window
+//			mpSwapChain->SetFullscreenState(false, nullptr);
+//	}
+//
+//	ReleaseCOM(mpRenderTargetView);
+//	ReleaseCOM(mpDepthStencilView);
+//	ReleaseCOM(mpSwapChain);
+//	ReleaseCOM(mpDepthStencilBuffer);
+//
+//	// Restore all default settings.
+//	if (mpd3dImmediateContext)
+//	{
+//		mpd3dImmediateContext->ClearState();
+//		mpd3dImmediateContext->Flush();
+//	}
+//
+//	ReleaseCOM(mpd3dImmediateContext);
+//	if (extraReporting)
+//	{
+//		ID3D11Debug* pd3dDebug;
+//		HR(mpd3dDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&pd3dDebug)));
+//		HR(pd3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY));
+//		ReleaseCOM(pd3dDebug);
+//	}
+//	ReleaseCOM(mpd3dDevice);
+//}
 
 void D3DHandler::CreateWrapSampler(ID3D11SamplerState* &pSampler)
 {

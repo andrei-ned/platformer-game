@@ -2,6 +2,7 @@
 #include "GameConstants.h"
 #include "Constants.h"
 #include <cassert>
+#include "DirectXColors.h"
 
 Application::Application()
 {
@@ -59,7 +60,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 		// Save the new client area dimensions.
 		mWinData.clientWidth = LOWORD(lParam);
 		mWinData.clientHeight = HIWORD(lParam);
-		//if (mpMyD3D && mpMyD3D->GetDeviceReady())
+		if (mpD3D && mpD3D->GetDeviceReady())
 		{
 			if (wParam == SIZE_MINIMIZED)
 			{
@@ -72,7 +73,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				mWinData.appPaused = false;
 				mWinData.minimized = false;
 				mWinData.maximized = true;
-				//mpMyD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight, *mpMyD3D);
+				mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
@@ -82,14 +83,14 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				{
 					mWinData.appPaused = false;
 					mWinData.minimized = false;
-					//mpMyD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight, *mpMyD3D);
+					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 				}
 				// Restoring from maximized state?
 				else if (mWinData.maximized)
 				{
 					mWinData.appPaused = false;
 					mWinData.maximized = false;
-					//mpMyD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight, *mpMyD3D);
+					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 				}
 				else if (mWinData.resizing)
 				{
@@ -104,7 +105,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				}
 				else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
 				{
-					//mpMyD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight, *mpMyD3D);
+					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 				}
 			}
 		}
@@ -121,8 +122,8 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 	case WM_EXITSIZEMOVE:
 		mWinData.appPaused = false;
 		mWinData.resizing = false;
-		//if (mpMyD3D)
-		//	mpMyD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight, *mpMyD3D);
+		if (mpD3D)
+			mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 		return 0;
 
 		// WM_DESTROY is sent when the window is being destroyed.
@@ -157,6 +158,8 @@ void Application::run(HINSTANCE hInstance) {
 	float deltaTime;
 	bool shouldQuit = false;
 
+	mpD3D = new D3DHandler(mWinData);
+
 	while (!shouldQuit)
 	{
 		MSG msg = { 0 };
@@ -172,10 +175,12 @@ void Application::run(HINSTANCE hInstance) {
 
 		if (!mWinData.appPaused)
 		{
+			mpD3D->BeginRender(DirectX::Colors::Red.v);
+
 			//mGame.Update
 			//mGame.Render
 
-
+			mpD3D->EndRender();
 		}
 		else
 		{
@@ -186,6 +191,8 @@ void Application::run(HINSTANCE hInstance) {
 		deltaTime = (float)(time2.QuadPart - time1.QuadPart) / cpuFrequency.QuadPart;
 		time1 = time2;
 	}
+
+	delete mpD3D;
 	// Start the game loop 
 	//sf::Clock clock;
 	//while (mWindow.isOpen())
