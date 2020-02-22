@@ -129,6 +129,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsGameObject.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteGameObject.cpp" />
     <ClCompile Include="TextGameObject.cpp" />
   </ItemGroup>
@@ -143,6 +144,7 @@
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="PhysicsGameObject.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteGameObject.h" />
     <ClInclude Include="TextGameObject.h" />
     <ClInclude Include="WinData.h" />

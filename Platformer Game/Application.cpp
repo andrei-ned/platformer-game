@@ -3,12 +3,17 @@
 #include "Constants.h"
 #include <cassert>
 #include "DirectXColors.h"
+#include "SpriteBatch.h"
+#include <WICTextureLoader.h>
+#include "CommonStates.h"
+#include "Sprite.h"
+
+using namespace DirectX;
 
 Application::Application()
 {
 	//mWindow.create(sf::VideoMode(GameConstants::SCREEN_RES_X, GameConstants::SCREEN_RES_Y), GameConstants::WINDOW_NAME);
 }
-
 
 Application::~Application()
 {
@@ -160,6 +165,17 @@ void Application::run(HINSTANCE hInstance) {
 
 	mpD3D = new D3DHandler(mWinData);
 
+	//**TESTING
+	ID3D11ShaderResourceView *pT;
+	DirectX::CreateWICTextureFromFile(&mpD3D->GetDevice(), L"../Assets/Player/Idle.png", nullptr, &pT);
+	CommonStates dxstate(&mpD3D->GetDevice());
+
+	Sprite spr(*pT);
+	//spr.setTexture(pT);
+	//****
+
+	assert(pT);
+
 	while (!shouldQuit)
 	{
 		MSG msg = { 0 };
@@ -175,10 +191,22 @@ void Application::run(HINSTANCE hInstance) {
 
 		if (!mWinData.appPaused)
 		{
-			mpD3D->BeginRender(DirectX::Colors::Red.v);
+			mpD3D->BeginRender(DirectX::Colors::Blue.v);
+
+			RECT rect;
+			
 
 			//mGame.Update
 			//mGame.Render
+
+			//**TESTING
+			DirectX::SpriteBatch sb(&mpD3D->GetDeviceCtx());
+			sb.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied());
+			//sb.Draw(pT, SimpleMath::Vector2(-500.0f,0.0f), SimpleMath::Vector4(1.0f,1.0f,1.0f,1.0f));
+			spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
+			spr.render(sb);
+			sb.End();
+			//****
 
 			mpD3D->EndRender();
 		}
