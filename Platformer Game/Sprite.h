@@ -1,6 +1,7 @@
 #pragma once
 #include "SpriteBatch.h"
 #include "SimpleMath.h"
+#include <optional>
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -29,6 +30,7 @@ public:
 	// Returns bounds (i.e. position and size in world space)
 private:
 	ID3D11ShaderResourceView *mpTexture;
+	std::optional<RECT> mTextureRect;
 	RECT *mpTextureRect;
 };
 

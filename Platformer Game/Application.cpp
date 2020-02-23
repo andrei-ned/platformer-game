@@ -7,6 +7,9 @@
 #include <WICTextureLoader.h>
 #include "CommonStates.h"
 #include "Sprite.h"
+#include <DDSTextureLoader.h>
+#include "D3DHelpers.h"
+#include "TextureCache.h"
 
 using namespace DirectX;
 
@@ -154,6 +157,8 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 }
 
 void Application::run(HINSTANCE hInstance) {
+
+
 	InitMainWindow(GameConstants::SCREEN_RES_X, GameConstants::SCREEN_RES_Y, hInstance, GameConstants::WINDOW_NAME, Application::MainWndProc, true);
 
 	LARGE_INTEGER cpuFrequency, time1, time2;
@@ -166,11 +171,15 @@ void Application::run(HINSTANCE hInstance) {
 	mpD3D = new D3DHandler(mWinData);
 
 	//**TESTING
+	TextureCache::get().test();
+	TextureCache &test1 = TextureCache::get();
+	TextureCache test2;
 	ID3D11ShaderResourceView *pT;
 	DirectX::CreateWICTextureFromFile(&mpD3D->GetDevice(), L"../Assets/Player/Idle.png", nullptr, &pT);
 	CommonStates dxstate(&mpD3D->GetDevice());
 
 	Sprite spr(*pT);
+	spr.setTextureRect({ 0,0,100,128 });
 	//spr.setTexture(pT);
 	//****
 
@@ -193,9 +202,6 @@ void Application::run(HINSTANCE hInstance) {
 		{
 			mpD3D->BeginRender(DirectX::Colors::Blue.v);
 
-			RECT rect;
-			
-
 			//mGame.Update
 			//mGame.Render
 
@@ -203,7 +209,8 @@ void Application::run(HINSTANCE hInstance) {
 			DirectX::SpriteBatch sb(&mpD3D->GetDeviceCtx());
 			sb.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied());
 			//sb.Draw(pT, SimpleMath::Vector2(-500.0f,0.0f), SimpleMath::Vector4(1.0f,1.0f,1.0f,1.0f));
-			spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
+			//spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
+			spr.mPos = Vector2(100.0f, 100.0f);
 			spr.render(sb);
 			sb.End();
 			//****
@@ -221,6 +228,7 @@ void Application::run(HINSTANCE hInstance) {
 	}
 
 	delete mpD3D;
+	ReleaseCOM(pT);
 	// Start the game loop 
 	//sf::Clock clock;
 	//while (mWindow.isOpen())
