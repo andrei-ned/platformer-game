@@ -176,7 +176,8 @@ void Application::run(HINSTANCE hInstance) {
 	//TextureCache test2;
 	Singleton<TextureCache>::get();
 	ID3D11ShaderResourceView *pT;
-	DirectX::CreateWICTextureFromFile(&mpD3D->GetDevice(), L"../Assets/Player/Idle.png", nullptr, &pT);
+	//DirectX::CreateWICTextureFromFile(&mpD3D->GetDevice(), L"../Assets/Player/Idle.png", nullptr, &pT);
+	pT = TextureCache::get().LoadTexture(&mpD3D->GetDevice(), "Player/Idle.png", false);
 	CommonStates dxstate(&mpD3D->GetDevice());
 
 	Sprite spr(*pT);
@@ -229,7 +230,7 @@ void Application::run(HINSTANCE hInstance) {
 	}
 
 	delete mpD3D;
-	ReleaseCOM(pT);
+	//ReleaseCOM(pT);
 	// Start the game loop 
 	//sf::Clock clock;
 	//while (mWindow.isOpen())
