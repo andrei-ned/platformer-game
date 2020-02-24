@@ -171,9 +171,10 @@ void Application::run(HINSTANCE hInstance) {
 	mpD3D = new D3DHandler(mWinData);
 
 	//**TESTING
-	TextureCache::get().test();
+	TextureCache::get();
 	TextureCache &test1 = TextureCache::get();
-	TextureCache test2;
+	//TextureCache test2;
+	Singleton<TextureCache>::get();
 	ID3D11ShaderResourceView *pT;
 	DirectX::CreateWICTextureFromFile(&mpD3D->GetDevice(), L"../Assets/Player/Idle.png", nullptr, &pT);
 	CommonStates dxstate(&mpD3D->GetDevice());
