@@ -4,6 +4,7 @@
 #include "TextGameObject.h"
 #include "Player.h"
 #include <vector>
+#include "SpriteBatch.h"
 
 class Game
 {
@@ -12,9 +13,9 @@ public:
 	~Game();
 	/// <summary> Game logic happens in here, should be called every frame </summary>
 	/// <param name="deltaTime"> Time since last frame </param>
-	//void update(const sf::Time& deltaTime);
+	void update(const float deltaTime);
 	// Draw things on screen, should be called every frame
-	//void render(sf::RenderWindow& window);
+	void render(DirectX::SpriteBatch& spriteBatch);
 private:
 	Player mPlayer;
 	std::vector<PhysicsGameObject> mTerrain;

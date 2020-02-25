@@ -1,19 +1,24 @@
 #pragma once
 //#include <SFML/Graphics.hpp>
 #include <iostream>
+#include "SpriteBatch.h"
+#include "SimpleMath.h"
+
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
 
 // Base game object class that all other game objects inherit from
 class GameObject
 {
 public:
 	// Will be called by game every frame, used for rendering
-	//void render(sf::RenderWindow& window);
-	//void setOrigin(const sf::Vector2f& off);
-	//sf::Vector2f getOrigin() const;
-	//void setScale(const sf::Vector2f& s);
-	//sf::Vector2f getScale() const;
-	//void setPos(const sf::Vector2f& pos);
-	//sf::Vector2f getPos() const;
+	//void render(SpriteBatch& spriteBatch);
+	//void setOrigin(const Vector2 off);
+	//Vector2 getOrigin() const;
+	//void setScale(const Vector2 s);
+	//Vector2 getScale() const;
+	//void setPos(const Vector2 pos);
+	//Vector2 getPos() const;
 	//float getDegrees() const;
 	//void setDegrees(float angle);
 	//void addRotation(float angle);

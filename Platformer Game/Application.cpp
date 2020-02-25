@@ -169,6 +169,7 @@ void Application::run(HINSTANCE hInstance) {
 	bool shouldQuit = false;
 
 	mpD3D = new D3DHandler(mWinData);
+	DirectX::SpriteBatch spriteBatch(&mpD3D->GetDeviceCtx());
 
 	//**TESTING
 	TextureCache::get();
@@ -204,18 +205,18 @@ void Application::run(HINSTANCE hInstance) {
 		{
 			mpD3D->BeginRender(DirectX::Colors::Blue.v);
 
-			//mGame.Update
-			//mGame.Render
-
+			mGame.update(deltaTime);
+			spriteBatch.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied());
+			mGame.render(spriteBatch);
 			//**TESTING
-			DirectX::SpriteBatch sb(&mpD3D->GetDeviceCtx());
-			sb.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied());
+			
 			//sb.Draw(pT, SimpleMath::Vector2(-500.0f,0.0f), SimpleMath::Vector4(1.0f,1.0f,1.0f,1.0f));
 			//spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
-			spr.mPos = Vector2(100.0f, 100.0f);
-			spr.render(sb);
-			sb.End();
+			//spr.mPos = Vector2(100.0f, 100.0f);
+			//spr.render(spriteBatch);
 			//****
+
+			spriteBatch.End();
 
 			mpD3D->EndRender();
 		}
@@ -231,6 +232,7 @@ void Application::run(HINSTANCE hInstance) {
 
 	delete mpD3D;
 	//ReleaseCOM(pT);
+
 	// Start the game loop 
 	//sf::Clock clock;
 	//while (mWindow.isOpen())

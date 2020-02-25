@@ -37,33 +37,33 @@ Game::Game() : mTerrain(5) {
 Game::~Game() {
 }
 
-//void Game::update(const sf::Time& deltaTime) {
-//	mPlayer.update(deltaTime);
-//
-//	// Check for collisions
-//	// Note: Checking against every terrain object is inefficient, possibly change later
-//	for (unsigned int i = 0; i < mTerrain.size(); i++)
-//	{
-//		// Collide player against terrain
-//		mPlayer.resolveCollision(mTerrain.at(i));
-//	}
-//
-//	//// **DEBUG
-//	//mDebugText.setString(std::to_string(mPlayer.mMaxVelDelta.x) + " x:" + std::to_string(mPlayer.getPos().x) + " y:" + std::to_string(mPlayer.getPos().y));
-//
-//	mPlayer.PhysicsGameObject::update(deltaTime);
-//
-//	// **DEBUG
-//	mDebugText.setString(std::to_string(mPlayer.getVelocity().x) + "\n" + std::to_string(mPlayer.getVelocity().y));
-//}
-//
-//void Game::render(sf::RenderWindow& window) {
-//	for (unsigned int i = 0; i < mTerrain.size(); i++)
-//	{
-//		mTerrain.at(i).render(window);
-//	}
-//	mPlayer.render(window);
-//
-//	// **DEBUG
-//	mDebugText.render(window);
-//}
+void Game::update(const float deltaTime) {
+	//mPlayer.update(deltaTime);
+
+	//// Check for collisions
+	//// Note: Checking against every terrain object is inefficient, possibly change later
+	//for (unsigned int i = 0; i < mTerrain.size(); i++)
+	//{
+	//	// Collide player against terrain
+	//	mPlayer.resolveCollision(mTerrain.at(i));
+	//}
+
+	////// **DEBUG
+	////mDebugText.setString(std::to_string(mPlayer.mMaxVelDelta.x) + " x:" + std::to_string(mPlayer.getPos().x) + " y:" + std::to_string(mPlayer.getPos().y));
+
+	//mPlayer.PhysicsGameObject::update(deltaTime);
+
+	//// **DEBUG
+	//mDebugText.setString(std::to_string(mPlayer.getVelocity().x) + "\n" + std::to_string(mPlayer.getVelocity().y));
+}
+
+void Game::render(DirectX::SpriteBatch& spriteBatch) {
+	//for (unsigned int i = 0; i < mTerrain.size(); i++)
+	//{
+	//	mTerrain.at(i).render(window);
+	//}
+	//mPlayer.render(window);
+
+	//// **DEBUG
+	//mDebugText.render(window);
+}
