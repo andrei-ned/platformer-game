@@ -11,22 +11,15 @@ using namespace DirectX::SimpleMath;
 class GameObject
 {
 public:
+	Vector2 mPos;
+	Vector2 mScale;
+	float mRotation; // in radians
+	Vector2 mOrigin;
+	Color mColor;
 	// Will be called by game every frame, used for rendering
-	//void render(SpriteBatch& spriteBatch);
-	//void setOrigin(const Vector2 off);
-	//Vector2 getOrigin() const;
-	//void setScale(const Vector2 s);
-	//Vector2 getScale() const;
-	//void setPos(const Vector2 pos);
-	//Vector2 getPos() const;
-	//float getDegrees() const;
-	//void setDegrees(float angle);
-	//void addRotation(float angle);
+	virtual void render(DirectX::SpriteBatch& batch) = 0;
 protected:
 	GameObject();
-	//// Pointer to drawable, must be initialized by inheriting game object
-	//sf::Drawable* mDrawable;
-	//// Pointer to transformable, must be initialized by inheriting game object
-	//sf::Transformable* mTransformable;
+
 };
 

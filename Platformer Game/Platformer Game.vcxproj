@@ -132,7 +132,6 @@
     <ClCompile Include="PhysicsGameObject.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Singleton.cpp" />
-    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteGameObject.cpp" />
     <ClCompile Include="TextGameObject.cpp" />
     <ClCompile Include="TextureCache.cpp" />
@@ -150,7 +149,6 @@
     <ClInclude Include="PhysicsGameObject.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Singleton.h" />
-    <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteGameObject.h" />
     <ClInclude Include="TextGameObject.h" />
     <ClInclude Include="TextureCache.h" />

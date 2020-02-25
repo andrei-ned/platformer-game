@@ -6,12 +6,12 @@
 #include "SpriteBatch.h"
 #include <WICTextureLoader.h>
 #include "CommonStates.h"
-#include "Sprite.h"
 #include <DDSTextureLoader.h>
 #include "D3DHelpers.h"
 #include "TextureCache.h"
 #include "SpriteFont.h"
 #include "FontCache.h"
+#include "SpriteGameObject.h"
 
 using namespace DirectX;
 
@@ -183,7 +183,7 @@ void Application::run(HINSTANCE hInstance) {
 	pT = TextureCache::get().LoadTexture(&pD3D->GetDevice(), "Player/Idle.png", false);
 	CommonStates dxstate(&pD3D->GetDevice());
 
-	Sprite spr(*pT);
+	SpriteGameObject spr(*pT);
 	spr.setTextureRect({ 0,0,100,128 });
 	//spr.setTexture(pT);
 
@@ -217,9 +217,9 @@ void Application::run(HINSTANCE hInstance) {
 			//**TESTING
 			
 			//sb.Draw(pT, SimpleMath::Vector2(-500.0f,0.0f), SimpleMath::Vector4(1.0f,1.0f,1.0f,1.0f));
-			//spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
-			//spr.mPos = Vector2(100.0f, 100.0f);
-			//spr.render(spriteBatch);
+			spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
+			spr.mPos = Vector2(100.0f, 100.0f);
+			spr.render(spriteBatch);
 
 			pFont->DrawString(&spriteBatch, L"testtt",
 				Vector2(0,0), Colors::Black, 0.f, Vector2(0,0), 1);

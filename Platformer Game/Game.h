@@ -22,7 +22,7 @@ private:
 	//sf::Texture mPlayerIdleTexture;
 	//sf::Texture mWallTexture;
 	// **DEBUG
-	TextGameObject mDebugText;
+	//TextGameObject mDebugText;
 	//sf::Font mDebugFont;
 };
 
