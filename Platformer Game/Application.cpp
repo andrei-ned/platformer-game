@@ -10,6 +10,8 @@
 #include <DDSTextureLoader.h>
 #include "D3DHelpers.h"
 #include "TextureCache.h"
+#include "SpriteFont.h"
+#include "FontCache.h"
 
 using namespace DirectX;
 
@@ -68,7 +70,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 		// Save the new client area dimensions.
 		mWinData.clientWidth = LOWORD(lParam);
 		mWinData.clientHeight = HIWORD(lParam);
-		if (mpD3D && mpD3D->GetDeviceReady())
+		if (pD3D && pD3D->GetDeviceReady())
 		{
 			if (wParam == SIZE_MINIMIZED)
 			{
@@ -81,7 +83,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				mWinData.appPaused = false;
 				mWinData.minimized = false;
 				mWinData.maximized = true;
-				mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+				pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
@@ -91,14 +93,14 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				{
 					mWinData.appPaused = false;
 					mWinData.minimized = false;
-					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+					pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 				}
 				// Restoring from maximized state?
 				else if (mWinData.maximized)
 				{
 					mWinData.appPaused = false;
 					mWinData.maximized = false;
-					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+					pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 				}
 				else if (mWinData.resizing)
 				{
@@ -113,7 +115,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				}
 				else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
 				{
-					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+					pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 				}
 			}
 		}
@@ -130,8 +132,8 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 	case WM_EXITSIZEMOVE:
 		mWinData.appPaused = false;
 		mWinData.resizing = false;
-		if (mpD3D)
-			mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+		if (pD3D)
+			pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 		return 0;
 
 		// WM_DESTROY is sent when the window is being destroyed.
@@ -165,11 +167,11 @@ void Application::run(HINSTANCE hInstance) {
 	QueryPerformanceFrequency(&cpuFrequency);
 	QueryPerformanceCounter(&time1);
 	QueryPerformanceCounter(&time2);
-	float deltaTime;
+	float deltaTime = 0.0f;
 	bool shouldQuit = false;
 
-	mpD3D = new D3DHandler(mWinData);
-	DirectX::SpriteBatch spriteBatch(&mpD3D->GetDeviceCtx());
+	pD3D = new D3DHandler(mWinData);
+	DirectX::SpriteBatch spriteBatch(&pD3D->GetDeviceCtx());
 
 	//**TESTING
 	TextureCache::get();
@@ -178,12 +180,15 @@ void Application::run(HINSTANCE hInstance) {
 	Singleton<TextureCache>::get();
 	ID3D11ShaderResourceView *pT;
 	//DirectX::CreateWICTextureFromFile(&mpD3D->GetDevice(), L"../Assets/Player/Idle.png", nullptr, &pT);
-	pT = TextureCache::get().LoadTexture(&mpD3D->GetDevice(), "Player/Idle.png", false);
-	CommonStates dxstate(&mpD3D->GetDevice());
+	pT = TextureCache::get().LoadTexture(&pD3D->GetDevice(), "Player/Idle.png", false);
+	CommonStates dxstate(&pD3D->GetDevice());
 
 	Sprite spr(*pT);
 	spr.setTextureRect({ 0,0,100,128 });
 	//spr.setTexture(pT);
+
+	//SpriteFont font(&pD3D->GetDevice(), L"../Assets/Fonts/courier.spritefont");
+	SpriteFont* pFont = FontCache::get().LoadSpriteFont(&pD3D->GetDevice(), "courier.spritefont");
 	//****
 
 	assert(pT);
@@ -203,9 +208,10 @@ void Application::run(HINSTANCE hInstance) {
 
 		if (!mWinData.appPaused)
 		{
-			mpD3D->BeginRender(DirectX::Colors::Blue.v);
-
 			mGame.update(deltaTime);
+
+			// Rendering
+			pD3D->BeginRender(DirectX::Colors::Blue.v);
 			spriteBatch.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied());
 			mGame.render(spriteBatch);
 			//**TESTING
@@ -214,11 +220,13 @@ void Application::run(HINSTANCE hInstance) {
 			//spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
 			//spr.mPos = Vector2(100.0f, 100.0f);
 			//spr.render(spriteBatch);
+
+			pFont->DrawString(&spriteBatch, L"testtt",
+				Vector2(0,0), Colors::Black, 0.f, Vector2(0,0), 1);
 			//****
 
 			spriteBatch.End();
-
-			mpD3D->EndRender();
+			pD3D->EndRender();
 		}
 		else
 		{
@@ -229,8 +237,8 @@ void Application::run(HINSTANCE hInstance) {
 		deltaTime = (float)(time2.QuadPart - time1.QuadPart) / cpuFrequency.QuadPart;
 		time1 = time2;
 	}
-
-	delete mpD3D;
+	
+	delete pD3D;
 	//ReleaseCOM(pT);
 
 	// Start the game loop 

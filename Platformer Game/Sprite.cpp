@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include <SimpleMath.h>
+#include "TextureCache.h"
 
 using namespace DirectX::SimpleMath;
 

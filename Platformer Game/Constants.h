@@ -10,4 +10,5 @@ namespace Constants {
 	// File paths
 	const std::string ASSETS_PATH = "../Assets/";
 	const std::string TEXTURES_PATH = "../Assets/Textures/";
+	const std::string FONTS_PATH = "../Assets/Fonts/";
 }

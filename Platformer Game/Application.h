@@ -20,6 +20,6 @@ private:
 	static LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT CALLBACK MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-	D3DHandler *mpD3D;
+	D3DHandler *pD3D;
 };
 

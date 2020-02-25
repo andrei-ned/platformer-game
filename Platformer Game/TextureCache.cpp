@@ -6,7 +6,6 @@ TextureCache::TextureCache()
 {
 }
 
-
 TextureCache::~TextureCache()
 {
 	for (auto& pair : mCache)
