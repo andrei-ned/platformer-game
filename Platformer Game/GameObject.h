@@ -20,6 +20,5 @@ public:
 	virtual void render(DirectX::SpriteBatch& batch) = 0;
 protected:
 	GameObject();
-
 };
 

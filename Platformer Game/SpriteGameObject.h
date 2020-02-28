@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "SpriteBatch.h"
 #include "SimpleMath.h"
-#include <optional>
+#include "Helpers.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -21,13 +21,13 @@ public:
 	ID3D11ShaderResourceView& getTexture() const;
 	void setTextureRect(RECT rect);
 	RECT getTextureRect() const;
-	// Returns size in world space
-	//sf::Vector2f getDimensions() const;
 	// Returns bounds (i.e. position and size in world space)
+	RECTF getBounds() const;
 private:
 	ID3D11ShaderResourceView *mpTexture;
-	std::optional<RECT> mTextureRect;
-	RECT *mpTextureRect;
+	RECT mTextureRect;
+	//RECT *mpTextureRect; 
+	Vector2 mUnscaledDimensions;
 //public:
 //	SpriteGameObject();
 //	//SpriteGameObject(const sf::Texture& t);

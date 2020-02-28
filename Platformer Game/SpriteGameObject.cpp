@@ -1,21 +1,18 @@
 #include "SpriteGameObject.h"
+#include "D3DHelpers.h"
 
-SpriteGameObject::SpriteGameObject() : mpTexture(nullptr), mpTextureRect(nullptr)
+SpriteGameObject::SpriteGameObject() : mpTexture(nullptr)
 {
-	RECT test = { 0,0,500,500 };
-	mpTextureRect = &test;
 }
 
 SpriteGameObject::SpriteGameObject(ID3D11ShaderResourceView& texture)
-	: SpriteGameObject()
+	: mpTexture(&texture), mTextureRect(getMaxTextureRect(&texture))
 {
-	setTexture(texture);
 }
 
 SpriteGameObject::SpriteGameObject(ID3D11ShaderResourceView& texture, RECT rect)
-	: SpriteGameObject(texture)
+	: mpTexture(&texture), mTextureRect(rect)
 {
-	setTextureRect(rect);
 }
 
 SpriteGameObject::~SpriteGameObject()
@@ -24,17 +21,18 @@ SpriteGameObject::~SpriteGameObject()
 
 void SpriteGameObject::render(DirectX::SpriteBatch& batch)
 {
-	batch.Draw(mpTexture, mPos, mTextureRect ? &mTextureRect.value() : nullptr, mColor, mRotation, mOrigin, mScale, DirectX::SpriteEffects::SpriteEffects_None);
+	batch.Draw(mpTexture, mPos, &mTextureRect, mColor, mRotation, mOrigin, mScale, DirectX::SpriteEffects::SpriteEffects_None);
 }
 
 void SpriteGameObject::setTexture(ID3D11ShaderResourceView& texture)
 {
 	mpTexture = &texture;
+	setTextureRect(getMaxTextureRect(&texture));
 }
 
 void SpriteGameObject::setTexture(ID3D11ShaderResourceView& texture, RECT rect)
 {
-	setTexture(texture);
+	mpTexture = &texture;
 	setTextureRect(rect);
 }
 
@@ -45,12 +43,21 @@ ID3D11ShaderResourceView& SpriteGameObject::getTexture() const
 
 void SpriteGameObject::setTextureRect(RECT rect)
 {
-	mpTextureRect = &rect;
+	mTextureRect = rect;
 }
 
 RECT SpriteGameObject::getTextureRect() const
 {
-	return *mpTextureRect;
+	return mTextureRect;
+}
+
+RECTF SpriteGameObject::getBounds() const
+{
+	float minX = mScale.x * (mPos.x + mOrigin.x + mTextureRect.left);
+	float minY = mScale.y * (mPos.y + mOrigin.y + mTextureRect.top);
+	float maxX = mScale.x * (mPos.x + mOrigin.x + mTextureRect.right);
+	float maxY = mScale.y * (mPos.y + mOrigin.y + mTextureRect.bottom);
+	return { minX, minY, maxX, maxY };
 }
 
 //SpriteGameObject::SpriteGameObject() {

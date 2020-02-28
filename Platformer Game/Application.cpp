@@ -12,6 +12,7 @@
 #include "SpriteFont.h"
 #include "FontCache.h"
 #include "SpriteGameObject.h"
+#include "Player.h"
 
 using namespace DirectX;
 
@@ -183,8 +184,11 @@ void Application::run(HINSTANCE hInstance) {
 	pT = TextureCache::get().LoadTexture(&pD3D->GetDevice(), "Player/Idle.png", false);
 	CommonStates dxstate(&pD3D->GetDevice());
 
-	SpriteGameObject spr(*pT);
-	spr.setTextureRect({ 0,0,100,128 });
+	//SpriteGameObject spr(*pT);
+	Player player;
+	player.mPos = Vector2(200.0f, 50.0f);
+	player.setTexture(*pT);
+	//spr.setTextureRect({ 0,0,100,128 });
 	//spr.setTexture(pT);
 
 	//SpriteFont font(&pD3D->GetDevice(), L"../Assets/Fonts/courier.spritefont");
@@ -215,11 +219,16 @@ void Application::run(HINSTANCE hInstance) {
 			spriteBatch.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied());
 			mGame.render(spriteBatch);
 			//**TESTING
-			
+			player.update(deltaTime);
+			PhysicsGameObject* test = &player;
+			test->update(deltaTime);
+			//player.PhysicsGameObject::update(deltaTime);
 			//sb.Draw(pT, SimpleMath::Vector2(-500.0f,0.0f), SimpleMath::Vector4(1.0f,1.0f,1.0f,1.0f));
-			spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
-			spr.mPos = Vector2(100.0f, 100.0f);
-			spr.render(spriteBatch);
+			//spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
+			//spr.mPos = Vector2(100.0f, 100.0f);
+			
+			//spr.render(spriteBatch);
+			player.render(spriteBatch);
 
 			pFont->DrawString(&spriteBatch, L"testtt",
 				Vector2(0,0), Colors::Black, 0.f, Vector2(0,0), 1);

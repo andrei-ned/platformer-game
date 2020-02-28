@@ -27,7 +27,6 @@ ID3D11ShaderResourceView* TextureCache::LoadTexture(ID3D11Device* pDevice, const
 	}
 
 	// Load texture from file
-	DDS_ALPHA_MODE alpha;
 	ID3D11ShaderResourceView *pT;
 	std::wstring ws(fullPath.begin(), fullPath.end());
 	if (isDDS)
