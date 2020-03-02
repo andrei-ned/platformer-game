@@ -193,6 +193,8 @@ void Application::run(HINSTANCE hInstance) {
 
 	//SpriteFont font(&pD3D->GetDevice(), L"../Assets/Fonts/courier.spritefont");
 	SpriteFont* pFont = FontCache::get().LoadSpriteFont(&pD3D->GetDevice(), "courier.spritefont");
+	TextGameObject text(*pFont);
+	text.mString = "testtt";
 	//****
 
 	assert(pT);
@@ -229,9 +231,9 @@ void Application::run(HINSTANCE hInstance) {
 			
 			//spr.render(spriteBatch);
 			player.render(spriteBatch);
-
-			pFont->DrawString(&spriteBatch, L"testtt",
-				Vector2(0,0), Colors::Black, 0.f, Vector2(0,0), 1);
+			text.render(spriteBatch);
+			//pFont->DrawString(&spriteBatch, L"testtt",
+			//	Vector2(0,0), Colors::Black, 0.f, Vector2(0,0), 1);
 			//****
 
 			spriteBatch.End();
