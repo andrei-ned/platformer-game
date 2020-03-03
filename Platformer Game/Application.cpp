@@ -13,6 +13,8 @@
 #include "FontCache.h"
 #include "SpriteGameObject.h"
 #include "Player.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 
 using namespace DirectX;
 
@@ -49,8 +51,29 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 		//Game::Get().ProcessKey((char)wParam);
 		break;
 	case WM_INPUT:
-		//Game::Get().mMKIn.MessageEvent((HRAWINPUT)lParam);
+	case WM_MOUSEMOVE:
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_MBUTTONDOWN:
+	case WM_MBUTTONUP:
+	case WM_MOUSEWHEEL:
+	case WM_XBUTTONDOWN:
+	case WM_XBUTTONUP:
+	case WM_MOUSEHOVER:
+		Mouse::ProcessMessage(msg, wParam, lParam);
 		break;
+
+	case WM_KEYDOWN:
+	case WM_SYSKEYDOWN:
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		Keyboard::ProcessMessage(msg, wParam, lParam);
+		break;
+	//case WM_INPUT:
+	//	//Game::Get().mMKIn.MessageEvent((HRAWINPUT)lParam);
+	//	break;
 
 		// WM_ACTIVATE is sent when the window is activated or deactivated.  
 		// We pause the game when the window is deactivated and unpause it 
@@ -65,13 +88,16 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 			mWinData.appPaused = false;
 		}
 		return 0;
-
+	case WM_ACTIVATEAPP:
+		Keyboard::ProcessMessage(msg, wParam, lParam);
+		Mouse::ProcessMessage(msg, wParam, lParam);
+		break;
 		// WM_SIZE is sent when the user resizes the window.  
 	case WM_SIZE:
 		// Save the new client area dimensions.
 		mWinData.clientWidth = LOWORD(lParam);
 		mWinData.clientHeight = HIWORD(lParam);
-		if (pD3D && pD3D->GetDeviceReady())
+		if (mpD3D && mpD3D->GetDeviceReady())
 		{
 			if (wParam == SIZE_MINIMIZED)
 			{
@@ -84,7 +110,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				mWinData.appPaused = false;
 				mWinData.minimized = false;
 				mWinData.maximized = true;
-				pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+				mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
@@ -94,14 +120,14 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				{
 					mWinData.appPaused = false;
 					mWinData.minimized = false;
-					pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 				}
 				// Restoring from maximized state?
 				else if (mWinData.maximized)
 				{
 					mWinData.appPaused = false;
 					mWinData.maximized = false;
-					pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 				}
 				else if (mWinData.resizing)
 				{
@@ -116,7 +142,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				}
 				else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
 				{
-					pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 				}
 			}
 		}
@@ -133,8 +159,8 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 	case WM_EXITSIZEMOVE:
 		mWinData.appPaused = false;
 		mWinData.resizing = false;
-		if (pD3D)
-			pD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+		if (mpD3D)
+			mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 		return 0;
 
 		// WM_DESTROY is sent when the window is being destroyed.
@@ -160,8 +186,6 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 }
 
 void Application::run(HINSTANCE hInstance) {
-
-
 	InitMainWindow(GameConstants::SCREEN_RES_X, GameConstants::SCREEN_RES_Y, hInstance, GameConstants::WINDOW_NAME, Application::MainWndProc, true);
 
 	LARGE_INTEGER cpuFrequency, time1, time2;
@@ -171,33 +195,37 @@ void Application::run(HINSTANCE hInstance) {
 	float deltaTime = 0.0f;
 	bool shouldQuit = false;
 
-	pD3D = new D3DHandler(mWinData);
-	DirectX::SpriteBatch spriteBatch(&pD3D->GetDeviceCtx());
+	mpD3D = new D3DHandler(mWinData);
+	DirectX::SpriteBatch spriteBatch(&mpD3D->GetDeviceCtx());
+	CommonStates dxstate(&mpD3D->GetDevice());
 
-	//**TESTING
-	TextureCache::get();
-	TextureCache &test1 = TextureCache::get();
-	//TextureCache test2;
-	Singleton<TextureCache>::get();
-	ID3D11ShaderResourceView *pT;
-	//DirectX::CreateWICTextureFromFile(&mpD3D->GetDevice(), L"../Assets/Player/Idle.png", nullptr, &pT);
-	pT = TextureCache::get().LoadTexture(&pD3D->GetDevice(), "Player/Idle.png", false);
-	CommonStates dxstate(&pD3D->GetDevice());
+	mpGame = new Game(*mpD3D);
+	Keyboard* kb = new Keyboard;
 
-	//SpriteGameObject spr(*pT);
-	Player player;
-	player.mPos = Vector2(200.0f, 50.0f);
-	player.setTexture(*pT);
-	//spr.setTextureRect({ 0,0,100,128 });
-	//spr.setTexture(pT);
+	////**TESTING
+	//Keyboard* kb = new Keyboard;
+	//TextureCache::get();
+	//TextureCache &test1 = TextureCache::get();
+	////TextureCache test2;
+	//Singleton<TextureCache>::get();
+	//ID3D11ShaderResourceView *pT;
+	////DirectX::CreateWICTextureFromFile(&mpD3D->GetDevice(), L"../Assets/Player/Idle.png", nullptr, &pT);
+	//pT = TextureCache::get().LoadTexture(&pD3D->GetDevice(), "Player/Idle.png", false);
 
-	//SpriteFont font(&pD3D->GetDevice(), L"../Assets/Fonts/courier.spritefont");
-	SpriteFont* pFont = FontCache::get().LoadSpriteFont(&pD3D->GetDevice(), "courier.spritefont");
-	TextGameObject text(*pFont);
-	text.mString = "testtt";
-	//****
+	////SpriteGameObject spr(*pT);
+	//Player player;
+	//player.mPos = Vector2(200.0f, 50.0f);
+	//player.setTexture(*pT, { 43, 28, 117, 102 });
+	////spr.setTextureRect({ 0,0,100,128 });
+	////spr.setTexture(pT);
 
-	assert(pT);
+	////SpriteFont font(&pD3D->GetDevice(), L"../Assets/Fonts/courier.spritefont");
+	//SpriteFont* pFont = FontCache::get().LoadSpriteFont(&pD3D->GetDevice(), "courier.spritefont");
+	//TextGameObject text(*pFont);
+	//text.mString = "testtt";
+	//assert(pT);
+	////****
+
 
 	while (!shouldQuit)
 	{
@@ -214,30 +242,37 @@ void Application::run(HINSTANCE hInstance) {
 
 		if (!mWinData.appPaused)
 		{
-			mGame.update(deltaTime);
+			//mGame.update(deltaTime);
+			mpGame->update(deltaTime);
 
 			// Rendering
-			pD3D->BeginRender(DirectX::Colors::Blue.v);
-			spriteBatch.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied());
-			mGame.render(spriteBatch);
-			//**TESTING
-			player.update(deltaTime);
-			PhysicsGameObject* test = &player;
-			test->update(deltaTime);
-			//player.PhysicsGameObject::update(deltaTime);
-			//sb.Draw(pT, SimpleMath::Vector2(-500.0f,0.0f), SimpleMath::Vector4(1.0f,1.0f,1.0f,1.0f));
-			//spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
-			//spr.mPos = Vector2(100.0f, 100.0f);
-			
-			//spr.render(spriteBatch);
-			player.render(spriteBatch);
-			text.render(spriteBatch);
-			//pFont->DrawString(&spriteBatch, L"testtt",
-			//	Vector2(0,0), Colors::Black, 0.f, Vector2(0,0), 1);
-			//****
+			mpD3D->BeginRender(DirectX::Colors::Blue.v);
+			spriteBatch.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied(), &mpD3D->GetWrapSampler());
+			//mGame.render(spriteBatch);
+			mpGame->render(spriteBatch);
+			////**TESTING
+			Keyboard::Get().GetState();
+			//if (kb->GetState().A)
+			//{
+			//	shouldQuit = true;
+			//}
+			//player.update(deltaTime);
+			//PhysicsGameObject* test = &player;
+			//test->update(deltaTime);
+			////player.PhysicsGameObject::update(deltaTime);
+			////sb.Draw(pT, SimpleMath::Vector2(-500.0f,0.0f), SimpleMath::Vector4(1.0f,1.0f,1.0f,1.0f));
+			////spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
+			////spr.mPos = Vector2(100.0f, 100.0f);
+			//
+			////spr.render(spriteBatch);
+			//player.render(spriteBatch);
+			//text.render(spriteBatch);
+			////pFont->DrawString(&spriteBatch, L"testtt",
+			////	Vector2(0,0), Colors::Black, 0.f, Vector2(0,0), 1);
+			////****
 
 			spriteBatch.End();
-			pD3D->EndRender();
+			mpD3D->EndRender();
 		}
 		else
 		{
@@ -249,7 +284,10 @@ void Application::run(HINSTANCE hInstance) {
 		time1 = time2;
 	}
 	
-	delete pD3D;
+	delete mpD3D;
+	delete mpGame;
+	delete kb;
+	//delete kb;
 	//ReleaseCOM(pT);
 
 	// Start the game loop 

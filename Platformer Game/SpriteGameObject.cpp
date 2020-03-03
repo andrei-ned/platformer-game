@@ -21,6 +21,7 @@ SpriteGameObject::~SpriteGameObject()
 
 void SpriteGameObject::render(DirectX::SpriteBatch& batch)
 {
+	assert(mpTexture);
 	batch.Draw(mpTexture, mPos, &mTextureRect, mColor, mRotation, mOrigin, mScale, DirectX::SpriteEffects::SpriteEffects_None);
 }
 
@@ -53,10 +54,10 @@ RECT SpriteGameObject::getTextureRect() const
 
 RECTF SpriteGameObject::getBounds() const
 {
-	float minX = mScale.x * (mPos.x + mOrigin.x + mTextureRect.left);
-	float minY = mScale.y * (mPos.y + mOrigin.y + mTextureRect.top);
-	float maxX = mScale.x * (mPos.x + mOrigin.x + mTextureRect.right);
-	float maxY = mScale.y * (mPos.y + mOrigin.y + mTextureRect.bottom);
+	float minX = mPos.x + mOrigin.x;
+	float minY = mPos.y + mOrigin.y;
+	float maxX = mPos.x + mOrigin.x + mScale.x * (mTextureRect.right - mTextureRect.left);
+	float maxY = mPos.y + mOrigin.y + mScale.y * (mTextureRect.bottom - mTextureRect.top);
 	return { minX, minY, maxX, maxY };
 }
 

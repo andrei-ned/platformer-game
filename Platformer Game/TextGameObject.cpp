@@ -9,6 +9,7 @@ TextGameObject::TextGameObject() {
 TextGameObject::TextGameObject(SpriteFont& font) : mpFont(&font) {}
 
 void TextGameObject::render(DirectX::SpriteBatch& batch) {
+	assert(mpFont);
 	//batch.Draw(mpTexture, mPos, &mTextureRect, mColor, mRotation, mOrigin, mScale, DirectX::SpriteEffects::SpriteEffects_None);
 	mpFont->DrawString(&batch, mString.c_str(), mPos, mColor, mRotation, mScale);
 }
