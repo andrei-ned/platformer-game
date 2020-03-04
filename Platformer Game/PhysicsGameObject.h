@@ -3,7 +3,7 @@
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
-
+ 
 // Implements physics on top of SpriteGameObject
 class PhysicsGameObject : public SpriteGameObject
 {

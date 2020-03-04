@@ -28,6 +28,12 @@
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{b7da9e19-7e5c-4d89-bb84-3db27b99105f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObjects\Components">
+      <UniqueIdentifier>{41e29a86-1f56-4365-b946-4d9f7eb956a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\Components">
+      <UniqueIdentifier>{5430cd3d-6259-44fc-9eda-2970238798a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -68,6 +74,24 @@
     </ClCompile>
     <ClCompile Include="D3DHelpers.cpp">
       <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsBody.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +142,24 @@
     </ClInclude>
     <ClInclude Include="FontCache.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.h">
+      <Filter>Header Files\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Header Files\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsBody.h">
+      <Filter>Header Files\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files\GameObjects\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,17 @@
+#pragma once
+#include "Collider.h"
+#include "PhysicsBody.h"
+
+class PlayerController : public Component
+{
+public:
+	PlayerController(GameObject& gameObject);
+	~PlayerController();
+	void update(const float deltaTime) override;
+private:
+	bool mIsJumping;
+	// Used to track time since last on ground in order to allow coyote time jumps
+	float mCurrentCoyoteTime;
+	PhysicsBody* mpPhysics;
+};
+

@@ -1,11 +1,11 @@
 #pragma once
-#include "PhysicsGameObject.h"
-#include "TextGameObject.h"
-#include "Player.h"
+#include "GameObject.h"
 #include <vector>
 #include "SpriteBatch.h"
 #include "D3DHandler.h"
 #include "Keyboard.h"
+#include "PhysicsBody.h"
+#include "Collider.h"
 
 class Game
 {
@@ -19,9 +19,11 @@ public:
 	void render(DirectX::SpriteBatch& spriteBatch);
 private:
 	D3DHandler* mpD3D;
-	Player mPlayer;
-	std::vector<PhysicsGameObject> mTerrain;
+	GameObject mPlayer;
+	PhysicsBody* mpPlayerPhysics;
+	std::vector<GameObject> mTerrain;
+	std::vector<Collider*> mTerrainColliders;
 	// **DEBUG
-	TextGameObject mDebugText;
+	GameObject mDebugText;
 };
 
