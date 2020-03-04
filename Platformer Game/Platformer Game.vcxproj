@@ -155,9 +155,6 @@
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="WinData.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\Assets\Player\Idle.dds" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

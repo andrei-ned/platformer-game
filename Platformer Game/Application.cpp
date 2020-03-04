@@ -4,15 +4,7 @@
 #include <cassert>
 #include "DirectXColors.h"
 #include "SpriteBatch.h"
-#include <WICTextureLoader.h>
 #include "CommonStates.h"
-#include <DDSTextureLoader.h>
-#include "D3DHelpers.h"
-#include "TextureCache.h"
-#include "SpriteFont.h"
-#include "FontCache.h"
-#include "SpriteGameObject.h"
-#include "Player.h"
 #include "Keyboard.h"
 #include "Mouse.h"
 
@@ -20,7 +12,6 @@ using namespace DirectX;
 
 Application::Application()
 {
-	//mWindow.create(sf::VideoMode(GameConstants::SCREEN_RES_X, GameConstants::SCREEN_RES_Y), GameConstants::WINDOW_NAME);
 }
 
 Application::~Application()
@@ -71,10 +62,6 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 	case WM_SYSKEYUP:
 		Keyboard::ProcessMessage(msg, wParam, lParam);
 		break;
-	//case WM_INPUT:
-	//	//Game::Get().mMKIn.MessageEvent((HRAWINPUT)lParam);
-	//	break;
-
 		// WM_ACTIVATE is sent when the window is activated or deactivated.  
 		// We pause the game when the window is deactivated and unpause it 
 		// when it becomes active.  
@@ -202,31 +189,6 @@ void Application::run(HINSTANCE hInstance) {
 	mpGame = new Game(*mpD3D);
 	Keyboard* kb = new Keyboard;
 
-	////**TESTING
-	//Keyboard* kb = new Keyboard;
-	//TextureCache::get();
-	//TextureCache &test1 = TextureCache::get();
-	////TextureCache test2;
-	//Singleton<TextureCache>::get();
-	//ID3D11ShaderResourceView *pT;
-	////DirectX::CreateWICTextureFromFile(&mpD3D->GetDevice(), L"../Assets/Player/Idle.png", nullptr, &pT);
-	//pT = TextureCache::get().LoadTexture(&pD3D->GetDevice(), "Player/Idle.png", false);
-
-	////SpriteGameObject spr(*pT);
-	//Player player;
-	//player.mPos = Vector2(200.0f, 50.0f);
-	//player.setTexture(*pT, { 43, 28, 117, 102 });
-	////spr.setTextureRect({ 0,0,100,128 });
-	////spr.setTexture(pT);
-
-	////SpriteFont font(&pD3D->GetDevice(), L"../Assets/Fonts/courier.spritefont");
-	//SpriteFont* pFont = FontCache::get().LoadSpriteFont(&pD3D->GetDevice(), "courier.spritefont");
-	//TextGameObject text(*pFont);
-	//text.mString = "testtt";
-	//assert(pT);
-	////****
-
-
 	while (!shouldQuit)
 	{
 		MSG msg = { 0 };
@@ -246,30 +208,9 @@ void Application::run(HINSTANCE hInstance) {
 			mpGame->update(deltaTime);
 
 			// Rendering
-			mpD3D->BeginRender(DirectX::Colors::Blue.v);
+			mpD3D->BeginRender(DirectX::Colors::Black.v);
 			spriteBatch.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied(), &mpD3D->GetWrapSampler());
-			//mGame.render(spriteBatch);
 			mpGame->render(spriteBatch);
-			////**TESTING
-			Keyboard::Get().GetState();
-			//if (kb->GetState().A)
-			//{
-			//	shouldQuit = true;
-			//}
-			//player.update(deltaTime);
-			//PhysicsGameObject* test = &player;
-			//test->update(deltaTime);
-			////player.PhysicsGameObject::update(deltaTime);
-			////sb.Draw(pT, SimpleMath::Vector2(-500.0f,0.0f), SimpleMath::Vector4(1.0f,1.0f,1.0f,1.0f));
-			////spr.mOrigin = SimpleMath::Vector2(500.0f, 0.0f);
-			////spr.mPos = Vector2(100.0f, 100.0f);
-			//
-			////spr.render(spriteBatch);
-			//player.render(spriteBatch);
-			//text.render(spriteBatch);
-			////pFont->DrawString(&spriteBatch, L"testtt",
-			////	Vector2(0,0), Colors::Black, 0.f, Vector2(0,0), 1);
-			////****
 
 			spriteBatch.End();
 			mpD3D->EndRender();
@@ -287,39 +228,6 @@ void Application::run(HINSTANCE hInstance) {
 	delete mpD3D;
 	delete mpGame;
 	delete kb;
-	//delete kb;
-	//ReleaseCOM(pT);
-
-	// Start the game loop 
-	//sf::Clock clock;
-	//while (mWindow.isOpen())
-	//{
-	//	// Process events
-	//	sf::Event event;
-	//	while (mWindow.pollEvent(event))
-	//	{
-	//		// Close window: exit
-	//		if (event.type == sf::Event::Closed)
-	//			mWindow.close();
-	//		if (event.type == sf::Event::TextEntered)
-	//		{
-	//			if (event.text.unicode < Constants::ASCII_RANGE)
-	//			{
-	//				if (static_cast<char>(event.text.unicode) == Constants::ESCAPE_KEY)
-	//					mWindow.close();
-	//			}
-	//		}
-	//	}
-
-	//	// Clear screen
-	//	mWindow.clear();
-
-	//	mGame.update(clock.restart());
-	//	mGame.render(mWindow);
-
-	//	// Update the window
-	//	mWindow.display();
-	//}
 }
 
 bool Application::InitMainWindow(int width, int height, HINSTANCE hInstance, const std::string& appName, WNDPROC mssgHandler, bool centred)

@@ -17,12 +17,9 @@ D3DHandler::D3DHandler(WinData winData)
 
 	CheckMultiSamplingSupport(m4xMsaaQuality);
 
-	//int w, h;
-	//WinUtil::Get().GetClientExtents(w, h);
 	DXGI_SWAP_CHAIN_DESC sd;
 	CreateSwapChainDescription(sd, winData.hMainWnd, true, winData.clientWidth, winData.clientHeight);
 	CreateSwapChain(sd);
-
 
 	// The remaining steps that need to be carried out for d3d creation
 	// also need to be executed every time the window is resized.  So
@@ -34,7 +31,6 @@ D3DHandler::D3DHandler(WinData winData)
 
 D3DHandler::~D3DHandler()
 {
-	//mTexCache.Release();
 	//check if full screen - not advisable to exit in full screen mode
 	if (mpSwapChain)
 	{
@@ -57,22 +53,12 @@ D3DHandler::~D3DHandler()
 	}
 
 	ReleaseCOM(mpd3dImmediateContext);
-	//if (extraReporting)
-	//{
-		ID3D11Debug* pd3dDebug;
-		HR(mpd3dDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&pd3dDebug)));
-		HR(pd3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY));
-		ReleaseCOM(pd3dDebug);
-	//}
+	ID3D11Debug* pd3dDebug;
+	HR(mpd3dDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&pd3dDebug)));
+	HR(pd3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY));
+	ReleaseCOM(pd3dDebug);
 	ReleaseCOM(mpd3dDevice);
 }
-
-//float D3DHandler::GetAspectRatio()
-//{
-//	int w, h;
-//	WinUtil::Get().GetClientExtents(w, h);
-//	return w / (float)h;
-//}
 
 void D3DHandler::BeginRender(const Color color)
 {
@@ -313,66 +299,6 @@ void D3DHandler::OnResize(int clientWidth, int clientHeight)
 	SetViewportDimensions(clientWidth, clientHeight);
 
 }
-
-//bool D3DHandler::InitDirect3D()
-//{
-//	// Create the device and device context.
-//	CreateD3D();
-//
-//	CheckMultiSamplingSupport(m4xMsaaQuality);
-//
-//	//int w, h;
-//	//WinUtil::Get().GetClientExtents(w, h);
-//	DXGI_SWAP_CHAIN_DESC sd;
-//	//CreateSwapChainDescription(sd, WinUtil::Get().GetMainWnd(), true, w, h); // <- IMPORTANT
-//	CreateSwapChain(sd);
-//
-//
-//	// The remaining steps that need to be carried out for d3d creation
-//	// also need to be executed every time the window is resized.  So
-//	// just call the OnResize method here to avoid code duplication.
-//
-//	//mpOnResize(w, h, *this);
-//
-//	CreateWrapSampler(mpWrapSampler);
-//
-//	return true;
-//}
-
-//void D3DHandler::ReleaseD3D(bool extraReporting = true)
-//{
-//	//mTexCache.Release();
-//	//check if full screen - not advisable to exit in full screen mode
-//	if (mpSwapChain)
-//	{
-//		BOOL fullscreen = false;
-//		HR(mpSwapChain->GetFullscreenState(&fullscreen, nullptr));
-//		if (fullscreen) //go for a window
-//			mpSwapChain->SetFullscreenState(false, nullptr);
-//	}
-//
-//	ReleaseCOM(mpRenderTargetView);
-//	ReleaseCOM(mpDepthStencilView);
-//	ReleaseCOM(mpSwapChain);
-//	ReleaseCOM(mpDepthStencilBuffer);
-//
-//	// Restore all default settings.
-//	if (mpd3dImmediateContext)
-//	{
-//		mpd3dImmediateContext->ClearState();
-//		mpd3dImmediateContext->Flush();
-//	}
-//
-//	ReleaseCOM(mpd3dImmediateContext);
-//	if (extraReporting)
-//	{
-//		ID3D11Debug* pd3dDebug;
-//		HR(mpd3dDevice->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(&pd3dDebug)));
-//		HR(pd3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY));
-//		ReleaseCOM(pd3dDebug);
-//	}
-//	ReleaseCOM(mpd3dDevice);
-//}
 
 void D3DHandler::CreateWrapSampler(ID3D11SamplerState* &pSampler)
 {

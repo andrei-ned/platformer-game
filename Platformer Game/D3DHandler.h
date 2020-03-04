@@ -10,28 +10,16 @@ class D3DHandler
 public:
 	D3DHandler(WinData winData);
 	~D3DHandler();
-	//main start up function
-	//bool InitDirect3D();
 	//default minimum behaviour when ALT+ENTER or drag or resize
 	//parameters are new width and height of window
 	void OnResize(int clientWidth, int clientHeight);
-	//main shutdown function, don't forget to call it
-	//extraReporting gives a bit more information about any objects
-	//that we haven't released properly
-	//void ReleaseD3D(bool extraReporting);
-	//is the screen/window square or letterbox or?
-	//float GetAspectRatio();
-	//void BeginRender(const DirectX::SimpleMath::Vector4& color);
 	void BeginRender(const DirectX::SimpleMath::Color color = DirectX::Colors::Black.v);
 	void EndRender();
 	ID3D11Device& GetDevice();
 	ID3D11DeviceContext& GetDeviceCtx();
 	bool GetDeviceReady() const;
 	ID3D11SamplerState& GetWrapSampler();
-	//TexCache& GetCache() { return mTexCache; }
-
 private:
-	//TexCache mTexCache;
 	//what type of gpu have we got - hopefully a hardware one
 	D3D_DRIVER_TYPE md3dDriverType = D3D_DRIVER_TYPE_UNKNOWN;
 	//texture multisampling quality level supported
@@ -77,6 +65,5 @@ private:
 	void CreateSwapChain(DXGI_SWAP_CHAIN_DESC& sd);
 
 	void CreateWrapSampler(ID3D11SamplerState* &pSampler);
-
 };
 

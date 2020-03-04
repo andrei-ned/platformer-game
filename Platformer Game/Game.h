@@ -22,11 +22,8 @@ private:
 	D3DHandler* mpD3D;
 	Player mPlayer;
 	std::vector<PhysicsGameObject> mTerrain;
-	//sf::Texture mPlayerIdleTexture;
-	//sf::Texture mWallTexture;
 	// **DEBUG
 	TextGameObject mDebugText;
 	//sf::Font mDebugFont;
-	//Keyboard mKeyboard;
 };
 

@@ -71,5 +71,6 @@ inline void DXError(HRESULT hr, const char* pFileStr, int lineNum)
 #endif
 #endif 
 
+// Get rect of texture size
 RECT getMaxTextureRect(ID3D11ShaderResourceView* pTex);
 
