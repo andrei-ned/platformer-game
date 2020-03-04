@@ -1,5 +1,4 @@
 #pragma once
-//#include "SFML/Graphics.hpp"
 #include <cstring>
 
 // Container for constants, these need not be changed

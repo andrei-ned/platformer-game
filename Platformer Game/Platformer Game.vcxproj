@@ -132,7 +132,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsGameObject.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Singleton.cpp" />
     <ClCompile Include="SpriteGameObject.cpp" />
     <ClCompile Include="TextGameObject.cpp" />
     <ClCompile Include="TextureCache.cpp" />

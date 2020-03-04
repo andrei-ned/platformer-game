@@ -1,5 +1,4 @@
 #pragma once
-//#include <SFML/Graphics.hpp>
 #include <iostream>
 #include "SpriteBatch.h"
 #include "SimpleMath.h"

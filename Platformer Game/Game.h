@@ -1,5 +1,4 @@
 #pragma once
-//#include "SFML/Graphics.hpp"
 #include "PhysicsGameObject.h"
 #include "TextGameObject.h"
 #include "Player.h"
@@ -24,6 +23,5 @@ private:
 	std::vector<PhysicsGameObject> mTerrain;
 	// **DEBUG
 	TextGameObject mDebugText;
-	//sf::Font mDebugFont;
 };
 
