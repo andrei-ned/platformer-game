@@ -11,9 +11,9 @@ Text::~Text()
 {
 }
 
-void Text::render(DirectX::SpriteBatch& batch) {
+void Text::render(Camera& camera) {
 	assert(mpFont);
-	mpFont->DrawString(&batch, mString.c_str(), mpGameObject->mPos, mColor, mpGameObject->mRotation, mpGameObject->mScale);
+	camera.drawText(mpFont, mString.c_str(), mpGameObject->mPos, mColor, mpGameObject->mRotation, mOrigin, mpGameObject->mScale, false);
 }
 
 void Text::setFont(SpriteFont& font) {

@@ -9,7 +9,7 @@
 #include "PhysicsBody.h"
 #include "PlayerController.h"
 
-Game::Game(D3DHandler& d3d) : mTerrain(5), mpD3D(&d3d) {
+Game::Game(D3DHandler& d3d, SpriteBatch& spriteBatch) : mTerrain(5), mpD3D(&d3d), mCamera(spriteBatch) {
 	mPlayer.addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture(&mpD3D->GetDevice(), "Player/Idle.png", false), { 43, 28, 117, 102 });
 	mPlayer.addComponent<Collider>();
 	mpPlayerPhysics = mPlayer.addComponent<PhysicsBody>();
@@ -54,6 +54,8 @@ Game::~Game() {
 void Game::update(const float deltaTime) {
 	mPlayer.update(deltaTime);
 
+	mCamera.mPos = mPlayer.mPos - Vector2(GameConstants::SCREEN_RES_X / 2, GameConstants::SCREEN_RES_Y / 2);
+
 	// Check for collisions
 	// Note: Checking against every terrain object is inefficient, possibly change later
 	for (unsigned int i = 0; i < mTerrainColliders.size(); i++)
@@ -68,13 +70,13 @@ void Game::update(const float deltaTime) {
 	mDebugText.getComponent<Text>()->mString = std::to_string(mpPlayerPhysics->mVelocity.x) + "\n" + std::to_string(mpPlayerPhysics->mVelocity.y);
 }
 
-void Game::render(DirectX::SpriteBatch& spriteBatch) {
+void Game::render() {
 	for (unsigned int i = 0; i < mTerrain.size(); i++)
 	{
-		mTerrain.at(i).render(spriteBatch);
+		mTerrain.at(i).render(mCamera);
 	}
-	mPlayer.render(spriteBatch);
+	mPlayer.render(mCamera);
 
 	// **DEBUG
-	mDebugText.render(spriteBatch);
+	mDebugText.render(mCamera);
 }

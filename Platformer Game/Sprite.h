@@ -13,7 +13,7 @@ public:
 	Color mColor;
 	Sprite(GameObject& gameObject);
 	~Sprite();
-	void render(DirectX::SpriteBatch& batch) override;
+	virtual void render(Camera& camera) override;
 	void setTexture(ID3D11ShaderResourceView& texture);
 	void setTexture(ID3D11ShaderResourceView& texture, RECT rect);
 	ID3D11ShaderResourceView& getTexture() const;

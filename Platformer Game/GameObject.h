@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "SpriteBatch.h"
+#include "Camera.h"
 #include "SimpleMath.h"
 #include <unordered_map>
 #include "Component.h"
@@ -27,7 +27,7 @@ public:
 	// Will be called every frame, separate from update to order certain logic (e.g. input in update, then resolve all collisions, then physics logic in updateLate)
 	void updateLate(const float deltaTime);
 	// Will be called by game every frame, used for rendering
-	void render(DirectX::SpriteBatch& batch);
+	void render(Camera& camera);
 	template <class T>
 	T* addComponent();
 	template <class T>

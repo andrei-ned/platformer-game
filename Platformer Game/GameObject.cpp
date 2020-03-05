@@ -39,10 +39,10 @@ void GameObject::updateLate(const float deltaTime)
 	}
 }
 
-void GameObject::render(DirectX::SpriteBatch& batch)
+void GameObject::render(Camera& camera)
 {
 	for (auto& pair : mComponents)
 	{
-		pair.second->render(batch);
+		pair.second->render(camera);
 	}
 }

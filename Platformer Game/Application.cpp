@@ -186,8 +186,9 @@ void Application::run(HINSTANCE hInstance) {
 	DirectX::SpriteBatch spriteBatch(&mpD3D->GetDeviceCtx());
 	CommonStates dxstate(&mpD3D->GetDevice());
 
-	mpGame = new Game(*mpD3D);
+	mpGame = new Game(*mpD3D, spriteBatch);
 	Keyboard* kb = new Keyboard;
+	Mouse* mouse = new Mouse;
 
 	while (!shouldQuit)
 	{
@@ -210,7 +211,8 @@ void Application::run(HINSTANCE hInstance) {
 			// Rendering
 			mpD3D->BeginRender(DirectX::Colors::Black.v);
 			spriteBatch.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied(), &mpD3D->GetWrapSampler());
-			mpGame->render(spriteBatch);
+
+			mpGame->render();
 
 			spriteBatch.End();
 			mpD3D->EndRender();
@@ -228,6 +230,7 @@ void Application::run(HINSTANCE hInstance) {
 	delete mpD3D;
 	delete mpGame;
 	delete kb;
+	delete mouse;
 }
 
 bool Application::InitMainWindow(int width, int height, HINSTANCE hInstance, const std::string& appName, WNDPROC mssgHandler, bool centred)

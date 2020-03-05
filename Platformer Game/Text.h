@@ -14,7 +14,7 @@ public:
 	std::string mString;
 	Text(GameObject& gameObject);
 	~Text();
-	void render(DirectX::SpriteBatch& batch) override;
+	virtual void render(Camera& camera) override;
 	void setFont(SpriteFont& font);
 private:
 	SpriteFont *mpFont;

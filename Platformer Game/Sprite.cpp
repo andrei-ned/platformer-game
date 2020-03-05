@@ -13,10 +13,10 @@ Sprite::~Sprite()
 }
 
 
-void Sprite::render(DirectX::SpriteBatch& batch)
+void Sprite::render(Camera& camera)
 {
 	assert(mpTexture);
-	batch.Draw(mpTexture, mpGameObject->mPos, &mTextureRect, mColor, mpGameObject->mRotation, mOrigin, mpGameObject->mScale, DirectX::SpriteEffects::SpriteEffects_None);
+	camera.drawSprite(mpTexture, mpGameObject->mPos, &mTextureRect, mColor, mpGameObject->mRotation, mOrigin, mpGameObject->mScale);
 }
 
 void Sprite::setTexture(ID3D11ShaderResourceView& texture)
