@@ -4,7 +4,6 @@
 
 PhysicsBody::PhysicsBody(GameObject& gameObject) : Component(gameObject)
 {
-	attachCollider();
 }
 
 
@@ -12,7 +11,7 @@ PhysicsBody::~PhysicsBody()
 {
 }
 
-void PhysicsBody::attachCollider()
+void PhysicsBody::start()
 {
 	mpCollider = mpGameObject->getComponent<Collider>();
 }

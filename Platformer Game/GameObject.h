@@ -20,41 +20,14 @@ public:
 	float mRotation; // in radians
 	Vector2 mOrigin; // <- remove
 	Color mColor; // <- remove
+	// To be called to initialize, before the next frame of updates
+	void start();
 	// Will be called every frame, used for game logic
 	void update(const float deltaTime);
 	// Will be called every frame, separate from update to order certain logic (e.g. input in update, then resolve all collisions, then physics logic in updateLate)
 	void updateLate(const float deltaTime);
 	// Will be called by game every frame, used for rendering
 	void render(DirectX::SpriteBatch& batch);
-	//template <class T>
-	//T* addComponent()
-	//{
-	//	auto pT = new T(*this);
-	//	mComponents.insert({ typeid(T), pT });
-	//	return pT;
-	//}
-
-	//template <class T>
-	//void removeComponent()
-	//{
-	//	auto search = mComponents.find(typeid(T));
-	//	if (search != mComponents.end())
-	//	{
-	//		delete search.second;
-	//		mComponents.erase(search);
-	//	}
-	//}
-
-	//template <class T>
-	//T* getComponent()
-	//{
-	//	auto search = mComponents.find(typeid(T));
-	//	if (search != mComponents.end())
-	//	{
-	//		return search.second;
-	//	}
-	//	return nullptr;
-	//}
 	template <class T>
 	T* addComponent();
 	template <class T>

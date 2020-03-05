@@ -13,6 +13,7 @@ public:
 	Vector2 mSize;
 	Collider(GameObject& gameObject);
 	~Collider();
+	void start() override;
 	// Returns bounds (i.e. position and size in world space)
 	RECTF getBounds() const;
 };

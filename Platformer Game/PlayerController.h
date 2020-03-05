@@ -7,6 +7,7 @@ class PlayerController : public Component
 public:
 	PlayerController(GameObject& gameObject);
 	~PlayerController();
+	void start() override;
 	void update(const float deltaTime) override;
 private:
 	bool mIsJumping;

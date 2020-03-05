@@ -39,6 +39,13 @@ Game::Game(D3DHandler& d3d) : mTerrain(5), mpD3D(&d3d) {
 	Text* txt = mDebugText.addComponent<Text>();
 	txt->setFont(*FontCache::get().LoadSpriteFont(&mpD3D->GetDevice(), "courier.spritefont"));
 	//mDebugText.removeComponent<Text>();
+
+	mPlayer.start();
+	mDebugText.start();
+	for (unsigned int i = 0; i < mTerrain.size(); i++)
+	{
+		mTerrain.at(i).start();
+	}
 }
 
 Game::~Game() {

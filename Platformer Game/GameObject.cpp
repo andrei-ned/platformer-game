@@ -15,6 +15,14 @@ GameObject::~GameObject()
 	mComponents.clear();
 }
 
+void GameObject::start()
+{
+	for (auto& pair : mComponents)
+	{
+		pair.second->start();
+	}
+}
+
 void GameObject::update(const float deltaTime)
 {
 	for (auto& pair : mComponents)

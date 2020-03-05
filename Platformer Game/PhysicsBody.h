@@ -14,8 +14,7 @@ public:
 	bool mIsGrounded;
 	PhysicsBody(GameObject& gameObject);
 	~PhysicsBody();
-	// Fetch collider reference from owning game object
-	void attachCollider();
+	void start() override;
 	void updateLate(const float deltaTime) override;
 	// If other game object is in the way of movement, sets velocity in that direction to 0
 	void resolveCollision(const Collider& other);

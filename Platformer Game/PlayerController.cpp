@@ -5,12 +5,16 @@
 
 PlayerController::PlayerController(GameObject& gameObject) : Component(gameObject)
 {
-	mpPhysics = gameObject.getComponent<PhysicsBody>();
 }
 
 
 PlayerController::~PlayerController()
 {
+}
+
+void PlayerController::start()
+{
+	mpPhysics = mpGameObject->getComponent<PhysicsBody>();
 }
 
 void PlayerController::update(const float deltaTime)

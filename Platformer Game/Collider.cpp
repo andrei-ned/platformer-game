@@ -4,18 +4,22 @@
 
 Collider::Collider(GameObject& gameObject) : Component(gameObject), mOrigin(0, 0)
 {
-	auto spr = gameObject.getComponent<Sprite>();
-	if (spr)
-	{
-		RECT rect = spr->getTextureRect();
-		mSize.x = rect.right - rect.left;
-		mSize.y = rect.bottom - rect.top;
-	}
 }
 
 
 Collider::~Collider()
 {
+}
+
+void Collider::start()
+{
+	auto spr = mpGameObject->getComponent<Sprite>();
+	if (spr)
+	{
+		RECT rect = spr->getTextureRect();
+		mSize.x = static_cast<float>(rect.right - rect.left);
+		mSize.y = static_cast<float>(rect.bottom - rect.top);
+	}
 }
 
 RECTF Collider::getBounds() const

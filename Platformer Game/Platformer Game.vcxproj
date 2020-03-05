@@ -133,13 +133,9 @@
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsBody.cpp" />
-    <ClCompile Include="PhysicsGameObject.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteGameObject.cpp" />
     <ClCompile Include="Text.cpp" />
-    <ClCompile Include="TextGameObject.cpp" />
     <ClCompile Include="TextureCache.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,14 +151,10 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="PhysicsBody.h" />
-    <ClInclude Include="PhysicsGameObject.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteGameObject.h" />
     <ClInclude Include="Text.h" />
-    <ClInclude Include="TextGameObject.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="WinData.h" />
   </ItemGroup>
