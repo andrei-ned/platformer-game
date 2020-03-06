@@ -37,9 +37,9 @@ void PhysicsBody::resolveCollision(const Collider& other) {
 	float signX = sign(scaleX);
 	float signY = sign(scaleY);
 
-	float nearTimeX = (otherPos.x - signX * ((bounds.right - bounds.left) + (otherBounds.right - otherBounds.left))  * 0.5f - pos.x) * scaleX;
+	float nearTimeX = (otherPos.x - signX * ((bounds.right - bounds.left) + (otherBounds.right - otherBounds.left)) * 0.5f - pos.x) * scaleX;
 	float nearTimeY = (otherPos.y - signY * ((bounds.bottom - bounds.top) + (otherBounds.bottom - otherBounds.top)) * 0.5f - pos.y) * scaleY;
-	float farTimeX = (otherPos.x + signX * ((bounds.right - bounds.left) + (otherBounds.right - otherBounds.left))  * 0.5f - pos.x) * scaleX;
+	float farTimeX = (otherPos.x + signX * ((bounds.right - bounds.left) + (otherBounds.right - otherBounds.left)) * 0.5f - pos.x) * scaleX;
 	float farTimeY = (otherPos.y + signY * ((bounds.bottom - bounds.top) + (otherBounds.bottom - otherBounds.top)) * 0.5f - pos.y) * scaleY;
 
 	if (nearTimeX > farTimeY || nearTimeY > farTimeX)
@@ -55,6 +55,10 @@ void PhysicsBody::resolveCollision(const Collider& other) {
 	if (nearTimeX > nearTimeY)
 	{
 		// Collision happening in direction of signX
+		//if (nearTimeX < 0) // Inside of collider, move out
+		//{
+
+		//}
 		mMaxVelDelta.x = min(mMaxVelDelta.x, nearTimeX);
 		mMaxVelDelta.x = max(mMaxVelDelta.x, 0.0f);
 		if (mMaxVelDelta.x < GameConstants::COLLISION_THRESHOLD)

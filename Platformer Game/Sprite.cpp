@@ -16,7 +16,7 @@ Sprite::~Sprite()
 void Sprite::render(Camera& camera)
 {
 	assert(mpTexture);
-	camera.drawSprite(mpTexture, mpGameObject->mPos, &mTextureRect, mColor, mpGameObject->mRotation, mOrigin, mpGameObject->mScale);
+	camera.drawSprite(mpTexture, mpGameObject->mPos, &mTextureRect, mColor, mpGameObject->mRotation, mOrigin, mpGameObject->mScale, mpGameObject->mIsInWorldSpace);
 }
 
 void Sprite::setTexture(ID3D11ShaderResourceView& texture)

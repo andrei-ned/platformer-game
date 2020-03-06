@@ -16,10 +16,9 @@ public:
 	GameObject();
 	~GameObject();
 	Vector2 mPos;
+	bool mIsInWorldSpace; // is position world space or screen space
 	Vector2 mScale;
 	float mRotation; // in radians
-	Vector2 mOrigin; // <- remove
-	Color mColor; // <- remove
 	// To be called to initialize, before the next frame of updates
 	void start();
 	// Will be called every frame, used for game logic

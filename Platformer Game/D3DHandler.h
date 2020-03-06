@@ -18,6 +18,7 @@ public:
 	ID3D11DeviceContext& GetDeviceCtx();
 	bool GetDeviceReady() const;
 	ID3D11SamplerState& GetWrapSampler();
+	D3D11_VIEWPORT& GetScreenViewport();
 private:
 	//what type of gpu have we got - hopefully a hardware one
 	D3D_DRIVER_TYPE md3dDriverType = D3D_DRIVER_TYPE_UNKNOWN;

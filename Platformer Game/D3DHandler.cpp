@@ -313,3 +313,8 @@ void D3DHandler::CreateWrapSampler(ID3D11SamplerState* &pSampler)
 	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	HR(mpd3dDevice->CreateSamplerState(&sampDesc, &pSampler));
 }
+
+D3D11_VIEWPORT& D3DHandler::GetScreenViewport()
+{
+	return mScreenViewport;
+}

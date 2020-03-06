@@ -21,8 +21,8 @@ public:
 	RECT getTextureRect() const;
 	// Returns bounds (i.e. position and size in world space)
 	RECTF getBounds() const;
+	RECT mTextureRect;
 private:
 	ID3D11ShaderResourceView *mpTexture;
-	RECT mTextureRect;
 };
 

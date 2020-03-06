@@ -13,7 +13,7 @@ Text::~Text()
 
 void Text::render(Camera& camera) {
 	assert(mpFont);
-	camera.drawText(mpFont, mString.c_str(), mpGameObject->mPos, mColor, mpGameObject->mRotation, mOrigin, mpGameObject->mScale, false);
+	camera.drawText(mpFont, mString.c_str(), mpGameObject->mPos, mColor, mpGameObject->mRotation, mOrigin, mpGameObject->mScale, mpGameObject->mIsInWorldSpace);
 }
 
 void Text::setFont(SpriteFont& font) {

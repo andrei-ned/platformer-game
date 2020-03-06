@@ -7,6 +7,7 @@
 #include "PhysicsBody.h"
 #include "Collider.h"
 #include "Camera.h"
+#include "Sprite.h"
 
 class Game
 {
@@ -25,6 +26,8 @@ private:
 	PhysicsBody* mpPlayerPhysics;
 	std::vector<GameObject> mTerrain;
 	std::vector<Collider*> mTerrainColliders;
+	std::vector<GameObject> mBackgrounds;
+	std::vector<Sprite*> mBackgroundSprites;
 	// **DEBUG
 	GameObject mDebugText;
 };
