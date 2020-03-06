@@ -36,8 +36,8 @@ Game::Game(D3DHandler& d3d, SpriteBatch& spriteBatch) : mTerrain(5), mBackground
 	// Backgrounds
 	for (int i = 0; i < mBackgrounds.size(); i++)
 	{
-		mBackgrounds.at(i).addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture(&mpD3D->GetDevice(), "Backgrounds/bg" + std::to_string(i) + ".png", false), { 0, 0, GameConstants::SCREEN_RES_X, 1080 });
-		mBackgrounds.at(i).mIsInWorldSpace = false;
+		mBackgrounds.at(i).addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture(&mpD3D->GetDevice(), "Backgrounds/bg" + std::to_string(i) + ".png", false), { 0, 1, GameConstants::SCREEN_RES_X, 1080 });
+		//mBackgrounds.at(i).mIsInWorldSpace = false;
 		mBackgroundSprites.push_back(mBackgrounds.at(i).getComponent<Sprite>());
 		mBackgrounds.at(i).getComponent<Sprite>()->mOrigin.y = 1080;
 		mBackgrounds.at(i).mPos.y = GameConstants::SCREEN_RES_Y;
@@ -75,7 +75,7 @@ void Game::update(const float deltaTime) {
 	//}
 	for (int i = 0; i < mBackgroundSprites.size(); i++)
 	{
-		mBackgroundSprites.at(i)->mTextureRect.left = mCamera.mPos.x * (i+1) * 0.25f;
+		mBackgroundSprites.at(i)->mTextureRect.left = mCamera.mPos.x * (i+1) * 0.1f;
 		mBackgroundSprites.at(i)->mTextureRect.right = mBackgroundSprites.at(i)->mTextureRect.left + GameConstants::SCREEN_RES_X;
 
 		//mBackgrounds.at(i).mPos.y = GameConstants::SCREEN_RES_Y + mCamera.mPos.y * 0.1f;

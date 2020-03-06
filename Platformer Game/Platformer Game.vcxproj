@@ -136,6 +136,7 @@
     <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteAnimator.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextureCache.cpp" />
   </ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteAnimator.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="WinData.h" />

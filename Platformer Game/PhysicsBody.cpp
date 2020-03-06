@@ -54,11 +54,9 @@ void PhysicsBody::resolveCollision(const Collider& other) {
 
 	if (nearTimeX > nearTimeY)
 	{
+		if (nearTimeX < 0)
+			return;
 		// Collision happening in direction of signX
-		//if (nearTimeX < 0) // Inside of collider, move out
-		//{
-
-		//}
 		mMaxVelDelta.x = min(mMaxVelDelta.x, nearTimeX);
 		mMaxVelDelta.x = max(mMaxVelDelta.x, 0.0f);
 		if (mMaxVelDelta.x < GameConstants::COLLISION_THRESHOLD)
@@ -68,13 +66,15 @@ void PhysicsBody::resolveCollision(const Collider& other) {
 	}
 	else
 	{
+		if (nearTimeY < 0) 
+			return;
 		// Collision happening in direction of signY
 		mMaxVelDelta.y = min(mMaxVelDelta.y, nearTimeY);
 		mMaxVelDelta.y = max(mMaxVelDelta.y, 0.0f);
 		if (mMaxVelDelta.y < GameConstants::COLLISION_THRESHOLD)
 		{
 			mVelocity.y = 0;
-			if (signY > 0) // falling
+			if (signY > 0 && nearTimeY >= 0) // falling
 			{
 				mIsGrounded = true;
 			}
