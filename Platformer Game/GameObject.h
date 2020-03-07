@@ -40,7 +40,8 @@ private:
 template <class T>
 T* GameObject::addComponent()
 {
-	auto pT = new T(*this);
+	assert(!getComponent<T>());
+	T* pT = new T(*this);
 	mComponents.insert({ typeid(T), pT });
 	return pT;
 }

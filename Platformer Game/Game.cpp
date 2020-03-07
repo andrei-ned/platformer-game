@@ -34,7 +34,7 @@ Game::Game(D3DHandler& d3d, SpriteBatch& spriteBatch) : mTerrain(5), mBackground
 	mTerrain.at(4).mPos = Vector2(700, 500);
 	mTerrainColliders.push_back(mTerrain.at(4).addComponent<Collider>());
 	// Backgrounds
-	for (int i = 0; i < mBackgrounds.size(); i++)
+	for (unsigned int i = 0; i < mBackgrounds.size(); i++)
 	{
 		mBackgrounds.at(i).addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture(&mpD3D->GetDevice(), "Backgrounds/bg" + std::to_string(i) + ".png", false), { 0, 1, GameConstants::SCREEN_RES_X, 1080 });
 		//mBackgrounds.at(i).mIsInWorldSpace = false;
