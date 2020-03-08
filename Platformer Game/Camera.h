@@ -16,6 +16,7 @@ public:
 	void drawText(SpriteFont* font, const std::string text, const Vector2& pos, Color color, float rotation, const Vector2& origin, const Vector2& scale, bool isWorldPos = true);
 	// Center the camera on a position
 	void centerOn(Vector2 targetPos);
+	Vector2 getDimensions() const;
 private:
 	SpriteBatch* mpSpriteBatch;
 	D3D11_VIEWPORT* mpViewport;

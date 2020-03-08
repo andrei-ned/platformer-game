@@ -7,6 +7,7 @@ class GameObject;
 class Component
 {
 public:
+	GameObject* mpGameObject;
 	// To be called to initialize, before the next frame of updates
 	virtual void start() {}
 	// Will be called every frame, used for game logic
@@ -16,7 +17,6 @@ public:
 	// Will be called by game every frame, used for rendering
 	virtual void render(Camera& camera) {}
 protected:
-	GameObject* mpGameObject;
 	Component(GameObject& gameObject);
 };
 

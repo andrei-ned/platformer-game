@@ -7,6 +7,7 @@
 #include "PlayerController.h"
 #include "GameConstants.h"
 #include "SpriteAnimator.h"
+#include <algorithm>
 
 PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 {
@@ -42,18 +43,20 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	// Set up player
 	mpPlayer = new GameObject;
 	mpPlayer->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Player/Idle.png", false), { 2, 28, 72, 28 + 74 });
+	mpPlayer->getComponent<Sprite>()->mOrigin = Vector2(35, 28 + 74);
 	mpPlayer->addComponent<Collider>();
 	mpPlayer->addComponent<PhysicsBody>();
 	mpPlayer->addComponent<PlayerController>();
+	// Animations
 	auto animator = mpPlayer->addComponent<SpriteAnimator>();
-	std::vector<RECT> playerAnimFrames;
-	//playerAnimFrames.push_back({ 0, 56, 147, 56 + 147 });
-	//playerAnimFrames.push_back({ 148, 56, 148+147, 56 + 147 });
+	// Idle animation
+	std::vector<RECT> idleFrames;
 	for (int i = 0; i < 30; i++)
-		playerAnimFrames.push_back({ 0, 28, 75, 28 + 74 });
+		idleFrames.push_back({ 0, 28, 75, 28 + 74 });
 	for (int i = 0; i < 11; i++)
-		playerAnimFrames.push_back({ i * 76, 28, (i+1) * 76 - 1, 28 + 74 });
-	animator->addAnimation("Idle", SpriteAnimator::Animation(playerAnimFrames, .05f));
+		idleFrames.push_back({ i * 76, 28, (i+1) * 76 - 1, 28 + 74 });
+	animator->addAnimation("Idle", SpriteAnimator::Animation(idleFrames, .05f));
+	// 
 	mpPlayer->mPos = Vector2(200, 0);
 	mAllGameObjects.push_back(mpPlayer);
 
@@ -122,16 +125,28 @@ void PlayState::update(const float deltaTime)
 
 void PlayState::render(Camera& camera)
 {
-	camera.centerOn(mpPlayer->mPos);
+	// **TESTING
+	RECTF levelBounds = { 0, 0, GameConstants::SCREEN_RES_X + 500, GameConstants::SCREEN_RES_Y};
+	Vector2 camDesiredPos;
+	Vector2 camHalfDim = camera.getDimensions() / 2;
+	Vector2 camPosMin = Vector2(levelBounds.left + camHalfDim.x, levelBounds.top + camHalfDim.y);
+	Vector2 camPosMax = Vector2(levelBounds.right - camHalfDim.x, levelBounds.bottom - camHalfDim.y);
+
+	camDesiredPos.x = camPosMin.x < camPosMax.x ? std::clamp(mpPlayer->mPos.x, levelBounds.left + camHalfDim.x, levelBounds.right - camHalfDim.x) : (levelBounds.left + levelBounds.right) / 2;
+	camDesiredPos.y = camPosMin.y < camPosMax.y ? std::clamp(mpPlayer->mPos.y, levelBounds.top + camHalfDim.y, levelBounds.bottom - camHalfDim.y) : (levelBounds.bottom + levelBounds.top) / 2;
+	// ****
+
+	camera.centerOn(camDesiredPos);
 
 	// Scroll backgrounds
 	for (unsigned int i = 0; i < mBackgroundSprites.size(); i++)
 	{
 		mBackgroundSprites.at(i)->mTextureRect.left = camera.mPos.x * (i + 1) * 0.1f;
-		mBackgroundSprites.at(i)->mTextureRect.right = mBackgroundSprites.at(i)->mTextureRect.left + GameConstants::SCREEN_RES_X;
+		mBackgroundSprites.at(i)->mTextureRect.right = mBackgroundSprites.at(i)->mTextureRect.left + camera.getDimensions().x;
+		mBackgroundSprites.at(i)->mpGameObject->mPos = Vector2(camera.mPos.x, camera.mPos.y + camera.getDimensions().y);
 	}
 
-	for (int i = 0; i < mAllGameObjects.size(); i++)
+	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
 		mAllGameObjects.at(i)->render(camera);
 	}

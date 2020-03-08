@@ -48,9 +48,9 @@ RECT Sprite::getTextureRect() const
 
 RECTF Sprite::getBounds() const
 {
-	float minX = mpGameObject->mPos.x + mOrigin.x;
-	float minY = mpGameObject->mPos.y + mOrigin.y;
-	float maxX = mpGameObject->mPos.x + mOrigin.x + mpGameObject->mScale.x * (mTextureRect.right - mTextureRect.left);
-	float maxY = mpGameObject->mPos.y + mOrigin.y + mpGameObject->mScale.y * (mTextureRect.bottom - mTextureRect.top);
+	float minX = mpGameObject->mPos.x - mOrigin.x;
+	float minY = mpGameObject->mPos.y - mOrigin.y;
+	float maxX = mpGameObject->mPos.x - mOrigin.x + mpGameObject->mScale.x * (mTextureRect.right - mTextureRect.left);
+	float maxY = mpGameObject->mPos.y - mOrigin.y + mpGameObject->mScale.y * (mTextureRect.bottom - mTextureRect.top);
 	return { minX, minY, maxX, maxY };
 }

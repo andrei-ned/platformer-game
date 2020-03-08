@@ -25,3 +25,8 @@ void Camera::centerOn(Vector2 targetPos)
 {
 	mPos = Vector2(targetPos.x - mpViewport->Width / 2, targetPos.y - mpViewport->Height / 2);
 }
+
+Vector2 Camera::getDimensions() const
+{
+	return Vector2(mpViewport->Width, mpViewport->Height);
+}

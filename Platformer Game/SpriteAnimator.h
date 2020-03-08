@@ -22,7 +22,7 @@ public:
 		void play();
 	private:
 		std::vector<RECT> mFrames;
-		int mCurrentFrameIndex;
+		unsigned int mCurrentFrameIndex;
 		float mSecsPerFrame;
 	};
 
