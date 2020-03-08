@@ -6,6 +6,7 @@
 #include "FontCache.h"
 #include "PlayerController.h"
 #include "GameConstants.h"
+#include "SpriteAnimator.h"
 
 PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 {
@@ -40,10 +41,19 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 
 	// Set up player
 	mpPlayer = new GameObject;
-	mpPlayer->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Player/Idle.png", false), { 43, 28, 117, 102 });
+	mpPlayer->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Player/Idle.png", false), { 2, 28, 72, 28 + 74 });
 	mpPlayer->addComponent<Collider>();
 	mpPlayer->addComponent<PhysicsBody>();
 	mpPlayer->addComponent<PlayerController>();
+	auto animator = mpPlayer->addComponent<SpriteAnimator>();
+	std::vector<RECT> playerAnimFrames;
+	//playerAnimFrames.push_back({ 0, 56, 147, 56 + 147 });
+	//playerAnimFrames.push_back({ 148, 56, 148+147, 56 + 147 });
+	for (int i = 0; i < 30; i++)
+		playerAnimFrames.push_back({ 0, 28, 75, 28 + 74 });
+	for (int i = 0; i < 11; i++)
+		playerAnimFrames.push_back({ i * 76, 28, (i+1) * 76 - 1, 28 + 74 });
+	animator->addAnimation("Idle", SpriteAnimator::Animation(playerAnimFrames, .05f));
 	mpPlayer->mPos = Vector2(200, 0);
 	mAllGameObjects.push_back(mpPlayer);
 
@@ -64,6 +74,8 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 		if (pPhysics)
 			mAllPhysicsBodies.push_back(pPhysics);
 	}
+
+	animator->playAnimation("Idle");
 }
 
 
