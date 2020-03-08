@@ -11,8 +11,10 @@ public:
 	FontCache();
 	~FontCache();
 	// Load font from cache if it exists, otherwise load it from file and add it to the cache
-	SpriteFont* LoadSpriteFont(ID3D11Device* pDevice, const std::string& path);
+	SpriteFont* LoadSpriteFont(const std::string& path);
+	void setDevice(ID3D11Device& device);
 private:
 	std::unordered_map<std::string, SpriteFont*> mCache;
+	ID3D11Device* mpDevice;
 };
 

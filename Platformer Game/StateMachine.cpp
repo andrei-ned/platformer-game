@@ -15,11 +15,10 @@ StateMachine::~StateMachine()
 
 void StateMachine::update(const float deltaTime)
 {
-	if (!mpCurrentState)
-		return;
 	if (mpCurrentState != mpDesiredState && mpDesiredState)
 	{
-		mpCurrentState->exit();
+		if (mpCurrentState)
+			mpCurrentState->exit();
 		mpCurrentState = mpDesiredState;
 		mpCurrentState->enter();
 	}

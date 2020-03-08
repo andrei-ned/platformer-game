@@ -1,13 +1,14 @@
 #pragma once
-#include "GameObject.h"
-#include <vector>
+//#include "GameObject.h"
+//#include <vector>
 #include "SpriteBatch.h"
 #include "D3DHandler.h"
-#include "Keyboard.h"
-#include "PhysicsBody.h"
-#include "Collider.h"
+//#include "Keyboard.h"
+//#include "PhysicsBody.h"
+//#include "Collider.h"
 #include "Camera.h"
-#include "Sprite.h"
+//#include "Sprite.h"
+#include "StateMachine.h"
 
 class Game
 {
@@ -21,14 +22,15 @@ public:
 	void render();
 private:
 	Camera mCamera;
-	D3DHandler* mpD3D;
-	GameObject mPlayer;
-	PhysicsBody* mpPlayerPhysics;
-	std::vector<GameObject> mTerrain;
-	std::vector<Collider*> mTerrainColliders;
-	std::vector<GameObject> mBackgrounds;
-	std::vector<Sprite*> mBackgroundSprites;
-	// **DEBUG
-	GameObject mDebugText;
+	StateMachine mStateMachine;
+	//D3DHandler* mpD3D;
+	//GameObject mPlayer;
+	//PhysicsBody* mpPlayerPhysics;
+	//std::vector<GameObject> mTerrain;
+	//std::vector<Collider*> mTerrainColliders;
+	//std::vector<GameObject> mBackgrounds;
+	//std::vector<Sprite*> mBackgroundSprites;
+	//// **DEBUG
+	//GameObject mDebugText;
 };
 

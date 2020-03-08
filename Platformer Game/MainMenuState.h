@@ -8,7 +8,9 @@ class MainMenuState : public State
 public:
 	MainMenuState(StateMachine& stateMachine);
 	~MainMenuState();
+	void update(const float deltaTime) override;
+	void render(Camera& camera) override;
 private:
-	std::vector<GameObject> mGameObjects;
+	std::vector<GameObject*> mAllGameObjects;
 };
 

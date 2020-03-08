@@ -40,7 +40,7 @@ private:
 template <class T>
 T* GameObject::addComponent()
 {
-	assert(!getComponent<T>());
+	assert(!getComponent<T>()); // Disallow multiple components of the same type, possible refactor to allow later if need be?
 	T* pT = new T(*this);
 	mComponents.insert({ typeid(T), pT });
 	return pT;

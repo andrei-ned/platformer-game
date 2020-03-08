@@ -27,6 +27,11 @@ void PhysicsBody::updateLate(const float deltaTime) {
 void PhysicsBody::resolveCollision(const Collider& other) {
 	assert(mpCollider);
 
+	if (&other == mpCollider)
+	{
+		return; // Disallow collision with itself
+	}
+
 	RECTF bounds = mpCollider->getBounds();
 	RECTF otherBounds = other.getBounds();
 	Vector2 pos((bounds.left + bounds.right) / 2, (bounds.top + bounds.bottom) / 2);

@@ -7,6 +7,8 @@
 #include "CommonStates.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "TextureCache.h"
+#include "FontCache.h"
 
 using namespace DirectX;
 
@@ -32,6 +34,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 	{
 		// Respond to a keyboard event.
 	case WM_CHAR:
+		// Change this later
 		switch (wParam)
 		{
 		case 'q':
@@ -39,7 +42,6 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 			PostQuitMessage(0);
 			break;
 		}
-		//Game::Get().ProcessKey((char)wParam);
 		break;
 	case WM_INPUT:
 	case WM_MOUSEMOVE:
@@ -185,6 +187,8 @@ void Application::run(HINSTANCE hInstance) {
 	mpD3D = new D3DHandler(mWinData);
 	DirectX::SpriteBatch spriteBatch(&mpD3D->GetDeviceCtx());
 	CommonStates dxstate(&mpD3D->GetDevice());
+	TextureCache::get().setDevice(mpD3D->GetDevice());
+	FontCache::get().setDevice(mpD3D->GetDevice());
 
 	mpGame = new Game(*mpD3D, spriteBatch);
 	Keyboard* kb = new Keyboard;
