@@ -2,6 +2,7 @@
 #include "State.h"
 #include "Text.h"
 #include <vector>
+#include "EventFunction.h"
 
 class MainMenuState : public State
 {
@@ -13,5 +14,6 @@ public:
 private:
 	std::vector<GameObject*> mAllGameObjects;
 	GameObject* mpPlayButton;
+	EventFunction<> mChangeToPlayStateFunction;
 };
 

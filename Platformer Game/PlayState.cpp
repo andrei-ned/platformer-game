@@ -144,8 +144,8 @@ void PlayState::render(Camera& camera)
 	// Scroll backgrounds
 	for (unsigned int i = 0; i < mBackgroundSprites.size(); i++)
 	{
-		mBackgroundSprites.at(i)->mTextureRect.left = camera.mPos.x * (i + 1) * 0.1f;
-		mBackgroundSprites.at(i)->mTextureRect.right = mBackgroundSprites.at(i)->mTextureRect.left + camera.getDimensions().x;
+		mBackgroundSprites.at(i)->mTextureRect.left = static_cast<LONG>(camera.mPos.x * (i + 1) * 0.1f);
+		mBackgroundSprites.at(i)->mTextureRect.right = static_cast<LONG>(mBackgroundSprites.at(i)->mTextureRect.left + camera.getDimensions().x);
 		mBackgroundSprites.at(i)->mpGameObject->mPos = Vector2(camera.mPos.x, camera.mPos.y + camera.getDimensions().y);
 	}
 

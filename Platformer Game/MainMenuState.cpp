@@ -9,9 +9,11 @@
 #include "TextureCache.h"
 #include "UIButton.h"
 
-MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine)
+
+MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine), mChangeToPlayStateFunction([=]() { mpStateMachine->changeState<PlayState>(); })
 {
 	auto placeholderText = new GameObject;
+	placeholderText->mIsInWorldSpace = false;
 	auto txt = placeholderText->addComponent<Text>();
 	txt->setFont(*FontCache::get().LoadSpriteFont("courier.spritefont"));
 	txt->mString = "Placeholder main menu.";
@@ -29,7 +31,7 @@ MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine)
 	txt->mString = "Play";
 	txt->mOrigin = txt->getDimensions() / 2;
 	mpPlayButton->addComponent<Collider>();
-	mpPlayButton->addComponent<UIButton>()->mOnClick.add([=]() { mpStateMachine->changeState<PlayState>(); });
+	mpPlayButton->addComponent<UIButton>()->mOnClick += mChangeToPlayStateFunction;
 	mAllGameObjects.push_back(mpPlayButton);
 
 	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
@@ -41,6 +43,12 @@ MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine)
 
 MainMenuState::~MainMenuState()
 {
+	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
+	{
+		delete mAllGameObjects.at(i);
+	}
+	mAllGameObjects.clear();
+	mpPlayButton->addComponent<UIButton>()->mOnClick -= mChangeToPlayStateFunction;
 }
 
 void MainMenuState::update(const float deltaTime)

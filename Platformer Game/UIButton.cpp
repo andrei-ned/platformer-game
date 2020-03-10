@@ -45,31 +45,4 @@ void UIButton::update(const float deltaTime)
 		mState = ButtonState::Default;
 		mpSprite->mColor = mColorDefault;
 	}
-
-	//switch (mState)
-	//{
-	//case ButtonState::Default:
-	//	if (mpCollider->containsPoint(Vector2(static_cast<float>(mouseState.x), static_cast<float>(mouseState.y))))
-	//		mState = ButtonState::Hovered;
-	//	break;
-	//case ButtonState::Hovered:
-	//	if (mpCollider->containsPoint(Vector2(static_cast<float>(mouseState.x), static_cast<float>(mouseState.y))))
-	//		if (mouseState.leftButton)
-	//			mState = ButtonState::Pressed;
-	//	else
-	//		mState = ButtonState::Default;
-	//	break;
-	//case ButtonState::Pressed:
-	//	if (mpCollider->containsPoint(Vector2(static_cast<float>(mouseState.x), static_cast<float>(mouseState.y))))
-	//		if (!mouseState.leftButton)
-	//			mOnClick();
-	//	else
-	//		mState = ButtonState::Default;
-	//	break;
-	//}
-
-	//if (mouseState.leftButton && mpCollider->containsPoint(Vector2(static_cast<float>(mouseState.x), static_cast<float>(mouseState.y))))
-	//{
-	//	mOnClick();
-	//}
 }

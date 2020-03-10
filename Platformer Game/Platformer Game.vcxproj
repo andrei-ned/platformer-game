@@ -129,6 +129,7 @@
     <ClCompile Include="D3DHandler.cpp" />
     <ClCompile Include="D3DHelpers.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="EventFunction.cpp" />
     <ClCompile Include="FontCache.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="D3DHandler.h" />
     <ClInclude Include="D3DHelpers.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="EventFunction.h" />
     <ClInclude Include="FontCache.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConstants.h" />
