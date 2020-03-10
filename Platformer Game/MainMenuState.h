@@ -12,5 +12,6 @@ public:
 	void render(Camera& camera) override;
 private:
 	std::vector<GameObject*> mAllGameObjects;
+	GameObject* mpPlayButton;
 };
 

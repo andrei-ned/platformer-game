@@ -31,3 +31,9 @@ RECTF Collider::getBounds() const
 	float maxY = mpGameObject->mPos.y - mOrigin.y + mpGameObject->mScale.y * mSize.y;
 	return { minX, minY, maxX, maxY };
 }
+
+bool Collider::containsPoint(Vector2 point) const
+{
+	RECTF bounds = getBounds();
+	return point.x > bounds.left && point.x < bounds.right && point.y > bounds.top && point.y < bounds.bottom;
+}

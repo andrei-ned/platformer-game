@@ -99,7 +99,7 @@ void PlayState::update(const float deltaTime)
 		mpStateMachine->changeState<MainMenuState>();
 
 	// Update
-	for (int i = 0; i < mAllGameObjects.size(); i++)
+	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
 		mAllGameObjects.at(i)->update(deltaTime);
 	}
@@ -114,7 +114,7 @@ void PlayState::update(const float deltaTime)
 	}
 
 	// Update Late
-	for (int i = 0; i < mAllGameObjects.size(); i++)
+	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
 		mAllGameObjects.at(i)->updateLate(deltaTime);
 	}
@@ -126,14 +126,17 @@ void PlayState::update(const float deltaTime)
 void PlayState::render(Camera& camera)
 {
 	// **TESTING
-	RECTF levelBounds = { 0, 0, GameConstants::SCREEN_RES_X + 500, GameConstants::SCREEN_RES_Y};
+	RECTF levelBounds = { 0, -300, GameConstants::SCREEN_RES_X + 500, GameConstants::SCREEN_RES_Y};
 	Vector2 camDesiredPos;
+	Vector2 camCurrentPos = camera.getCenter();
 	Vector2 camHalfDim = camera.getDimensions() / 2;
 	Vector2 camPosMin = Vector2(levelBounds.left + camHalfDim.x, levelBounds.top + camHalfDim.y);
 	Vector2 camPosMax = Vector2(levelBounds.right - camHalfDim.x, levelBounds.bottom - camHalfDim.y);
 
 	camDesiredPos.x = camPosMin.x < camPosMax.x ? std::clamp(mpPlayer->mPos.x, levelBounds.left + camHalfDim.x, levelBounds.right - camHalfDim.x) : (levelBounds.left + levelBounds.right) / 2;
 	camDesiredPos.y = camPosMin.y < camPosMax.y ? std::clamp(mpPlayer->mPos.y, levelBounds.top + camHalfDim.y, levelBounds.bottom - camHalfDim.y) : (levelBounds.bottom + levelBounds.top) / 2;
+	// Smooth camera movement
+	camDesiredPos = camCurrentPos + 0.05f * (camDesiredPos - camCurrentPos);
 	// ****
 
 	camera.centerOn(camDesiredPos);

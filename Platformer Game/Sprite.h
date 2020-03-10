@@ -10,6 +10,7 @@ class Sprite : public Component
 {
 public:
 	Vector2 mOrigin;
+	Vector2 mScale;
 	Color mColor;
 	Sprite(GameObject& gameObject);
 	~Sprite();

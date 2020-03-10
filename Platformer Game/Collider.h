@@ -16,5 +16,7 @@ public:
 	void start() override;
 	// Returns bounds (i.e. position and size in world space)
 	RECTF getBounds() const;
+	// Returns true if position is inside of collider
+	bool containsPoint(Vector2 point) const;
 };
 
