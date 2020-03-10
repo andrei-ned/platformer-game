@@ -128,6 +128,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="D3DHandler.cpp" />
     <ClCompile Include="D3DHelpers.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="FontCache.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextureCache.cpp" />
+    <ClCompile Include="UIButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -152,6 +154,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="D3DHandler.h" />
     <ClInclude Include="D3DHelpers.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="FontCache.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameConstants.h" />
@@ -168,6 +171,7 @@
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextureCache.h" />
+    <ClInclude Include="UIButton.h" />
     <ClInclude Include="WinData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

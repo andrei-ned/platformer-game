@@ -7,13 +7,14 @@
 #include "PlayState.h"
 #include "GameConstants.h"
 #include "TextureCache.h"
+#include "UIButton.h"
 
 MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine)
 {
 	auto placeholderText = new GameObject;
 	auto txt = placeholderText->addComponent<Text>();
 	txt->setFont(*FontCache::get().LoadSpriteFont("courier.spritefont"));
-	txt->mString = "Placeholder main menu.\nPress Space";
+	txt->mString = "Placeholder main menu.";
 	mAllGameObjects.push_back(placeholderText);
 
 	mpPlayButton = new GameObject;
@@ -28,9 +29,10 @@ MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine)
 	txt->mString = "Play";
 	txt->mOrigin = txt->getDimensions() / 2;
 	mpPlayButton->addComponent<Collider>();
+	mpPlayButton->addComponent<UIButton>()->mOnClick.add([=]() { mpStateMachine->changeState<PlayState>(); });
 	mAllGameObjects.push_back(mpPlayButton);
 
-	for (int i = 0; i < mAllGameObjects.size(); i++)
+	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
 		mAllGameObjects.at(i)->start();
 	}
@@ -43,23 +45,28 @@ MainMenuState::~MainMenuState()
 
 void MainMenuState::update(const float deltaTime)
 {
-	auto keyboardState = Keyboard::Get().GetState();
-	auto mouseState = Mouse::Get().GetState();
+	//auto keyboardState = Keyboard::Get().GetState();
+	//auto mouseState = Mouse::Get().GetState();
 
-	if (mouseState.leftButton && mpPlayButton->getComponent<Collider>()->containsPoint(Vector2(mouseState.x, mouseState.y)))
-	{
-		mpStateMachine->changeState<PlayState>();
-	}
+	//if (mouseState.leftButton && mpPlayButton->getComponent<Collider>()->containsPoint(Vector2(mouseState.x, mouseState.y)))
+	//{
+	//	mpStateMachine->changeState<PlayState>();
+	//}
 
-	if (keyboardState.Space)
+	//if (keyboardState.Space)
+	//{
+	//	mpStateMachine->changeState<PlayState>();
+	//}
+
+	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
-		mpStateMachine->changeState<PlayState>();
+		mAllGameObjects.at(i)->update(deltaTime);
 	}
 }
 
 void MainMenuState::render(Camera& camera)
 {
-	for (int i = 0; i < mAllGameObjects.size(); i++)
+	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
 		mAllGameObjects.at(i)->render(camera);
 	}
