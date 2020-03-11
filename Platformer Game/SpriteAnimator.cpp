@@ -23,10 +23,10 @@ void SpriteAnimator::update(const float deltaTime)
 	if (!mpCurrentAnimation->mIsPlaying)
 		return;
 	mElapsedSecs += deltaTime;
-	while (mElapsedSecs > mpCurrentAnimation->getSecsPerFrame())
+	if (mElapsedSecs > mpCurrentAnimation->mSecsPerFrame)
 	{
 		mpSprite->setTextureRect(mpCurrentAnimation->cycleFrame());
-		mElapsedSecs -= mpCurrentAnimation->getSecsPerFrame();
+		mElapsedSecs -= mpCurrentAnimation->mSecsPerFrame;
 	}
 }
 
@@ -56,6 +56,8 @@ void SpriteAnimator::playAnimation(std::string name)
 
 void SpriteAnimator::playAnimation(Animation* animationPtr)
 {
+	if (animationPtr == mpCurrentAnimation)
+		return;
 	mpCurrentAnimation = animationPtr;
 	// If animation has a texture, update the sprite
 	if (mpCurrentAnimation->mpTexture)
@@ -64,6 +66,12 @@ void SpriteAnimator::playAnimation(Animation* animationPtr)
 	mpSprite->setTextureRect(mpCurrentAnimation->getCurrentFrame());
 	mIsPlaying = true;
 	mElapsedSecs = 0;
+}
+
+void SpriteAnimator::setSpeed(float secsPerFrame)
+{
+	assert(secsPerFrame > 0);
+	mpCurrentAnimation->mSecsPerFrame = secsPerFrame;
 }
 
 SpriteAnimator::Animation* SpriteAnimator::addAndPlayAnimation(std::string name, Animation animation)
@@ -107,11 +115,6 @@ RECT SpriteAnimator::Animation::getCurrentFrame()
 {
 	assert(mFrames.size() > 0);
 	return mFrames.at(mCurrentFrameIndex);
-}
-
-float SpriteAnimator::Animation::getSecsPerFrame() const
-{
-	return mSecsPerFrame;
 }
 
 void SpriteAnimator::Animation::play()

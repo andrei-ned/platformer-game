@@ -1,6 +1,7 @@
 #pragma once
 #include "Collider.h"
 #include "PhysicsBody.h"
+#include "SpriteAnimator.h"
 
 class PlayerController : public Component
 {
@@ -14,5 +15,7 @@ private:
 	// Used to track time since last on ground in order to allow coyote time jumps
 	float mCurrentCoyoteTime;
 	PhysicsBody* mpPhysics;
+	Sprite* mpSprite;
+	SpriteAnimator* mpAnimator;
 };
 

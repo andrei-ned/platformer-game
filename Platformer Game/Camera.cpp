@@ -14,13 +14,13 @@ Camera::~Camera()
 void Camera::drawSprite(ID3D11ShaderResourceView* texture, const Vector2& pos, const RECT* textureRect, Color color, float rotation, const Vector2& origin,
 	const Vector2& scale, bool isWorldPos, SpriteEffects spriteEffects, float depth)
 {
-	mpSpriteBatch->Draw(texture, isWorldPos ? pos - mPos : pos, textureRect, color, rotation, origin, scale);
+	mpSpriteBatch->Draw(texture, isWorldPos ? pos - mPos : pos, textureRect, color, rotation, origin, scale, spriteEffects, depth);
 }
 
 void Camera::drawText(SpriteFont* font, const std::string text, const Vector2& pos, Color color, float rotation, const Vector2& origin,
 	const Vector2& scale, bool isWorldPos, SpriteEffects spriteEffects, float depth)
 {
-	font->DrawString(mpSpriteBatch, text.c_str(), isWorldPos ? pos - mPos : pos, color, rotation, origin, scale);
+	font->DrawString(mpSpriteBatch, text.c_str(), isWorldPos ? pos - mPos : pos, color, rotation, origin, scale, spriteEffects, depth);
 }
 
 void Camera::centerOn(Vector2 targetPos)

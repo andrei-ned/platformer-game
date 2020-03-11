@@ -12,18 +12,17 @@ public:
 
 		bool mLoop;
 		bool mIsPlaying;
+		float mSecsPerFrame;
 		// Texture containing the sprite sheet with the animation, leave as nullptr to use Sprite's texture
 		ID3D11ShaderResourceView *mpTexture;
 
 		// Get next frame and increment index
 		RECT cycleFrame();
 		RECT getCurrentFrame();
-		float getSecsPerFrame() const;
 		void play();
 	private:
 		std::vector<RECT> mFrames;
 		unsigned int mCurrentFrameIndex;
-		float mSecsPerFrame;
 	};
 
 	bool mIsPlaying;
@@ -39,7 +38,7 @@ public:
 	void playAnimation(Animation* animationPtr);
 	Animation* addAndPlayAnimation(std::string name, Animation animation);
 	Animation* getAnimation(std::string name);
-
+	void setSpeed(float secsPerFrame);
 private:
 	Sprite* mpSprite;
 	float mElapsedSecs;

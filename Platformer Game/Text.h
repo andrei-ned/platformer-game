@@ -12,6 +12,7 @@ public:
 	Vector2 mOrigin;
 	Vector2 mScale;
 	Color mColor;
+	SpriteEffects mSpriteEffects;
 	std::string mString;
 	Text(GameObject& gameObject);
 	~Text();

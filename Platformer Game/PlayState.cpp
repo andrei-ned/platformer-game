@@ -42,8 +42,8 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 
 	// Set up player
 	mpPlayer = new GameObject;
-	mpPlayer->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Player/Idle.png", false), { 2, 28, 72, 28 + 74 });
-	mpPlayer->getComponent<Sprite>()->mOrigin = Vector2(35, 28 + 74);
+	mpPlayer->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Player/Idle.png", false), { 1, 24, 75, 24 + 78 });
+	mpPlayer->getComponent<Sprite>()->mOrigin = Vector2(36, 80);
 	mpPlayer->addComponent<Collider>();
 	mpPlayer->addComponent<PhysicsBody>();
 	mpPlayer->addComponent<PlayerController>();
@@ -52,10 +52,20 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	// Idle animation
 	std::vector<RECT> idleFrames;
 	for (int i = 0; i < 30; i++)
-		idleFrames.push_back({ 0, 28, 75, 28 + 74 });
+		idleFrames.push_back({ 0, 24, 75, 28 + 80 });
 	for (int i = 0; i < 11; i++)
-		idleFrames.push_back({ i * 76, 28, (i+1) * 76 - 1, 28 + 74 });
-	animator->addAnimation("Idle", SpriteAnimator::Animation(idleFrames, .05f));
+		idleFrames.push_back({ i * 76, 24, (i+1) * 76 - 1, 24 + 80 });
+	animator->addAnimation("Idle", SpriteAnimator::Animation(idleFrames, .05f, TextureCache::get().LoadTexture("Player/Idle.png", false)));
+	// Run animation
+	std::vector<RECT> runFrames;
+	for (int i = 0; i < 10; i++)
+		runFrames.push_back({ i * 100, 49, (i + 1) * 100 - 1, 49 + 80 });
+	for (int i = 0; i < 8; i++)
+		runFrames.push_back({ i * 100, 176, (i + 1) * 100 - 1, 176 + 80 });
+	animator->addAnimation("Run", SpriteAnimator::Animation(runFrames, .05f, TextureCache::get().LoadTexture("Player/Run.png", false)));
+	// Jump/Fall animations
+	animator->addAnimation("Jump", SpriteAnimator::Animation({ {37, 25, 37 + 77,25 + 78} }, 1.0f, TextureCache::get().LoadTexture("Player/Jump.png", false), false));
+	animator->addAnimation("Fall", SpriteAnimator::Animation({ {152, 25, 152 + 67,25 + 78} }, 1.0f, TextureCache::get().LoadTexture("Player/Jump.png", false), false));
 	// 
 	mpPlayer->mPos = Vector2(200, 0);
 	mAllGameObjects.push_back(mpPlayer);

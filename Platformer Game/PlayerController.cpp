@@ -15,10 +15,36 @@ PlayerController::~PlayerController()
 void PlayerController::start()
 {
 	mpPhysics = mpGameObject->getComponent<PhysicsBody>();
+	mpSprite = mpGameObject->getComponent<Sprite>();
+	mpAnimator = mpGameObject->getComponent<SpriteAnimator>();
 }
 
 void PlayerController::update(const float deltaTime)
 {
+	// Animations
+	if (mpPhysics->mVelocity.x > 0)
+		mpSprite->mSpriteEffects = SpriteEffects_None;
+	if (mpPhysics->mVelocity.x < 0)
+		mpSprite->mSpriteEffects = SpriteEffects_FlipHorizontally;
+
+	if (mpPhysics->mIsGrounded)
+	{
+		if (abs(mpPhysics->mVelocity.x) > 25.0f)
+		{
+			mpAnimator->playAnimation("Run");
+			mpAnimator->setSpeed(min(20.0f / abs(mpPhysics->mVelocity.x), 0.075f));
+		}
+		else
+		{
+			mpAnimator->playAnimation("Idle");
+		}
+	}
+	else
+	{
+		mpAnimator->playAnimation(mpPhysics->mVelocity.y > 0 ? "Fall" : "Jump");
+	}
+
+
 	auto keyboardState = Keyboard::Get().GetState();
 
 	Vector2 playerVel(mpPhysics->mVelocity);

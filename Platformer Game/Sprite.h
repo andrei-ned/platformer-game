@@ -12,6 +12,7 @@ public:
 	Vector2 mOrigin;
 	Vector2 mScale;
 	Color mColor;
+	SpriteEffects mSpriteEffects;
 	Sprite(GameObject& gameObject);
 	~Sprite();
 	virtual void render(Camera& camera) override;
