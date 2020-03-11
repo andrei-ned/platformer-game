@@ -3,6 +3,7 @@
 #include "SimpleMath.h"
 #include "DirectXColors.h"
 #include "WinData.h"
+#include "Event.h"
 
 class D3DHandler
 {
@@ -65,5 +66,7 @@ private:
 	void CreateSwapChain(DXGI_SWAP_CHAIN_DESC& sd);
 
 	void CreateWrapSampler(ID3D11SamplerState* &pSampler);
+
+	EventFunction<int,int> mOnResizeFunction;
 };
 

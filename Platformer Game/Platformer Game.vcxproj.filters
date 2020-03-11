@@ -114,6 +114,9 @@
     <ClCompile Include="EventFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjectUtils.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="EventFunction.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectUtils.h">
+      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

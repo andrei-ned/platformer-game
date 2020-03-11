@@ -12,6 +12,8 @@
 
 using namespace DirectX;
 
+Event<int, int> Application::sOnWindowResize;
+
 Application::Application()
 {
 }
@@ -33,16 +35,8 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 	switch (msg)
 	{
 		// Respond to a keyboard event.
-	case WM_CHAR:
-		// Change this later
-		switch (wParam)
-		{
-		case 'q':
-		case 'Q':
-			PostQuitMessage(0);
-			break;
-		}
-		break;
+	//case WM_CHAR:
+	//	break;
 	case WM_INPUT:
 	case WM_MOUSEMOVE:
 	case WM_LBUTTONDOWN:
@@ -99,7 +93,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				mWinData.appPaused = false;
 				mWinData.minimized = false;
 				mWinData.maximized = true;
-				mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+				sOnWindowResize.invoke(mWinData.clientWidth, mWinData.clientHeight);
 			}
 			else if (wParam == SIZE_RESTORED)
 			{
@@ -109,14 +103,14 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				{
 					mWinData.appPaused = false;
 					mWinData.minimized = false;
-					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+					sOnWindowResize.invoke(mWinData.clientWidth, mWinData.clientHeight);
 				}
 				// Restoring from maximized state?
 				else if (mWinData.maximized)
 				{
 					mWinData.appPaused = false;
 					mWinData.maximized = false;
-					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+					sOnWindowResize.invoke(mWinData.clientWidth, mWinData.clientHeight);
 				}
 				else if (mWinData.resizing)
 				{
@@ -131,7 +125,7 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 				}
 				else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
 				{
-					mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+					sOnWindowResize.invoke(mWinData.clientWidth, mWinData.clientHeight);
 				}
 			}
 		}
@@ -148,8 +142,9 @@ LRESULT CALLBACK Application::MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, 
 	case WM_EXITSIZEMOVE:
 		mWinData.appPaused = false;
 		mWinData.resizing = false;
-		if (mpD3D)
-			mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
+		sOnWindowResize.invoke(mWinData.clientWidth, mWinData.clientHeight);
+		//if (mpD3D)
+		//	mpD3D->OnResize(mWinData.clientWidth, mWinData.clientHeight);
 		return 0;
 
 		// WM_DESTROY is sent when the window is being destroyed.
@@ -193,6 +188,11 @@ void Application::run(HINSTANCE hInstance) {
 	mpGame = new Game(*mpD3D, spriteBatch);
 	Keyboard* kb = new Keyboard;
 	Mouse* mouse = new Mouse;
+
+	Event<int> test;
+	EventFunction<int> testFunc([](int x) {DBOUT(x); });
+	test += testFunc;
+	test.invoke(3);
 
 	while (!shouldQuit)
 	{

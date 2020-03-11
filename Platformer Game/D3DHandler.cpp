@@ -3,14 +3,13 @@
 #include "DirectXColors.h"
 #include <vector>
 #include <cassert>
-	
+#include "Application.h"	
 
 using namespace std;
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-
-D3DHandler::D3DHandler(WinData winData)
+D3DHandler::D3DHandler(WinData winData) : mOnResizeFunction([=](int x, int y) { OnResize(x, y); })
 {
 	// Create the device and device context.
 	CreateD3D();
@@ -27,6 +26,8 @@ D3DHandler::D3DHandler(WinData winData)
 	OnResize(winData.clientWidth, winData.clientHeight);
 
 	CreateWrapSampler(mpWrapSampler);
+
+	Application::sOnWindowResize += mOnResizeFunction;
 }
 
 D3DHandler::~D3DHandler()
@@ -58,6 +59,8 @@ D3DHandler::~D3DHandler()
 	HR(pd3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY));
 	ReleaseCOM(pd3dDebug);
 	ReleaseCOM(mpd3dDevice);
+
+	Application::sOnWindowResize -= mOnResizeFunction;
 }
 
 void D3DHandler::BeginRender(const Color color)

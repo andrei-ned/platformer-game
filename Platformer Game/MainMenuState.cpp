@@ -8,31 +8,28 @@
 #include "GameConstants.h"
 #include "TextureCache.h"
 #include "UIButton.h"
+#include "GameObjectUtils.h"
 
-
-MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine), mChangeToPlayStateFunction([=]() { mpStateMachine->changeState<PlayState>(); })
+MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine)
 {
 	auto placeholderText = new GameObject;
+	placeholderText->mPos.y = 150;
 	placeholderText->mIsInWorldSpace = false;
 	auto txt = placeholderText->addComponent<Text>();
 	txt->setFont(*FontCache::get().LoadSpriteFont("courier.spritefont"));
-	txt->mString = "Placeholder main menu.";
+	txt->mString = "Main Menu";
+	txt->mOrigin.x = txt->getDimensions().x / 2;
 	mAllGameObjects.push_back(placeholderText);
 
-	mpPlayButton = new GameObject;
-	mpPlayButton->mIsInWorldSpace = false;
-	mpPlayButton->mPos = Vector2(GameConstants::SCREEN_RES_X / 2, 250);
-	auto spr = mpPlayButton->addComponent<Sprite>();
-	spr->setTexture(*TextureCache::get().LoadTexture("UI/buttons.png", false), { 488, 50, 488 + 512, 50 + 128 });
-	spr->mOrigin = Vector2(256, 64);
-	spr->mScale = Vector2(0.75f, 0.75f);
-	txt = mpPlayButton->addComponent<Text>();
-	txt->setFont(*FontCache::get().LoadSpriteFont("courier.spritefont"));
-	txt->mString = "Play";
-	txt->mOrigin = txt->getDimensions() / 2;
-	mpPlayButton->addComponent<Collider>();
-	mpPlayButton->addComponent<UIButton>()->mOnClick += mChangeToPlayStateFunction;
-	mAllGameObjects.push_back(mpPlayButton);
+	auto playButton = makeUIButton("Play");
+	playButton->mPos.y = 350;
+	playButton->getComponent<UIButton>()->mOnClick += EventFunction<>([=]() { mpStateMachine->changeState<PlayState>(); });
+	mAllGameObjects.push_back(playButton);
+
+	auto exitButton = makeUIButton("Exit");
+	exitButton->mPos.y = 450;
+	exitButton->getComponent<UIButton>()->mOnClick += EventFunction<>([=]() { PostQuitMessage(0); });
+	mAllGameObjects.push_back(exitButton);
 
 	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
@@ -48,7 +45,6 @@ MainMenuState::~MainMenuState()
 		delete mAllGameObjects.at(i);
 	}
 	mAllGameObjects.clear();
-	mpPlayButton->addComponent<UIButton>()->mOnClick -= mChangeToPlayStateFunction;
 }
 
 void MainMenuState::update(const float deltaTime)
@@ -76,6 +72,7 @@ void MainMenuState::render(Camera& camera)
 {
 	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
+		mAllGameObjects.at(i)->mPos.x = camera.getDimensions().x / 2;
 		mAllGameObjects.at(i)->render(camera);
 	}
 }
