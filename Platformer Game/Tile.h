@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
+
 // Contains information about setting up a game object on a tilemap
 class Tile
 {

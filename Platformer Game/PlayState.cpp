@@ -9,6 +9,7 @@
 #include "SpriteAnimator.h"
 #include <algorithm>
 #include "Tilemap.h"
+#include "Tile.h"
 
 PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 {
@@ -26,14 +27,30 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 
 	// Set up tilemap
 	Tile tile;
-	tile.setTexture(0, *TextureCache::get().LoadTexture("Tiles/Dirt.png", false));
+	tile.setTexture(0, *TextureCache::get().LoadTexture("Tiles/Grass.png", false));
+	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/Column.png", false));
+	tile.setTexture(Tile::Adjacency::Top, *TextureCache::get().LoadTexture("Tiles/column_down.png", false));
+	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Bottom | Tile::Adjacency::Right | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/Dirt.png", false));
+	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Right | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/DirtDown.png", false));
+	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Bottom | Tile::Adjacency::Right, *TextureCache::get().LoadTexture("Tiles/DirtLeft.png", false));
+	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Right, *TextureCache::get().LoadTexture("Tiles/DirtLeftCorner.png", false));
+	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Bottom  | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/DirtRight.png", false));
+	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/DirtRightCorner.png", false));
+	tile.setTexture(Tile::Adjacency::Right, *TextureCache::get().LoadTexture("Tiles/GrassCliffLeft.png", false));
+	tile.setTexture(Tile::Adjacency::Right | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/GrassCliffMid.png", false));
+	tile.setTexture(Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/GrassCliffRight.png", false));
+	tile.setTexture(Tile::Adjacency::Right | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassLeft.png", false));
+	tile.setTexture(Tile::Adjacency::Right | Tile::Adjacency::Left | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassMid.png", false));
+	tile.setTexture(Tile::Adjacency::Left | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassRight.png", false));
+	tile.setTexture(Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassTop.png", false));
 	tile.mScale = Vector2(0.5f, 0.5f);
 
-	Tilemap tilemap(Vector2(64, 64));
+	Tilemap tilemap(tile, Vector2(64, 64));
 	for (int i = 0; i < 20; i++)
 	{
-		mAllGameObjects.push_back(tilemap.addTile(tile, i, 3));
+		mAllGameObjects.push_back(tilemap.addTile(i, 3));
 	}
+	tilemap.updateTilemap();
 
 	// Set up terrain
 	std::pair<RECT, Vector2> terrainDetails[] = { 

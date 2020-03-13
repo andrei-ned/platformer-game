@@ -13,7 +13,7 @@ namespace GameConstants {
 	// Max fall speed
 	const float MAX_FALL_SPEED = 10000.0f;
 	// If distance to another object is below this then velocity can be changed by collision
-	const float COLLISION_THRESHOLD = .001f;
+	const float COLLISION_THRESHOLD = .000001f;
 	// Acceleration to be applied to player on movement input
 	const float PLAYER_MOVE_ACCELERATION = 6000.0f;
 	// Max horizontal move velocity

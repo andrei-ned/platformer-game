@@ -3,11 +3,11 @@
 #include "Collider.h"
 
 
-Tilemap::Tilemap()
+Tilemap::Tilemap(Tile tile) : mTile(tile)
 {
 }
 
-Tilemap::Tilemap(Vector2 tileSize) : mTileSize(tileSize)
+Tilemap::Tilemap(Tile tile, Vector2 tileSize) : mTile(tile), mTileSize(tileSize)
 {
 }
 
@@ -15,20 +15,20 @@ Tilemap::~Tilemap()
 {
 }
 
-GameObject* Tilemap::addTile(Tile& tile, int x, int y)
+GameObject* Tilemap::addTile(int x, int y)
 {
-	return addTile(tile, std::make_pair(x, y));
+	return addTile(std::make_pair(x, y));
 }
 
-GameObject* Tilemap::addTile(Tile& tile, std::pair<int, int> pos)
+GameObject* Tilemap::addTile(std::pair<int, int> pos)
 {
 	GameObject* go = new GameObject;
 	go->mPos = Vector2(pos.first*mTileSize.x, pos.second*mTileSize.y);
 	auto spr = go->addComponent<Sprite>();
-	spr->setTexture(*tile.getTexture(0));
-	spr->mScale = tile.mScale;
+	spr->setTexture(*mTile.getTexture(0));
+	spr->mScale = mTile.mScale;
 	go->addComponent<Collider>();
-	mTiles.insert({ pos,go });
+	mTileGameObjects.insert({ pos,go });
 	return go;
 }
 
@@ -37,15 +37,26 @@ std::vector<GameObject*> Tilemap::addTiles(Tile& tile, std::vector<std::pair<int
 	std::vector<GameObject*> mNewTiles;
 	for (unsigned int i = 0; i < positions.size(); i++)
 	{
-		mNewTiles.push_back(addTile(tile, positions.at(i)));
+		mNewTiles.push_back(addTile(positions.at(i)));
 	}
 	return mNewTiles;
 }
 
 void Tilemap::updateTilemap()
 {
-	for (auto& pair : mTiles)
+	for (auto& pair : mTileGameObjects)
 	{
-
+		int mask = 0;
+		int x = pair.first.first;
+		int y = pair.first.second;
+		if (mTileGameObjects.find({ x-1,y }) != mTileGameObjects.end())
+			mask |= Tile::Adjacency::Left;
+		if (mTileGameObjects.find({ x+1,y }) != mTileGameObjects.end())
+			mask |= Tile::Adjacency::Right;
+		if (mTileGameObjects.find({ x,y-1 }) != mTileGameObjects.end())
+			mask |= Tile::Adjacency::Top;
+		if (mTileGameObjects.find({ x,y+1 }) != mTileGameObjects.end())
+			mask |= Tile::Adjacency::Bottom;
+		pair.second->getComponent<Sprite>()->setTexture(*mTile.getTexture(mask));
 	}
 }

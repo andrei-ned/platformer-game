@@ -2,7 +2,7 @@
 
 
 
-Tile::Tile() : mTextures(16)
+Tile::Tile() : mTextures(16), mScale(Vector2(1,1))
 {
 }
 
