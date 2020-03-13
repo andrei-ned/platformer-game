@@ -214,6 +214,7 @@ void Application::run(HINSTANCE hInstance) {
 
 			// Rendering
 			mpD3D->BeginRender(DirectX::Colors::Black.v);
+			mpD3D->BeginRender(Color(.5,.4,.6,1));
 			spriteBatch.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied(), &mpD3D->GetWrapSampler());
 
 			mpGame->render();
