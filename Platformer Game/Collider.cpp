@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Sprite.h"
 
-Collider::Collider(GameObject& gameObject) : Component(gameObject), mOrigin(0, 0)
+Collider::Collider(GameObject& gameObject) : Component(gameObject), mOrigin(0, 0), mSize(0, 0)
 {
 }
 
@@ -13,6 +13,7 @@ Collider::~Collider()
 
 void Collider::start()
 {
+	// Get size from sprite
 	auto spr = mpGameObject->getComponent<Sprite>();
 	if (spr)
 	{

@@ -106,7 +106,10 @@ RECT SpriteAnimator::Animation::cycleFrame()
 		if (mLoop)
 			mCurrentFrameIndex = 0;
 		else
+		{
+			mCurrentFrameIndex--;
 			mIsPlaying = false;
+		}
 	}
 	return mFrames.at(mCurrentFrameIndex);
 }

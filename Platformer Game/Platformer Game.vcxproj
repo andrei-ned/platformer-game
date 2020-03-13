@@ -146,6 +146,8 @@
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextureCache.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="UIButton.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +177,8 @@
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextureCache.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="Tilemap.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="WinData.h" />
   </ItemGroup>

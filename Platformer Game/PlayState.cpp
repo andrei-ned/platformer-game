@@ -8,6 +8,7 @@
 #include "GameConstants.h"
 #include "SpriteAnimator.h"
 #include <algorithm>
+#include "Tilemap.h"
 
 PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 {
@@ -21,6 +22,17 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 		bgObj->mPos.y = GameConstants::SCREEN_RES_Y;
 		mBackgroundSprites.push_back(bgSpr);
 		mAllGameObjects.push_back(bgObj);
+	}
+
+	// Set up tilemap
+	Tile tile;
+	tile.setTexture(0, *TextureCache::get().LoadTexture("Tiles/Dirt.png", false));
+	tile.mScale = Vector2(0.5f, 0.5f);
+
+	Tilemap tilemap(Vector2(64, 64));
+	for (int i = 0; i < 20; i++)
+	{
+		mAllGameObjects.push_back(tilemap.addTile(tile, i, 3));
 	}
 
 	// Set up terrain
