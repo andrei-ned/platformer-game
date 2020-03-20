@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
-
+#include <optional>
+#include "Helpers.h"
 
 // Contains information about setting up a game object on a tilemap
 class Tile
@@ -19,8 +20,16 @@ public:
 	~Tile();
 
 	void setTexture(int adjacencyMask, ID3D11ShaderResourceView& texture);
+	void setColliderBounds(int adjacencyMask, RECTF bounds);
 	ID3D11ShaderResourceView* getTexture(int mask) const;
+	std::optional<RECTF> getColliderBounds(int mask) const;
 private:
-	std::vector<ID3D11ShaderResourceView*> mTextures;
+	struct TileDetails
+	{
+		ID3D11ShaderResourceView* texture;
+		std::optional<RECTF> colliderBounds;
+	};
+
+	std::vector<TileDetails> mTileDetails;
 };
 

@@ -37,37 +37,53 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Bottom  | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/DirtRight.png", false));
 	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/DirtRightCorner.png", false));
 	tile.setTexture(Tile::Adjacency::Right, *TextureCache::get().LoadTexture("Tiles/GrassCliffLeft.png", false));
+	//tile.setColliderBounds(Tile::Adjacency::Right, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Right | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/GrassCliffMid.png", false));
+	//tile.setColliderBounds(Tile::Adjacency::Right | Tile::Adjacency::Left, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/GrassCliffRight.png", false));
+	//tile.setColliderBounds(Tile::Adjacency::Left, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Right | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassLeft.png", false));
+	//tile.setColliderBounds(Tile::Adjacency::Right | Tile::Adjacency::Bottom, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Right | Tile::Adjacency::Left | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassMid.png", false));
+	//tile.setColliderBounds(Tile::Adjacency::Right | Tile::Adjacency::Left | Tile::Adjacency::Bottom, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Left | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassRight.png", false));
+	//tile.setColliderBounds(Tile::Adjacency::Left | Tile::Adjacency::Bottom, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassTop.png", false));
+	//tile.setColliderBounds(Tile::Adjacency::Bottom, { 0,16,128,128 });
 	tile.mScale = Vector2(0.5f, 0.5f);
 
 	Tilemap tilemap(tile, Vector2(64, 64));
-	for (int i = 0; i < 20; i++)
+	for (int i = -1; i < 30; i++)
 	{
-		mAllGameObjects.push_back(tilemap.addTile(i, 3));
+		mAllGameObjects.push_back(tilemap.addTile(i, 13));
+		mAllGameObjects.push_back(tilemap.addTile(i, 14));
 	}
+	for (int i = 6; i < 11; i++)
+		mAllGameObjects.push_back(tilemap.addTile(7, i));
 	tilemap.updateTilemap();
 
+	// Set up collider at edge of map
+	auto mapLeftBound = new GameObject;
+	mapLeftBound->mPos.x = -10;
+	mapLeftBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
+	mAllGameObjects.push_back(mapLeftBound);
+
 	// Set up terrain
-	std::pair<RECT, Vector2> terrainDetails[] = { 
-		{{ 0, 0, GameConstants::SCREEN_RES_X, 128 }, Vector2(0, GameConstants::SCREEN_RES_Y - 128)},
-	    {{ 0, 0, 64, GameConstants::SCREEN_RES_Y }, Vector2(0, 0)},
-		{{ 0, 0, 64, GameConstants::SCREEN_RES_Y }, Vector2(GameConstants::SCREEN_RES_X - 64, 0)},
-		{{ 0, 0, 128, 64 }, Vector2(500, 300)},
-		{{ 0, 0, 256, 64 }, Vector2(700, 500)}
-	};
-	for (auto& item : terrainDetails)
-	{
-		auto terrainObj = new GameObject;
-		terrainObj->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Tiles/Dirt.png", false), item.first);
-		terrainObj->addComponent<Collider>();
-		terrainObj->mPos = item.second;
-		mAllGameObjects.push_back(terrainObj);
-	}
+	//std::pair<RECT, Vector2> terrainDetails[] = { 
+	//	{{ 0, 0, GameConstants::SCREEN_RES_X, 128 }, Vector2(0, GameConstants::SCREEN_RES_Y - 128)},
+	//    {{ 0, 0, 64, GameConstants::SCREEN_RES_Y }, Vector2(0, 0)},
+	//	{{ 0, 0, 64, GameConstants::SCREEN_RES_Y }, Vector2(GameConstants::SCREEN_RES_X - 64, 0)},
+	//	{{ 0, 0, 128, 64 }, Vector2(500, 300)},
+	//	{{ 0, 0, 256, 64 }, Vector2(700, 500)}
+	//};
+	//for (auto& item : terrainDetails)
+	//{
+	//	auto terrainObj = new GameObject;
+	//	terrainObj->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Tiles/Dirt.png", false), item.first);
+	//	terrainObj->addComponent<Collider>();
+	//	terrainObj->mPos = item.second;
+	//	mAllGameObjects.push_back(terrainObj);
+	//}
 
 	// Set up player
 	mpPlayer = new GameObject;

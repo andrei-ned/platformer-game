@@ -58,5 +58,9 @@ void Tilemap::updateTilemap()
 		if (mTileGameObjects.find({ x,y+1 }) != mTileGameObjects.end())
 			mask |= Tile::Adjacency::Bottom;
 		pair.second->getComponent<Sprite>()->setTexture(*mTile.getTexture(mask));
+		if (mTile.getColliderBounds(mask).has_value())
+		{
+			pair.second->getComponent<Collider>()->setBounds(mTile.getColliderBounds(mask).value());
+		}
 	}
 }

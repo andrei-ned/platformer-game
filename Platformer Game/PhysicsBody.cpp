@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "GameConstants.h"
 
-PhysicsBody::PhysicsBody(GameObject& gameObject) : Component(gameObject)
+PhysicsBody::PhysicsBody(GameObject& gameObject) : Component(gameObject), mMaxVelDelta(HUGE_VALF, HUGE_VALF)
 {
 }
 
