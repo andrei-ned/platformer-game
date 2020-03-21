@@ -13,6 +13,8 @@ public:
 	void update(const float deltaTime) override;
 	void render(Camera& camera) override;
 private:
+	void addGameObjects(std::vector<GameObject*> newGameObjects);
+
 	std::vector<GameObject*> mAllGameObjects;
 	std::vector<PhysicsBody*> mAllPhysicsBodies;
 	std::vector<Collider*> mAllColliders;

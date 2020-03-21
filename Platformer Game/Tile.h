@@ -20,14 +20,14 @@ public:
 	~Tile();
 
 	void setTexture(int adjacencyMask, ID3D11ShaderResourceView& texture);
-	void setColliderBounds(int adjacencyMask, RECTF bounds);
+	//void setColliderBounds(int adjacencyMask, RECTF bounds);
 	ID3D11ShaderResourceView* getTexture(int mask) const;
-	std::optional<RECTF> getColliderBounds(int mask) const;
+	//std::optional<RECTF> getColliderBounds(int mask) const;
 private:
 	struct TileDetails
 	{
 		ID3D11ShaderResourceView* texture;
-		std::optional<RECTF> colliderBounds;
+		//std::optional<RECTF> colliderBounds;
 	};
 
 	std::vector<TileDetails> mTileDetails;

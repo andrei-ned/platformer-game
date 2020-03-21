@@ -53,13 +53,21 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	tile.mScale = Vector2(0.5f, 0.5f);
 
 	Tilemap tilemap(tile, Vector2(64, 64));
-	for (int i = -1; i < 30; i++)
-	{
-		mAllGameObjects.push_back(tilemap.addTile(i, 13));
-		mAllGameObjects.push_back(tilemap.addTile(i, 14));
-	}
-	for (int i = 6; i < 11; i++)
-		mAllGameObjects.push_back(tilemap.addTile(7, i));
+	//for (int i = -1; i < 30; i++)
+	//{
+	//	mAllGameObjects.push_back(tilemap.addTile(i, 13));
+	//	mAllGameObjects.push_back(tilemap.addTile(i, 14));
+	//}
+	addGameObjects(tilemap.fillTiles({ -1,13 }, { 30,14 }));
+	addGameObjects(tilemap.fillTiles({ 9,11 }, { 15,12 }));
+	addGameObjects(tilemap.fillTiles({ 16,12 }, { 22,8 }));
+	addGameObjects(tilemap.fillTiles({ 23,12 }, { 22,8 }));
+	addGameObjects(tilemap.fillTiles({ 11,4 }, { 13,4 }));
+	addGameObjects(tilemap.fillTiles({ 20,2 }, { 25,12 }));
+	//for (int i = 6; i < 11; i++)
+	//	mAllGameObjects.push_back(tilemap.addTile(7, i));
+	//newTiles = tilemap.fillTiles({ 7,6 }, { 7,10 });
+	//mAllGameObjects.insert(mAllGameObjects.end(), newTiles.begin(), newTiles.end());
 	tilemap.updateTilemap();
 
 	// Set up collider at edge of map
@@ -208,4 +216,9 @@ void PlayState::render(Camera& camera)
 	{
 		mAllGameObjects.at(i)->render(camera);
 	}
+}
+
+void PlayState::addGameObjects(std::vector<GameObject*> newGameObjects)
+{
+	mAllGameObjects.insert(mAllGameObjects.end(), newGameObjects.begin(), newGameObjects.end());
 }
