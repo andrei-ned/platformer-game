@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Sprite.h"
 
-Collider::Collider(GameObject& gameObject) : Component(gameObject), mOrigin(0, 0), mSize(0, 0)
+Collider::Collider(GameObject& gameObject) : Component(gameObject), mOrigin(0, 0), mSize(0, 0), mIsTrigger(false)
 {
 }
 
@@ -48,8 +48,8 @@ void Collider::setBounds(RECTF rect)
 	mOrigin.y += (sprRect.top - rect.top) * spr->mScale.y;
 }
 
-bool Collider::containsPoint(Vector2 point) const
+bool Collider::containsPoint(const Vector2 point) const
 {
 	RECTF bounds = getBounds();
-	return point.x > bounds.left && point.x < bounds.right && point.y > bounds.top && point.y < bounds.bottom;
+	return bounds.containsPoint(point);
 }

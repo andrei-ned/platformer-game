@@ -17,7 +17,7 @@ public:
 	void start() override;
 	void updateLate(const float deltaTime) override;
 	// If other game object is in the way of movement, sets velocity in that direction to 0
-	void resolveCollision(const Collider& other);
+	void resolveCollision(Collider& other);
 private:
 	Vector2 mMaxVelDelta;
 	Collider* mpCollider;

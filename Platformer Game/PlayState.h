@@ -20,6 +20,9 @@ private:
 	std::vector<Collider*> mAllColliders;
 	std::vector<Sprite*> mBackgroundSprites;
 	GameObject* mpPlayer;
+	// Levels
+	std::vector<RECTF> mLevelBounds;
+	RECTF mLevelBoundsCurrent;
 	// **DEBUG
 	Text* mpDebugText;
 };

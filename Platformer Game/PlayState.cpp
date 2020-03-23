@@ -60,10 +60,10 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	//}
 	addGameObjects(tilemap.fillTiles({ -1,13 }, { 30,14 }));
 	addGameObjects(tilemap.fillTiles({ 9,11 }, { 15,12 }));
-	addGameObjects(tilemap.fillTiles({ 16,12 }, { 22,8 }));
-	addGameObjects(tilemap.fillTiles({ 23,12 }, { 22,8 }));
-	addGameObjects(tilemap.fillTiles({ 11,4 }, { 13,4 }));
-	addGameObjects(tilemap.fillTiles({ 20,2 }, { 25,12 }));
+	addGameObjects(tilemap.fillTiles({ 16,12 }, { 22,7 }));
+	addGameObjects(tilemap.fillTiles({ 23,12 }, { 22,7 }));
+	addGameObjects(tilemap.fillTiles({ 11,3 }, { 13,3 }));
+	addGameObjects(tilemap.fillTiles({ 20,1 }, { 50,12 }));
 	//for (int i = 6; i < 11; i++)
 	//	mAllGameObjects.push_back(tilemap.addTile(7, i));
 	//newTiles = tilemap.fillTiles({ 7,6 }, { 7,10 });
@@ -75,6 +75,16 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	mapLeftBound->mPos.x = -10;
 	mapLeftBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
 	mAllGameObjects.push_back(mapLeftBound);
+	auto mapRightBound = new GameObject;
+	mapRightBound->mPos.x = 64 * 45;
+	mapRightBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
+	mAllGameObjects.push_back(mapRightBound);
+
+	// Set up level bounds
+	mLevelBounds.insert(mLevelBounds.end(), { 
+		{ 0, -64 * 6, 64 * 25, 64 * 14 },
+		{ 64 * 25, -64 * 12, 64 * 45, 64 * 3} });
+		//mAllGameObjects.insert(mAllGameObjects.end(), newGameObjects.begin(), newGameObjects.end());
 
 	// Set up terrain
 	//std::pair<RECT, Vector2> terrainDetails[] = { 
@@ -188,16 +198,22 @@ void PlayState::update(const float deltaTime)
 
 void PlayState::render(Camera& camera)
 {
+	// Camera movement within level bounds
+	for (unsigned int i = 0; i < mLevelBounds.size(); i++)
+	{
+		if (mLevelBounds.at(i).containsPoint(mpPlayer->mPos))
+			mLevelBoundsCurrent = mLevelBounds.at(i);
+	}
 	// **TESTING
-	RECTF levelBounds = { 0, -300, GameConstants::SCREEN_RES_X + 500, GameConstants::SCREEN_RES_Y};
+	//RECTF levelBounds = { 0, -64 * 6, 1600, 896 };
 	Vector2 camDesiredPos;
 	Vector2 camCurrentPos = camera.getCenter();
 	Vector2 camHalfDim = camera.getDimensions() / 2;
-	Vector2 camPosMin = Vector2(levelBounds.left + camHalfDim.x, levelBounds.top + camHalfDim.y);
-	Vector2 camPosMax = Vector2(levelBounds.right - camHalfDim.x, levelBounds.bottom - camHalfDim.y);
+	Vector2 camPosMin = Vector2(mLevelBoundsCurrent.left + camHalfDim.x, mLevelBoundsCurrent.top + camHalfDim.y);
+	Vector2 camPosMax = Vector2(mLevelBoundsCurrent.right - camHalfDim.x, mLevelBoundsCurrent.bottom - camHalfDim.y);
 
-	camDesiredPos.x = camPosMin.x < camPosMax.x ? std::clamp(mpPlayer->mPos.x, levelBounds.left + camHalfDim.x, levelBounds.right - camHalfDim.x) : (levelBounds.left + levelBounds.right) / 2;
-	camDesiredPos.y = camPosMin.y < camPosMax.y ? std::clamp(mpPlayer->mPos.y, levelBounds.top + camHalfDim.y, levelBounds.bottom - camHalfDim.y) : (levelBounds.bottom + levelBounds.top) / 2;
+	camDesiredPos.x = camPosMin.x < camPosMax.x ? std::clamp(mpPlayer->mPos.x, mLevelBoundsCurrent.left + camHalfDim.x, mLevelBoundsCurrent.right - camHalfDim.x) : (mLevelBoundsCurrent.left + mLevelBoundsCurrent.right) / 2;
+	camDesiredPos.y = camPosMin.y < camPosMax.y ? std::clamp(mpPlayer->mPos.y, mLevelBoundsCurrent.top + camHalfDim.y, mLevelBoundsCurrent.bottom - camHalfDim.y) : (mLevelBoundsCurrent.bottom + mLevelBoundsCurrent.top) / 2;
 	// Smooth camera movement
 	camDesiredPos = camCurrentPos + 0.05f * (camDesiredPos - camCurrentPos);
 	// ****
