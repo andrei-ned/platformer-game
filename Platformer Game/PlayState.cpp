@@ -37,19 +37,12 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Bottom  | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/DirtRight.png", false));
 	tile.setTexture(Tile::Adjacency::Top | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/DirtRightCorner.png", false));
 	tile.setTexture(Tile::Adjacency::Right, *TextureCache::get().LoadTexture("Tiles/GrassCliffLeft.png", false));
-	//tile.setColliderBounds(Tile::Adjacency::Right, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Right | Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/GrassCliffMid.png", false));
-	//tile.setColliderBounds(Tile::Adjacency::Right | Tile::Adjacency::Left, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Left, *TextureCache::get().LoadTexture("Tiles/GrassCliffRight.png", false));
-	//tile.setColliderBounds(Tile::Adjacency::Left, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Right | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassLeft.png", false));
-	//tile.setColliderBounds(Tile::Adjacency::Right | Tile::Adjacency::Bottom, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Right | Tile::Adjacency::Left | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassMid.png", false));
-	//tile.setColliderBounds(Tile::Adjacency::Right | Tile::Adjacency::Left | Tile::Adjacency::Bottom, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Left | Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassRight.png", false));
-	//tile.setColliderBounds(Tile::Adjacency::Left | Tile::Adjacency::Bottom, { 0,16,128,128 });
 	tile.setTexture(Tile::Adjacency::Bottom, *TextureCache::get().LoadTexture("Tiles/GrassTop.png", false));
-	//tile.setColliderBounds(Tile::Adjacency::Bottom, { 0,16,128,128 });
 	tile.mScale = Vector2(0.5f, 0.5f);
 
 	Tilemap tilemap(tile, Vector2(64, 64));
@@ -66,8 +59,6 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	addGameObjects(tilemap.fillTiles({ 20,1 }, { 50,12 }));
 	//for (int i = 6; i < 11; i++)
 	//	mAllGameObjects.push_back(tilemap.addTile(7, i));
-	//newTiles = tilemap.fillTiles({ 7,6 }, { 7,10 });
-	//mAllGameObjects.insert(mAllGameObjects.end(), newTiles.begin(), newTiles.end());
 	tilemap.updateTilemap();
 
 	// Set up collider at edge of map
@@ -83,25 +74,8 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	// Set up level bounds
 	mLevelBounds.insert(mLevelBounds.end(), { 
 		{ 0, -64 * 6, 64 * 25, 64 * 14 },
-		{ 64 * 25, -64 * 12, 64 * 45, 64 * 3} });
-		//mAllGameObjects.insert(mAllGameObjects.end(), newGameObjects.begin(), newGameObjects.end());
-
-	// Set up terrain
-	//std::pair<RECT, Vector2> terrainDetails[] = { 
-	//	{{ 0, 0, GameConstants::SCREEN_RES_X, 128 }, Vector2(0, GameConstants::SCREEN_RES_Y - 128)},
-	//    {{ 0, 0, 64, GameConstants::SCREEN_RES_Y }, Vector2(0, 0)},
-	//	{{ 0, 0, 64, GameConstants::SCREEN_RES_Y }, Vector2(GameConstants::SCREEN_RES_X - 64, 0)},
-	//	{{ 0, 0, 128, 64 }, Vector2(500, 300)},
-	//	{{ 0, 0, 256, 64 }, Vector2(700, 500)}
-	//};
-	//for (auto& item : terrainDetails)
-	//{
-	//	auto terrainObj = new GameObject;
-	//	terrainObj->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Tiles/Dirt.png", false), item.first);
-	//	terrainObj->addComponent<Collider>();
-	//	terrainObj->mPos = item.second;
-	//	mAllGameObjects.push_back(terrainObj);
-	//}
+		{ 64 * 25, -64 * 12, 64 * 45, 64 * 3} 
+	});
 
 	// Set up player
 	mpPlayer = new GameObject;
@@ -204,8 +178,6 @@ void PlayState::render(Camera& camera)
 		if (mLevelBounds.at(i).containsPoint(mpPlayer->mPos))
 			mLevelBoundsCurrent = mLevelBounds.at(i);
 	}
-	// **TESTING
-	//RECTF levelBounds = { 0, -64 * 6, 1600, 896 };
 	Vector2 camDesiredPos;
 	Vector2 camCurrentPos = camera.getCenter();
 	Vector2 camHalfDim = camera.getDimensions() / 2;
@@ -216,7 +188,6 @@ void PlayState::render(Camera& camera)
 	camDesiredPos.y = camPosMin.y < camPosMax.y ? std::clamp(mpPlayer->mPos.y, mLevelBoundsCurrent.top + camHalfDim.y, mLevelBoundsCurrent.bottom - camHalfDim.y) : (mLevelBoundsCurrent.bottom + mLevelBoundsCurrent.top) / 2;
 	// Smooth camera movement
 	camDesiredPos = camCurrentPos + 0.05f * (camDesiredPos - camCurrentPos);
-	// ****
 
 	camera.centerOn(camDesiredPos);
 

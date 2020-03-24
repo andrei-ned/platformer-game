@@ -37,21 +37,19 @@ void PhysicsBody::resolveCollision(Collider& other) {
 	Vector2 pos((bounds.left + bounds.right) / 2, (bounds.top + bounds.bottom) / 2);
 	Vector2 otherPos((otherBounds.left + otherBounds.right) / 2, (otherBounds.top + otherBounds.bottom) / 2);
 
-	if (other.mIsTrigger)
+	if (other.mIsTrigger) // Trigger collision, only invoke the event
 	{
 		float dx = pos.x - otherPos.x;
-		float px = (bounds.right - bounds.left + otherBounds.right - otherBounds.left) / 2 - abs(dx);
-		if (px <= 0) 
+		if ((bounds.right - bounds.left + otherBounds.right - otherBounds.left) / 2 - abs(dx) <= 0 );
 			return; // Collision isn't happening
 
 		float dy = pos.y - otherPos.y;
-		float py = (bounds.top - bounds.bottom + otherBounds.top - otherBounds.bottom) / 2 - abs(dy);
-		if (py)
+		if ((bounds.top - bounds.bottom + otherBounds.top - otherBounds.bottom) / 2 - abs(dy) <= 0);
 			return; // Collision isn't happening
 
 		other.mOnTrigger.invoke(*mpCollider);
 	}
-	else
+	else // Physics collision, constrain velocity if necessary
 	{
 		float scaleX = 1 / mVelocity.x;
 		float scaleY = 1 / mVelocity.y;
