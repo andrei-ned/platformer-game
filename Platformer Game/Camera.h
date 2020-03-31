@@ -3,25 +3,27 @@
 #include "SpriteBatch.h"
 #include "SpriteFont.h"
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-
 class Camera
 {
+
 public:
-	Vector2 mPos; // The top left corner of the camera
-	Camera(SpriteBatch& spriteBatch, D3D11_VIEWPORT& viewport);
+	DirectX::SimpleMath::Vector2 mPos; // The top left corner of the camera
+
+	Camera(DirectX::SpriteBatch& spriteBatch, D3D11_VIEWPORT& viewport);
 	~Camera();
-	void drawSprite(ID3D11ShaderResourceView* texture, const Vector2& pos, const RECT* textureRect, Color color, float rotation, const Vector2& origin, 
-		const Vector2& scale, bool isWorldPos = true, SpriteEffects spriteEffects = SpriteEffects_None, float depth = 0.0f);
-	void drawText(SpriteFont* font, const std::string text, const Vector2& pos, Color color, float rotation, const Vector2& origin, 
-		const Vector2& scale, bool isWorldPos = true, SpriteEffects spriteEffects = SpriteEffects_None, float depth = 0.0f);
+
+	void drawSprite(ID3D11ShaderResourceView* texture, const DirectX::SimpleMath::Vector2& pos, const RECT* textureRect, DirectX::SimpleMath::Color color, float rotation, const DirectX::SimpleMath::Vector2& origin,
+		const DirectX::SimpleMath::Vector2& scale, bool isWorldPos = true, DirectX::SpriteEffects spriteEffects = DirectX::SpriteEffects_None, float depth = 0.0f);
+	void drawText(DirectX::SpriteFont* font, const std::string text, const DirectX::SimpleMath::Vector2& pos, DirectX::SimpleMath::Color color, float rotation, const DirectX::SimpleMath::Vector2& origin,
+		const DirectX::SimpleMath::Vector2& scale, bool isWorldPos = true, DirectX::SpriteEffects spriteEffects = DirectX::SpriteEffects_None, float depth = 0.0f);
+
 	// Center the camera on a position
-	void centerOn(Vector2 targetPos);
-	Vector2 getCenter() const;
-	Vector2 getDimensions() const;
+	void centerOn(DirectX::SimpleMath::Vector2 targetPos);
+
+	DirectX::SimpleMath::Vector2 getCenter() const;
+	DirectX::SimpleMath::Vector2 getDimensions() const;
 private:
-	SpriteBatch* mpSpriteBatch;
+	DirectX::SpriteBatch* mpSpriteBatch;
 	D3D11_VIEWPORT* mpViewport;
 };
 

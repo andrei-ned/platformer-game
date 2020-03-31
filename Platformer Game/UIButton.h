@@ -16,7 +16,7 @@ public:
 	Color mColorPressed;
 
 	UIButton(GameObject& gameObject);
-	~UIButton();
+	~UIButton() override;
 
 	void start() override;
 	void update(const float deltaTime) override;

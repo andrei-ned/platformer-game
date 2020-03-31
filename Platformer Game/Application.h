@@ -4,6 +4,9 @@
 #include "D3DHandler.h"
 #include "WinData.h"
 #include "Event.h"
+#include "Keyboard.h"
+#include "Mouse.h"
+#include <memory>
 
 // Boilerplate setup for handling the game
 class Application
@@ -21,7 +24,9 @@ private:
 	static LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT CALLBACK MemberWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-	D3DHandler* mpD3D;
-	Game* mpGame;
+	std::unique_ptr<D3DHandler> mpD3D;
+	std::unique_ptr<Game> mpGame;
+	std::unique_ptr<DirectX::Keyboard> mpKb;
+	std::unique_ptr<DirectX::Mouse> mpMouse;
 };
 

@@ -7,7 +7,8 @@ class PlayerController : public Component
 {
 public:
 	PlayerController(GameObject& gameObject);
-	~PlayerController();
+	~PlayerController() override;
+
 	void start() override;
 	void update(const float deltaTime) override;
 private:

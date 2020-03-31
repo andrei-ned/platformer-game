@@ -8,6 +8,7 @@ class Event
 public:
 	Event() {};
 	~Event() {};
+
 	void invoke(Args... args)
 	{
 		for (auto& func : mFunctions)

@@ -3,18 +3,18 @@
 #include "SimpleMath.h"
 #include "Helpers.h"
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
 
 class Sprite : public Component
 {
 public:
-	Vector2 mOrigin;
-	Vector2 mScale;
-	Color mColor;
-	SpriteEffects mSpriteEffects;
+	DirectX::SimpleMath::Vector2 mOrigin;
+	DirectX::SimpleMath::Vector2 mScale;
+	DirectX::SimpleMath::Color mColor;
+	DirectX::SpriteEffects mSpriteEffects;
+
 	Sprite(GameObject& gameObject);
-	~Sprite();
+	~Sprite() override;
+
 	virtual void render(Camera& camera) override;
 	void setTexture(ID3D11ShaderResourceView& texture);
 	void setTexture(ID3D11ShaderResourceView& texture, RECT rect);

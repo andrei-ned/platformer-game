@@ -6,6 +6,7 @@ class StateMachine;
 class State
 {
 public:
+	virtual ~State() {};
 	// Called when machine enters the state
 	virtual void enter() {}
 	// Called when machine exits the state

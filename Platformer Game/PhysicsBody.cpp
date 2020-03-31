@@ -40,11 +40,11 @@ void PhysicsBody::resolveCollision(Collider& other) {
 	if (other.mIsTrigger) // Trigger collision, only invoke the event
 	{
 		float dx = pos.x - otherPos.x;
-		if ((bounds.right - bounds.left + otherBounds.right - otherBounds.left) / 2 - abs(dx) <= 0 );
+		if ((bounds.right - bounds.left + otherBounds.right - otherBounds.left) / 2 - abs(dx) <= 0 )
 			return; // Collision isn't happening
 
 		float dy = pos.y - otherPos.y;
-		if ((bounds.top - bounds.bottom + otherBounds.top - otherBounds.bottom) / 2 - abs(dy) <= 0);
+		if ((bounds.top - bounds.bottom + otherBounds.top - otherBounds.bottom) / 2 - abs(dy) <= 0)
 			return; // Collision isn't happening
 
 		other.mOnTrigger.invoke(*mpCollider);

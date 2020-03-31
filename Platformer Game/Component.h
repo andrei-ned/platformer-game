@@ -7,7 +7,10 @@ class GameObject;
 class Component
 {
 public:
+	virtual ~Component() {}
+
 	GameObject* mpGameObject;
+
 	// To be called to initialize, before the next frame of updates
 	virtual void start() {}
 	// Will be called every frame, used for game logic

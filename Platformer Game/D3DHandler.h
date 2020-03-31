@@ -10,6 +10,7 @@ class D3DHandler
 public:
 	D3DHandler(WinData winData);
 	~D3DHandler();
+
 	//default minimum behaviour when ALT+ENTER or drag or resize
 	//parameters are new width and height of window
 	void OnResize(int clientWidth, int clientHeight);

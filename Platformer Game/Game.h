@@ -1,19 +1,13 @@
 #pragma once
-//#include "GameObject.h"
-//#include <vector>
 #include "SpriteBatch.h"
 #include "D3DHandler.h"
-//#include "Keyboard.h"
-//#include "PhysicsBody.h"
-//#include "Collider.h"
 #include "Camera.h"
-//#include "Sprite.h"
 #include "StateMachine.h"
 
 class Game
 {
 public:
-	Game(D3DHandler& d3d, SpriteBatch& spriteBatch);
+	Game(D3DHandler& d3d, DirectX::SpriteBatch& spriteBatch);
 	~Game();
 	/// <summary> Game logic happens in here, should be called every frame </summary>
 	/// <param name="deltaTime"> Time since last frame </param>
@@ -23,14 +17,5 @@ public:
 private:
 	Camera mCamera;
 	StateMachine mStateMachine;
-	//D3DHandler* mpD3D;
-	//GameObject mPlayer;
-	//PhysicsBody* mpPlayerPhysics;
-	//std::vector<GameObject> mTerrain;
-	//std::vector<Collider*> mTerrainColliders;
-	//std::vector<GameObject> mBackgrounds;
-	//std::vector<Sprite*> mBackgroundSprites;
-	//// **DEBUG
-	//GameObject mDebugText;
 };
 

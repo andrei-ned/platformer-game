@@ -28,10 +28,11 @@ public:
 	bool mIsPlaying;
 
 	SpriteAnimator(GameObject& gameObject);
-	~SpriteAnimator();
+	~SpriteAnimator() override;
 
 	void start() override;
 	void update(const float deltaTime) override;
+
 	Animation* addAnimation(std::string name, Animation animation);
 	void removeAnimation(std::string name);
 	void playAnimation(std::string name);

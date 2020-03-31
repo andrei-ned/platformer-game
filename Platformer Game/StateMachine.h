@@ -2,24 +2,28 @@
 #include "State.h"
 #include <unordered_map>
 #include <typeindex>
+#include <memory>
 
 class StateMachine
 {
 public:
 	StateMachine();
 	~StateMachine();
+
 	// Will be called every frame, used for game logic
 	void update(const float deltaTime);
 	// Will be called every frame, used for rendering
 	void render(Camera& camera);
+
 	// Change current state to T, create it if it doesn't exist
 	template <class T>
 	void changeState();
-	// Add state T to map of states
+
 private:
+	// Add state T to map of states
 	template <class T>
 	T* addState();
-	std::unordered_map<std::type_index, State*> mStates; 
+	std::unordered_map<std::type_index, std::unique_ptr<State>> mStates; 
 	State* mpCurrentState;
 	State* mpDesiredState;
 };
@@ -30,7 +34,7 @@ void StateMachine::changeState()
 	auto search = mStates.find(typeid(T));
 	if (search != mStates.end())
 	{
-		mpDesiredState = (*search).second;
+		mpDesiredState = (*search).second.get();
 	}
 	else
 	{
@@ -41,7 +45,8 @@ void StateMachine::changeState()
 template <class T>
 T* StateMachine::addState()
 {
-	T* pT = new T(*this);
-	mStates.insert({ typeid(T), pT });
+	auto upT = std::make_unique<T>(*this);
+	T* pT = upT.get();
+	mStates.insert({ typeid(T), std::move(upT) });
 	return pT;
 }

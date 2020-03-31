@@ -12,24 +12,24 @@
 
 MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine)
 {
-	auto placeholderText = new GameObject;
+	auto placeholderText = std::make_unique<GameObject>();
 	placeholderText->mPos.y = 150;
 	placeholderText->mIsInWorldSpace = false;
 	auto txt = placeholderText->addComponent<Text>();
 	txt->setFont(*FontCache::get().LoadSpriteFont("courier.spritefont"));
 	txt->mString = "Main Menu";
 	txt->mOrigin.x = txt->getDimensions().x / 2;
-	mAllGameObjects.push_back(placeholderText);
+	mAllGameObjects.push_back(std::move(placeholderText));
 
 	auto playButton = makeUIButton("Play");
 	playButton->mPos.y = 350;
 	playButton->getComponent<UIButton>()->mOnClick += EventFunction<>([=]() { mpStateMachine->changeState<PlayState>(); });
-	mAllGameObjects.push_back(playButton);
+	mAllGameObjects.push_back(std::move(playButton));
 
 	auto exitButton = makeUIButton("Exit");
 	exitButton->mPos.y = 450;
 	exitButton->getComponent<UIButton>()->mOnClick += EventFunction<>([=]() { PostQuitMessage(0); });
-	mAllGameObjects.push_back(exitButton);
+	mAllGameObjects.push_back(std::move(exitButton));
 
 	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
@@ -40,10 +40,10 @@ MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine)
 
 MainMenuState::~MainMenuState()
 {
-	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
-	{
-		delete mAllGameObjects.at(i);
-	}
+	//for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
+	//{
+	//	delete mAllGameObjects.at(i);
+	//}
 	mAllGameObjects.clear();
 }
 
@@ -72,7 +72,7 @@ void MainMenuState::render(Camera& camera)
 {
 	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
-		mAllGameObjects.at(i)->mPos.x = camera.getDimensions().x / 2;
+		mAllGameObjects.at(i)->mPos.x = camera.getDimensions().x / 2; // Center on screen
 		mAllGameObjects.at(i)->render(camera);
 	}
 }

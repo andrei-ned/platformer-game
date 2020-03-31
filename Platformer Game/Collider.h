@@ -4,19 +4,17 @@
 #include "Helpers.h"
 #include "Event.h"
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
 
 class Collider : public Component
 {
 public:
-	Vector2 mOrigin;
-	Vector2 mSize;
+	DirectX::SimpleMath::Vector2 mOrigin;
+	DirectX::SimpleMath::Vector2 mSize;
 	bool mIsTrigger;
 	Event<Collider&> mOnTrigger;
 
 	Collider(GameObject& gameObject);
-	~Collider();
+	~Collider() override;
 
 	void start() override;
 	// Returns bounds (i.e. position and size in world space)

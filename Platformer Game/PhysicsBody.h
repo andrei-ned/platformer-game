@@ -3,23 +3,23 @@
 #include "SimpleMath.h"
 #include "Collider.h"
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
 
 class PhysicsBody : public Component
 {
 public:
-	Vector2 mVelocity;
+	DirectX::SimpleMath::Vector2 mVelocity;
 	// Check if touching the ground (used for e.g. checking if player can jump)
 	bool mIsGrounded;
+
 	PhysicsBody(GameObject& gameObject);
-	~PhysicsBody();
+	~PhysicsBody() override;
+
 	void start() override;
 	void updateLate(const float deltaTime) override;
 	// If other game object is in the way of movement, sets velocity in that direction to 0
 	void resolveCollision(Collider& other);
 private:
-	Vector2 mMaxVelDelta;
+	DirectX::SimpleMath::Vector2 mMaxVelDelta;
 	Collider* mpCollider;
 };
 

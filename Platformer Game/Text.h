@@ -3,24 +3,24 @@
 #include "SimpleMath.h"
 #include "SpriteFont.h"
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
 
 class Text : public Component
 {
 public:
-	Vector2 mOrigin;
-	Vector2 mScale;
-	Color mColor;
-	SpriteEffects mSpriteEffects;
+	DirectX::SimpleMath::Vector2 mOrigin;
+	DirectX::SimpleMath::Vector2 mScale;
+	DirectX::SimpleMath::Color mColor;
+	DirectX::SpriteEffects mSpriteEffects;
 	std::string mString;
+
 	Text(GameObject& gameObject);
-	~Text();
+	~Text() override;
+
 	virtual void render(Camera& camera) override;
-	void setFont(SpriteFont& font);
+	void setFont(DirectX::SpriteFont& font);
 	// Get size based on font and string
-	Vector2 getDimensions() const;
+	DirectX::SimpleMath::Vector2 getDimensions() const;
 private:
-	SpriteFont *mpFont;
+	DirectX::SpriteFont *mpFont;
 };
 

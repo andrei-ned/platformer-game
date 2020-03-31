@@ -5,12 +5,11 @@
 #include "DirectXColors.h"
 #include "SpriteBatch.h"
 #include "CommonStates.h"
-#include "Keyboard.h"
-#include "Mouse.h"
 #include "TextureCache.h"
 #include "FontCache.h"
 
 using namespace DirectX;
+using namespace DirectX::SimpleMath;
 
 Event<int, int> Application::sOnWindowResize;
 
@@ -179,20 +178,17 @@ void Application::run(HINSTANCE hInstance) {
 	float deltaTime = 0.0f;
 	bool shouldQuit = false;
 
-	mpD3D = new D3DHandler(mWinData);
+	mpD3D = std::make_unique<D3DHandler>(mWinData);
 	DirectX::SpriteBatch spriteBatch(&mpD3D->GetDeviceCtx());
 	CommonStates dxstate(&mpD3D->GetDevice());
 	TextureCache::get().setDevice(mpD3D->GetDevice());
 	FontCache::get().setDevice(mpD3D->GetDevice());
 
-	mpGame = new Game(*mpD3D, spriteBatch);
-	Keyboard* kb = new Keyboard;
-	Mouse* mouse = new Mouse;
-
-	Event<int> test;
-	EventFunction<int> testFunc([](int x) {DBOUT(x); });
-	test += testFunc;
-	test.invoke(3);
+	mpGame = std::make_unique<Game>(*mpD3D, spriteBatch);
+	//Keyboard* kb = new Keyboard;
+	mpKb = std::make_unique<Keyboard>();
+	//Mouse* mouse = new Mouse;
+	mpMouse = std::make_unique<Mouse>();
 
 	while (!shouldQuit)
 	{
@@ -209,11 +205,10 @@ void Application::run(HINSTANCE hInstance) {
 
 		if (!mWinData.appPaused)
 		{
-			//mGame.update(deltaTime);
 			mpGame->update(deltaTime);
 
 			// Rendering
-			mpD3D->BeginRender(Color(.5,.4,.6,1));
+			mpD3D->BeginRender(Color(.5f, .4f, .6f, 1.0f));
 			spriteBatch.Begin(SpriteSortMode_Deferred, dxstate.NonPremultiplied(), &mpD3D->GetWrapSampler());
 
 			mpGame->render();
@@ -231,10 +226,10 @@ void Application::run(HINSTANCE hInstance) {
 		time1 = time2;
 	}
 	
-	delete mpD3D;
-	delete mpGame;
-	delete kb;
-	delete mouse;
+	//delete mpD3D;
+	//delete mpGame;
+	//delete kb;
+	//delete mouse;
 }
 
 bool Application::InitMainWindow(int width, int height, HINSTANCE hInstance, const std::string& appName, WNDPROC mssgHandler, bool centred)

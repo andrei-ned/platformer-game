@@ -1,6 +1,7 @@
 #include "Camera.h"
 
-
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
 
 Camera::Camera(SpriteBatch& spriteBatch, D3D11_VIEWPORT& viewport) : mpSpriteBatch(&spriteBatch), mpViewport(&viewport)
 {

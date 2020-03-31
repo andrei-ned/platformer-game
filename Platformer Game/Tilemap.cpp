@@ -68,7 +68,7 @@ std::vector<GameObject*> Tilemap::fillTiles(std::pair<int, int> pos1, std::pair<
 		}
 	}
 	auto col = mTileGameObjects[{minX, minY}]->addComponent<Collider>();
-	col->mSize = Vector2(maxX - minX + 1, maxY - minY + 1) * mTileSize;
+	col->mSize = Vector2(static_cast<float>(maxX - minX + 1), static_cast<float>(maxY - minY + 1)) * mTileSize;
 	return newTiles;
 }
 

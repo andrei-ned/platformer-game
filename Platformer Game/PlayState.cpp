@@ -16,13 +16,13 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	// Set up backgrounds
 	for (unsigned int i = 0; i < 3; i++)
 	{
-		auto bgObj = new GameObject;
+		auto bgObj = std::make_unique<GameObject>();
 		auto bgSpr = bgObj->addComponent<Sprite>();
 		bgSpr->setTexture(*TextureCache::get().LoadTexture("Backgrounds/bg" + std::to_string(i) + ".png", false), { 0, 1, GameConstants::SCREEN_RES_X, 1080 });
 		bgSpr->mOrigin.y = 1080;
 		bgObj->mPos.y = GameConstants::SCREEN_RES_Y;
 		mBackgroundSprites.push_back(bgSpr);
-		mAllGameObjects.push_back(bgObj);
+		mAllGameObjects.push_back(std::move(bgObj));
 	}
 
 	// Set up tilemap
@@ -62,14 +62,14 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	tilemap.updateTilemap();
 
 	// Set up collider at edge of map
-	auto mapLeftBound = new GameObject;
+	auto mapLeftBound = std::make_unique<GameObject>();
 	mapLeftBound->mPos.x = -10;
 	mapLeftBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
-	mAllGameObjects.push_back(mapLeftBound);
-	auto mapRightBound = new GameObject;
+	mAllGameObjects.push_back(std::move(mapLeftBound));
+	auto mapRightBound = std::make_unique<GameObject>();
 	mapRightBound->mPos.x = 64 * 45;
 	mapRightBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
-	mAllGameObjects.push_back(mapRightBound);
+	mAllGameObjects.push_back(std::move(mapRightBound));
 
 	// Set up level bounds
 	mLevelBounds.insert(mLevelBounds.end(), { 
@@ -78,7 +78,8 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	});
 
 	// Set up player
-	mpPlayer = new GameObject;
+	auto upPlayer = std::make_unique<GameObject>();
+	mpPlayer = upPlayer.get();
 	mpPlayer->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Player/Idle.png", false), { 1, 24, 75, 24 + 78 });
 	mpPlayer->getComponent<Sprite>()->mOrigin = Vector2(36, 80);
 	mpPlayer->addComponent<Collider>();
@@ -105,14 +106,15 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	animator->addAnimation("Fall", SpriteAnimator::Animation({ {152, 25, 152 + 67,25 + 78} }, 1.0f, TextureCache::get().LoadTexture("Player/Jump.png", false), false));
 	// 
 	mpPlayer->mPos = Vector2(200, 0);
-	mAllGameObjects.push_back(mpPlayer);
+	mAllGameObjects.push_back(std::move(upPlayer));
 
 	// **DEBUG
-	auto debugTextObj = new GameObject;
+	auto debugTextObj = std::make_unique<GameObject>();
 	debugTextObj->mIsInWorldSpace = false;
 	mpDebugText = debugTextObj->addComponent<Text>();
 	mpDebugText->setFont(*FontCache::get().LoadSpriteFont("courier.spritefont"));
-	mAllGameObjects.push_back(debugTextObj);
+	mAllGameObjects.push_back(std::move(debugTextObj));
+	// ***
 
 	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
@@ -131,10 +133,10 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 
 PlayState::~PlayState()
 {
-	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
-	{
-		delete mAllGameObjects.at(i);
-	}
+	//for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
+	//{
+	//	delete mAllGameObjects.at(i);
+	//}
 	mAllGameObjects.clear();
 }
 

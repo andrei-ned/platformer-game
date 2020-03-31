@@ -8,10 +8,10 @@ GameObject::GameObject() : mPos(0, 0), mScale(1, 1), mRotation(0), mIsInWorldSpa
 
 GameObject::~GameObject()
 {
-	for (auto& pair : mComponents)
-	{
-		delete pair.second;
-	}
+	//for (auto& pair : mComponents)
+	//{
+	//	delete pair.second;
+	//}
 	mComponents.clear();
 }
 

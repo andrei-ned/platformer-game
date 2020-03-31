@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "Component.h"
 #include <typeindex>
+#include <memory>
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -15,6 +16,7 @@ class GameObject
 public:
 	GameObject();
 	~GameObject();
+
 	Vector2 mPos;
 	bool mIsInWorldSpace; // is position world space or screen space
 	Vector2 mScale;
@@ -27,6 +29,7 @@ public:
 	void updateLate(const float deltaTime);
 	// Will be called by game every frame, used for rendering
 	void render(Camera& camera);
+
 	template <class T>
 	T* addComponent();
 	template <class T>
@@ -34,15 +37,16 @@ public:
 	template <class T>
 	T* getComponent();
 private:
-	std::unordered_map<std::type_index, Component*> mComponents;
+	std::unordered_map<std::type_index, std::unique_ptr<Component>> mComponents;
 };
 
 template <class T>
 T* GameObject::addComponent()
 {
 	assert(!getComponent<T>()); // Disallow multiple components of the same type, possible refactor to allow later if need be?
-	T* pT = new T(*this);
-	mComponents.insert({ typeid(T), pT });
+	auto upT = std::make_unique<T>(*this);
+	auto pT = upT.get();
+	mComponents.insert({ typeid(T), std::move(upT)});
 	return pT;
 }
 
@@ -52,7 +56,7 @@ void GameObject::removeComponent()
 	auto search = mComponents.find(typeid(T));
 	if (search != mComponents.end())
 	{
-		delete (*search).second;
+		//delete (*search).second;
 		mComponents.erase(search);
 	}
 }
@@ -63,7 +67,8 @@ T* GameObject::getComponent()
 	auto search = mComponents.find(typeid(T));
 	if (search != mComponents.end())
 	{
-		return dynamic_cast<T*>((*search).second);
+		//return (*search).second.g;
+		return dynamic_cast<T*>((*search).second.get());
 	}
 	return nullptr;
 }
