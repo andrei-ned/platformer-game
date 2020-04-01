@@ -30,10 +30,9 @@ void SpriteAnimator::update(const float deltaTime)
 	}
 }
 
-SpriteAnimator::Animation* SpriteAnimator::addAnimation(std::string name, Animation animation)
+void SpriteAnimator::addAnimation(std::string name, Animation animation)
 {
 	mAnimations.insert({ name, animation });
-	return &animation;
 }
 
 void SpriteAnimator::removeAnimation(std::string name)
@@ -72,13 +71,6 @@ void SpriteAnimator::setSpeed(float secsPerFrame)
 {
 	assert(secsPerFrame > 0);
 	mpCurrentAnimation->mSecsPerFrame = secsPerFrame;
-}
-
-SpriteAnimator::Animation* SpriteAnimator::addAndPlayAnimation(std::string name, Animation animation)
-{
-	Animation* animPtr = addAnimation(name, animation);
-	playAnimation(animPtr);
-	return animPtr;
 }
 
 SpriteAnimator::Animation* SpriteAnimator::getAnimation(std::string name)

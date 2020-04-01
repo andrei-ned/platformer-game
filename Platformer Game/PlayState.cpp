@@ -11,6 +11,9 @@
 #include "Tilemap.h"
 #include "Tile.h"
 
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
+
 PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 {
 	// Set up backgrounds

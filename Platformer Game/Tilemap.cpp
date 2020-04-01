@@ -2,6 +2,8 @@
 #include "Sprite.h"
 #include "Collider.h"
 
+using namespace DirectX::SimpleMath;
+
 
 Tilemap::Tilemap(Tile tile) : mTile(tile)
 {

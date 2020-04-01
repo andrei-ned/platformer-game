@@ -2,6 +2,9 @@
 #include "GameObject.h"
 #include "Sprite.h"
 
+using namespace DirectX::SimpleMath;
+
+
 Collider::Collider(GameObject& gameObject) : Component(gameObject), mOrigin(0, 0), mSize(0, 0), mIsTrigger(false)
 {
 }

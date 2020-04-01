@@ -1,5 +1,6 @@
 #include "Tile.h"
 
+using namespace DirectX::SimpleMath;
 
 
 Tile::Tile() : mTileDetails(16), mScale(Vector2(1,1))

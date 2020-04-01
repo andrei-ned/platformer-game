@@ -7,6 +7,9 @@
 #include "UIButton.h"
 #include <memory>
 
+using namespace DirectX::SimpleMath;
+
+
 std::unique_ptr<GameObject> makeUIButton(std::string buttonText)
 {
 	auto button = std::make_unique<GameObject>();

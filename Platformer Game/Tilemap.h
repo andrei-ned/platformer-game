@@ -8,10 +8,10 @@
 class Tilemap
 {
 public:
-	Vector2 mTileSize;
+	DirectX::SimpleMath::Vector2 mTileSize;
 
 	Tilemap(Tile tile);
-	Tilemap(Tile tile, Vector2 tileSize);
+	Tilemap(Tile tile, DirectX::SimpleMath::Vector2 tileSize);
 	~Tilemap();
 	
 	// Make game object out of tile and put into map

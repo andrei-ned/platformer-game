@@ -22,6 +22,6 @@ public:
 	// Sets size and origin based on texture rect
 	void setBounds(RECTF rect);
 	// Returns true if position is inside of collider
-	bool containsPoint(const Vector2 point) const;
+	bool containsPoint(const DirectX::SimpleMath::Vector2 point) const;
 };
 

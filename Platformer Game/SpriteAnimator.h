@@ -33,11 +33,10 @@ public:
 	void start() override;
 	void update(const float deltaTime) override;
 
-	Animation* addAnimation(std::string name, Animation animation);
+	void addAnimation(std::string name, Animation animation);
 	void removeAnimation(std::string name);
 	void playAnimation(std::string name);
 	void playAnimation(Animation* animationPtr);
-	Animation* addAndPlayAnimation(std::string name, Animation animation);
 	Animation* getAnimation(std::string name);
 	void setSpeed(float secsPerFrame);
 private:

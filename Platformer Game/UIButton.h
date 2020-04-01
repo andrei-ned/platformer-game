@@ -11,9 +11,9 @@ class UIButton : public Component
 {
 public:
 	Event<> mOnClick;
-	Color mColorDefault;
-	Color mColorHovered;
-	Color mColorPressed;
+	DirectX::SimpleMath::Color mColorDefault;
+	DirectX::SimpleMath::Color mColorHovered;
+	DirectX::SimpleMath::Color mColorPressed;
 
 	UIButton(GameObject& gameObject);
 	~UIButton() override;

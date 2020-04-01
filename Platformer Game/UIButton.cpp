@@ -2,6 +2,10 @@
 #include "GameObject.h"
 #include "Mouse.h"
 
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
+
+
 UIButton::UIButton(GameObject& gameObject) : Component(gameObject), mColorDefault(Colors::White.v), mColorHovered(.9f, .9f, .9f, 1), mColorPressed(.8f, .8f, .8f, 1), mState(ButtonState::Default)
 {
 }

@@ -2,6 +2,9 @@
 #include "GameObject.h"
 #include "D3DHelpers.h"
 
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
+
 
 Sprite::Sprite(GameObject& gameObject) : Component(gameObject), mOrigin(0, 0), mScale(1, 1), mColor(Colors::White.v)
 {

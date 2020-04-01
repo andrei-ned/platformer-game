@@ -1,6 +1,8 @@
 #include "FontCache.h"
 #include "Constants.h"
 
+using namespace DirectX;
+
 
 FontCache::FontCache()
 {

@@ -2,6 +2,9 @@
 #include "GameObject.h"
 #include "GameConstants.h"
 
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
+
 PhysicsBody::PhysicsBody(GameObject& gameObject) : Component(gameObject), mMaxVelDelta(HUGE_VALF, HUGE_VALF)
 {
 }

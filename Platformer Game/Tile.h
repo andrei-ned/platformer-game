@@ -14,7 +14,7 @@ public:
 		Bottom = 1 << 3
 	};
 
-	Vector2 mScale;
+	DirectX::SimpleMath::Vector2 mScale;
 
 	Tile();
 	~Tile();

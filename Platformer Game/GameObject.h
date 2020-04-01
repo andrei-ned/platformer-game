@@ -7,8 +7,6 @@
 #include <typeindex>
 #include <memory>
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
 
 // Game object class, add components to give functionality
 class GameObject
@@ -17,9 +15,9 @@ public:
 	GameObject();
 	~GameObject();
 
-	Vector2 mPos;
+	DirectX::SimpleMath::Vector2 mPos;
 	bool mIsInWorldSpace; // is position world space or screen space
-	Vector2 mScale;
+	DirectX::SimpleMath::Vector2 mScale;
 	float mRotation; // in radians
 	// To be called to initialize, before the next frame of updates
 	void start();

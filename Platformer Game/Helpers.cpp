@@ -1,5 +1,7 @@
 #include "Helpers.h"
 
+using namespace DirectX::SimpleMath;
+
 float sign(float x)
 {
 	return x > 0 ? 1.0f : -1.0f;

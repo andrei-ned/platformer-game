@@ -4,6 +4,9 @@
 #include "Helpers.h"
 #include "GameConstants.h"
 
+using namespace DirectX::SimpleMath;
+using namespace DirectX;
+
 GameObject::GameObject() : mPos(0, 0), mScale(1, 1), mRotation(0), mIsInWorldSpace(true) {}
 
 GameObject::~GameObject()

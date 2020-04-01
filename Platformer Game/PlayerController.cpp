@@ -3,6 +3,10 @@
 #include "GameConstants.h"
 #include "Keyboard.h"
 
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
+
+
 PlayerController::PlayerController(GameObject& gameObject) : Component(gameObject)
 {
 }

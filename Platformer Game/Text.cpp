@@ -1,6 +1,9 @@
 #include "Text.h"
 #include "GameObject.h"
 
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
+
 
 Text::Text(GameObject& gameObject) : Component(gameObject), mOrigin(0, 0), mScale(1, 1), mColor(Colors::White.v)
 {
