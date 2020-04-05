@@ -5,7 +5,8 @@
 #include "FontCache.h"
 #include "Collider.h"
 #include "UIButton.h"
-#include <memory>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace DirectX::SimpleMath;
 
@@ -25,4 +26,15 @@ std::unique_ptr<GameObject> makeUIButton(std::string buttonText)
 	button->addComponent<Collider>();
 	button->addComponent<UIButton>();
 	return button;
+}
+
+std::unique_ptr<GameObject> makeSpike(EventFunction<Collider&>& onCollisionEvent, SpikeDirection direction)
+{
+	auto spike = std::make_unique<GameObject>();
+	spike->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Hazards/Spike.png", false), { 0,0,63,64 });
+	auto spikeCol = spike->addComponent<Collider>();
+	spikeCol->mIsTrigger = true;
+	spikeCol->mOnTrigger += onCollisionEvent;
+	spike->mRotation = M_PI / 2 * direction;
+	return spike;
 }

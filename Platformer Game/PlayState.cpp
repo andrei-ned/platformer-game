@@ -10,6 +10,7 @@
 #include <algorithm>
 #include "Tilemap.h"
 #include "Tile.h"
+#include "GameObjectUtils.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -63,6 +64,12 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	//for (int i = 6; i < 11; i++)
 	//	mAllGameObjects.push_back(tilemap.addTile(7, i));
 	tilemap.updateTilemap();
+
+	// Set up hazards
+	EventFunction<Collider&> playerDeathEvent([=](Collider& other) { DBOUT("spike collision") });
+	auto spike = makeSpike(playerDeathEvent, SpikeDirection::Up);
+	spike->mPos = Vector2(5 * 64, 13 * 64 + 10);
+	mAllGameObjects.push_back(std::move(spike));
 
 	// Set up collider at edge of map
 	auto mapLeftBound = std::make_unique<GameObject>();

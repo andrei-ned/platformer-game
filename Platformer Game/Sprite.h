@@ -11,6 +11,7 @@ public:
 	DirectX::SimpleMath::Vector2 mScale;
 	DirectX::SimpleMath::Color mColor;
 	DirectX::SpriteEffects mSpriteEffects;
+	RECT mTextureRect;
 
 	Sprite(GameObject& gameObject);
 	~Sprite() override;
@@ -23,7 +24,6 @@ public:
 	RECT getTextureRect() const;
 	// Returns bounds (i.e. position and size in world space)
 	RECTF getBounds() const;
-	RECT mTextureRect;
 private:
 	ID3D11ShaderResourceView *mpTexture;
 };

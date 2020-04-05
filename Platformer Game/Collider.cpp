@@ -31,10 +31,23 @@ void Collider::start()
 
 RECTF Collider::getBounds() const
 {
-	float minX = mpGameObject->mPos.x - mOrigin.x;
-	float minY = mpGameObject->mPos.y - mOrigin.y;
-	float maxX = mpGameObject->mPos.x - mOrigin.x + mpGameObject->mScale.x * mSize.x;
-	float maxY = mpGameObject->mPos.y - mOrigin.y + mpGameObject->mScale.y * mSize.y;
+	//float minX = mpGameObject->mPos.x - mOrigin.x;
+	//float minY = mpGameObject->mPos.y - mOrigin.y;
+	//float maxX = mpGameObject->mPos.x - mOrigin.x + mpGameObject->mScale.x * mSize.x;
+	//float maxY = mpGameObject->mPos.y - mOrigin.y + mpGameObject->mScale.y * mSize.y;
+
+	Vector2 rotationOrigin = mpGameObject->mPos - mOrigin;
+
+	Vector2 p1 = rotate(mpGameObject->mPos - mOrigin, rotationOrigin, mpGameObject->mRotation);
+	Vector2 p2 = rotate(mpGameObject->mPos - mOrigin + Vector2(mpGameObject->mScale.x * mSize.x, 0), rotationOrigin, mpGameObject->mRotation);
+	Vector2 p3 = rotate(mpGameObject->mPos - mOrigin + Vector2(0, mpGameObject->mScale.y * mSize.y), rotationOrigin, mpGameObject->mRotation);
+	Vector2 p4 = rotate(mpGameObject->mPos - mOrigin + Vector2(mpGameObject->mScale.x * mSize.x, mpGameObject->mScale.y * mSize.y), rotationOrigin, mpGameObject->mRotation);
+
+	float minX = min(min(p1.x, p2.x), min(p3.x, p4.x));
+	float minY = min(min(p1.y, p2.y), min(p3.y, p4.y));
+	float maxX = max(max(p1.x, p2.x), max(p3.x, p4.x));
+	float maxY = max(max(p1.y, p2.y), max(p3.y, p4.y));
+
 	return { minX, minY, maxX, maxY };
 }
 

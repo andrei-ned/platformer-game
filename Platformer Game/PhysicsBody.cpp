@@ -47,7 +47,7 @@ void PhysicsBody::resolveCollision(Collider& other) {
 			return; // Collision isn't happening
 
 		float dy = pos.y - otherPos.y;
-		if ((bounds.top - bounds.bottom + otherBounds.top - otherBounds.bottom) / 2 - abs(dy) <= 0)
+		if ((bounds.bottom - bounds.top + otherBounds.bottom - otherBounds.top) / 2 - abs(dy) <= 0)
 			return; // Collision isn't happening
 
 		other.mOnTrigger.invoke(*mpCollider);

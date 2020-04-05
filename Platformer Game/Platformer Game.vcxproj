@@ -166,6 +166,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectUtils.h" />
     <ClInclude Include="Helpers.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="PhysicsBody.h" />
     <ClInclude Include="PlayerController.h" />
