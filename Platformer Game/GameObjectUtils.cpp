@@ -28,10 +28,11 @@ std::unique_ptr<GameObject> makeUIButton(std::string buttonText)
 	return button;
 }
 
-std::unique_ptr<GameObject> makeSpike(EventFunction<Collider&>& onCollisionEvent, SpikeDirection direction)
+std::unique_ptr<GameObject> makeSpike(EventFunction<Collider&>& onCollisionEvent, SpikeDirection direction, Vector2 pos)
 {
 	auto spike = std::make_unique<GameObject>();
 	spike->addComponent<Sprite>()->setTexture(*TextureCache::get().LoadTexture("Hazards/Spike.png", false), { 0,0,63,64 });
+	spike->mPos = pos;
 	auto spikeCol = spike->addComponent<Collider>();
 	spikeCol->mIsTrigger = true;
 	spikeCol->mOnTrigger += onCollisionEvent;

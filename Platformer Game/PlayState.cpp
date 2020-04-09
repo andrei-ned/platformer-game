@@ -29,6 +29,13 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 		mAllGameObjects.push_back(std::move(bgObj));
 	}
 
+	// Set up death event
+	EventFunction<Collider&> playerDeathEvent([=](Collider& other)
+	{
+		mpPlayer->mPos = mLevels.at(mCurrentLevelIndex).playerSpawnPos;
+		mpPlayer->getComponent<PhysicsBody>()->mVelocity = Vector2(0, 0);
+	});
+
 	// Set up tilemap
 	Tile tile;
 	tile.setTexture(0, *TextureCache::get().LoadTexture("Tiles/Grass.png", false));
@@ -55,36 +62,90 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	//	mAllGameObjects.push_back(tilemap.addTile(i, 13));
 	//	mAllGameObjects.push_back(tilemap.addTile(i, 14));
 	//}
+	// Level 1
 	addGameObjects(tilemap.fillTiles({ -1,13 }, { 30,14 }));
 	addGameObjects(tilemap.fillTiles({ 9,11 }, { 15,12 }));
 	addGameObjects(tilemap.fillTiles({ 16,12 }, { 22,7 }));
 	addGameObjects(tilemap.fillTiles({ 23,12 }, { 22,7 }));
 	addGameObjects(tilemap.fillTiles({ 11,3 }, { 13,3 }));
-	addGameObjects(tilemap.fillTiles({ 20,1 }, { 50,12 }));
+	// Level 2
+	addGameObjects(tilemap.fillTiles({ 20,1 }, { 32,12 }));
+	addGameObjects(tilemap.fillTiles({ 38,1 }, { 43,12 }));
+	addGameObjects(tilemap.fillTiles({ 50,0 }, { 55,0 }));
+	addGameObjects(tilemap.fillTiles({ 58,-4 }, { 61,-4 }));
+	addGameObjects(tilemap.fillTiles({ 70,2 }, { 73,2 }));
+	addGameObjects(tilemap.fillTiles({ 78,-1 }, { 120,12 }));
+	auto pit = std::make_unique<GameObject>();
+	pit->mPos = Vector2(64 * 32, 64 * 5);
+	auto pitCol = pit->addComponent<Collider>();
+	pitCol->mIsTrigger = true;
+	pitCol->mSize = Vector2(64 * 48, 1);
+	pitCol->mOnTrigger += playerDeathEvent;
+	mAllGameObjects.push_back(std::move(pit));
+	// Level 3
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(91 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(92 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(93 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(106 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(107 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(108 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(111 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(112 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(113 * 64, -64)));
+	addGameObjects(tilemap.fillTiles({ 120,-5 }, { 136,3 }));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(120 * 64, -64 * 4)));
+	// Level 4
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(134 * 64, -64 * 5)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(135 * 64, -64 * 5)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(136 * 64, -64 * 5)));
+	pit = std::make_unique<GameObject>();
+	pit->mPos = Vector2(64 * 135, 64 * 3);
+	pitCol = pit->addComponent<Collider>();
+	pitCol->mIsTrigger = true;
+	pitCol->mSize = Vector2(64 * 48, 1);
+	pitCol->mOnTrigger += playerDeathEvent;
+	mAllGameObjects.push_back(std::move(pit));
+	addGameObjects(tilemap.fillTiles({ 142,0 }, { 147,0 }));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(144 * 64, 0)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(145 * 64, 0)));
+	addGameObjects(tilemap.fillTiles({ 151,-2 }, { 157,-2 }));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(151 * 64, 64 * -2)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(152 * 64, 64 * -2)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(156 * 64, 64 * -2)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(157 * 64, 64 * -2)));
+	addGameObjects(tilemap.fillTiles({ 163,-13 }, { 170,-3 }));
+	addGameObjects(tilemap.fillTiles({ 161,0 }, { 170,2 }));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(163 * 64, 64 * -2)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(163 * 64, 64 * -3)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(163 * 64, 64 * -4)));
 	//for (int i = 6; i < 11; i++)
 	//	mAllGameObjects.push_back(tilemap.addTile(7, i));
 	tilemap.updateTilemap();
 
-	// Set up hazards
-	EventFunction<Collider&> playerDeathEvent([=](Collider& other) { DBOUT("spike collision") });
-	auto spike = makeSpike(playerDeathEvent, SpikeDirection::Up);
-	spike->mPos = Vector2(5 * 64, 13 * 64 + 10);
-	mAllGameObjects.push_back(std::move(spike));
+
+	//auto spike = makeSpike(playerDeathEvent, SpikeDirection::Up);
+	//spike->mPos = Vector2(5 * 64, 13 * 64 + 10);
+	//mAllGameObjects.push_back(std::move(spike));
 
 	// Set up collider at edge of map
 	auto mapLeftBound = std::make_unique<GameObject>();
 	mapLeftBound->mPos.x = -10;
 	mapLeftBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
 	mAllGameObjects.push_back(std::move(mapLeftBound));
-	auto mapRightBound = std::make_unique<GameObject>();
-	mapRightBound->mPos.x = 64 * 45;
-	mapRightBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
-	mAllGameObjects.push_back(std::move(mapRightBound));
+	//auto mapRightBound = std::make_unique<GameObject>();
+	//mapRightBound->mPos.x = 64 * 45;
+	//mapRightBound->mPos.y = -500;
+	//mapRightBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
+	//mAllGameObjects.push_back(std::move(mapRightBound));
 
-	// Set up level bounds
-	mLevelBounds.insert(mLevelBounds.end(), { 
-		{ 0, -64 * 6, 64 * 25, 64 * 14 },
-		{ 64 * 25, -64 * 12, 64 * 45, 64 * 3} 
+	// Set up levels
+	mCurrentLevelIndex = 0;
+	mLevels.insert(mLevels.end(), { 
+		Level({ 0, -64 * 6, 64 * 25, 64 * 14 }, Vector2(150,800)),
+		Level({ 64 * 25, -64 * 10, 64 * 85, 64 * 4}, Vector2(1770,60)),
+		Level({ 64 * 85, -64 * 10, 64 * 125, 64 * 4}, Vector2(5530,-70)),
+		Level({ 64 * 125, -64 * 12, 64 * 168, 64 * 2}, Vector2(8140,-330)),
+		Level({ 64 * 168, -64 * 12, 64 * 200, 64 * 2}, Vector2(10850,0))
 	});
 
 	// Set up player
@@ -116,6 +177,7 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	animator->addAnimation("Fall", SpriteAnimator::Animation({ {152, 25, 152 + 67,25 + 78} }, 1.0f, TextureCache::get().LoadTexture("Player/Jump.png", false), false));
 	// 
 	mpPlayer->mPos = Vector2(200, 0);
+	mpPlayer->mPos = Vector2(10850, 0);// **DEBUG
 	mAllGameObjects.push_back(std::move(upPlayer));
 
 	// **DEBUG
@@ -152,6 +214,11 @@ PlayState::~PlayState()
 
 void PlayState::update(const float deltaTime)
 {
+	// Update current level
+	for (unsigned int i = 0; i < mLevels.size(); i++)
+		if (mLevels.at(i).bounds.containsPoint(mpPlayer->mPos))
+			mCurrentLevelIndex = i;
+
 	// Input
 	auto keyboardState = Keyboard::Get().GetState();
 	if (keyboardState.Escape)
@@ -179,25 +246,22 @@ void PlayState::update(const float deltaTime)
 	}
 
 	// **DEBUG
-	mpDebugText->mString = std::to_string(mpPlayer->getComponent<PhysicsBody>()->mVelocity.x) + "\n" + std::to_string(mpPlayer->getComponent<PhysicsBody>()->mVelocity.y);
+	//mpDebugText->mString = std::to_string(mpPlayer->getComponent<PhysicsBody>()->mVelocity.x) + "\n" + std::to_string(mpPlayer->getComponent<PhysicsBody>()->mVelocity.y);
+	mpDebugText->mString = std::to_string(static_cast<int>(mpPlayer->mPos.x / 64)) + ": " + std::to_string(mpPlayer->mPos.x) + "\n" + std::to_string(static_cast<int>(mpPlayer->mPos.y / 64)) + ": " + std::to_string(mpPlayer->mPos.y);
 }
 
 void PlayState::render(Camera& camera)
 {
 	// Camera movement within level bounds
-	for (unsigned int i = 0; i < mLevelBounds.size(); i++)
-	{
-		if (mLevelBounds.at(i).containsPoint(mpPlayer->mPos))
-			mLevelBoundsCurrent = mLevelBounds.at(i);
-	}
+	RECTF levelBounds = mLevels.at(mCurrentLevelIndex).bounds;
 	Vector2 camDesiredPos;
 	Vector2 camCurrentPos = camera.getCenter();
 	Vector2 camHalfDim = camera.getDimensions() / 2;
-	Vector2 camPosMin = Vector2(mLevelBoundsCurrent.left + camHalfDim.x, mLevelBoundsCurrent.top + camHalfDim.y);
-	Vector2 camPosMax = Vector2(mLevelBoundsCurrent.right - camHalfDim.x, mLevelBoundsCurrent.bottom - camHalfDim.y);
+	Vector2 camPosMin = Vector2(levelBounds.left + camHalfDim.x, levelBounds.top + camHalfDim.y);
+	Vector2 camPosMax = Vector2(levelBounds.right - camHalfDim.x, levelBounds.bottom - camHalfDim.y);
 
-	camDesiredPos.x = camPosMin.x < camPosMax.x ? std::clamp(mpPlayer->mPos.x, mLevelBoundsCurrent.left + camHalfDim.x, mLevelBoundsCurrent.right - camHalfDim.x) : (mLevelBoundsCurrent.left + mLevelBoundsCurrent.right) / 2;
-	camDesiredPos.y = camPosMin.y < camPosMax.y ? std::clamp(mpPlayer->mPos.y, mLevelBoundsCurrent.top + camHalfDim.y, mLevelBoundsCurrent.bottom - camHalfDim.y) : (mLevelBoundsCurrent.bottom + mLevelBoundsCurrent.top) / 2;
+	camDesiredPos.x = camPosMin.x < camPosMax.x ? std::clamp(mpPlayer->mPos.x + camHalfDim.x / 3, levelBounds.left + camHalfDim.x, levelBounds.right - camHalfDim.x) : (levelBounds.left + levelBounds.right) / 2;
+	camDesiredPos.y = camPosMin.y < camPosMax.y ? std::clamp(mpPlayer->mPos.y, levelBounds.top + camHalfDim.y, levelBounds.bottom - camHalfDim.y) : (levelBounds.bottom + levelBounds.top) / 2;
 	// Smooth camera movement
 	camDesiredPos = camCurrentPos + 0.05f * (camDesiredPos - camCurrentPos);
 

@@ -5,6 +5,7 @@
 #include "Sprite.h"
 #include "Text.h"
 #include <memory>
+#include "Level.h"
 
 class PlayState : public State
 {
@@ -22,8 +23,10 @@ private:
 	std::vector<Sprite*> mBackgroundSprites;
 	GameObject* mpPlayer;
 	// Levels
-	std::vector<RECTF> mLevelBounds;
-	RECTF mLevelBoundsCurrent;
+	std::vector<Level> mLevels;
+	int mCurrentLevelIndex;
+	//std::vector<RECTF> mLevelBounds;
+	//RECTF mLevelBoundsCurrent;
 	// **DEBUG
 	Text* mpDebugText;
 };
