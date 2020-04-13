@@ -40,28 +40,11 @@ MainMenuState::MainMenuState(StateMachine& stateMachine) : State(stateMachine)
 
 MainMenuState::~MainMenuState()
 {
-	//for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
-	//{
-	//	delete mAllGameObjects.at(i);
-	//}
 	mAllGameObjects.clear();
 }
 
 void MainMenuState::update(const float deltaTime)
 {
-	//auto keyboardState = Keyboard::Get().GetState();
-	//auto mouseState = Mouse::Get().GetState();
-
-	//if (mouseState.leftButton && mpPlayButton->getComponent<Collider>()->containsPoint(Vector2(mouseState.x, mouseState.y)))
-	//{
-	//	mpStateMachine->changeState<PlayState>();
-	//}
-
-	//if (keyboardState.Space)
-	//{
-	//	mpStateMachine->changeState<PlayState>();
-	//}
-
 	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
 	{
 		mAllGameObjects.at(i)->update(deltaTime);

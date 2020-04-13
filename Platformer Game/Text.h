@@ -4,6 +4,7 @@
 #include "SpriteFont.h"
 
 
+// Renders text
 class Text : public Component
 {
 public:

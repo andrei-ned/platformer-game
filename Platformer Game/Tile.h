@@ -3,6 +3,7 @@
 #include <optional>
 #include "Helpers.h"
 
+
 // Contains information about setting up a game object on a tilemap
 class Tile
 {

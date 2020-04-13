@@ -128,8 +128,6 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="D3DHandler.cpp" />
     <ClCompile Include="D3DHelpers.cpp" />
-    <ClCompile Include="Event.cpp" />
-    <ClCompile Include="EventFunction.cpp" />
     <ClCompile Include="FontCache.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />

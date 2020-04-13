@@ -5,6 +5,7 @@
 #include "EventFunction.h"
 #include <memory>
 
+// Starting state for the game
 class MainMenuState : public State
 {
 public:

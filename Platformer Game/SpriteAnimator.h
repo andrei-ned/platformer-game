@@ -1,6 +1,8 @@
 #pragma once
 #include "Sprite.h"
 
+
+// Animates the sprite component attached to game object
 class SpriteAnimator : public Component
 {
 public:

@@ -4,6 +4,7 @@
 #include "Collider.h"
 
 
+// Applies velocity to a game object, and resolves collision if there is a collider attached
 class PhysicsBody : public Component
 {
 public:

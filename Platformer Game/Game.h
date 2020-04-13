@@ -4,6 +4,8 @@
 #include "Camera.h"
 #include "StateMachine.h"
 
+
+// Boilerplate setup for handling the game, main logic is contained within game states
 class Game
 {
 public:

@@ -57,11 +57,6 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	tile.mScale = Vector2(0.5f, 0.5f);
 
 	Tilemap tilemap(tile, Vector2(64, 64));
-	//for (int i = -1; i < 30; i++)
-	//{
-	//	mAllGameObjects.push_back(tilemap.addTile(i, 13));
-	//	mAllGameObjects.push_back(tilemap.addTile(i, 14));
-	//}
 	// Level 1
 	addGameObjects(tilemap.fillTiles({ -1,13 }, { 30,14 }));
 	addGameObjects(tilemap.fillTiles({ 9,11 }, { 15,12 }));
@@ -83,9 +78,9 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	pitCol->mOnTrigger += playerDeathEvent;
 	mAllGameObjects.push_back(std::move(pit));
 	// Level 3
-	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(91 * 64, -64)));
-	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(92 * 64, -64)));
 	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(93 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(94 * 64, -64)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(95 * 64, -64)));
 	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(106 * 64, -64)));
 	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(107 * 64, -64)));
 	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(108 * 64, -64)));
@@ -146,7 +141,7 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	pitCol->mOnTrigger += playerDeathEvent;
 	mAllGameObjects.push_back(std::move(pit));
 	// Level 6 (win screen)
-	addGameObjects(tilemap.fillTiles({ 202,7 }, { 221,11 }));
+	addGameObjects(tilemap.fillTiles({ 202,7 }, { 221,14 }));
 	addGameObjects(tilemap.fillTiles({ 202,-3 }, { 202,-4 }));
 	addGameObjects(tilemap.fillTiles({ 203,-2 }, { 203,-1 }));
 	addGameObjects(tilemap.fillTiles({ 204,-3 }, { 204,-4 }));
@@ -170,11 +165,6 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	addGameObjects(tilemap.fillTiles({ 216,3 }, { 216,3 }));
 	addGameObjects(tilemap.fillTiles({ 217,1 }, { 217,4 }));
 	tilemap.updateTilemap();
-
-
-	//auto spike = makeSpike(playerDeathEvent, SpikeDirection::Up);
-	//spike->mPos = Vector2(5 * 64, 13 * 64 + 10);
-	//mAllGameObjects.push_back(std::move(spike));
 
 	// Set up collider at edge of map
 	auto mapLeftBound = std::make_unique<GameObject>();
@@ -227,15 +217,14 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	animator->addAnimation("Fall", SpriteAnimator::Animation({ {152, 25, 152 + 67,25 + 78} }, 1.0f, TextureCache::get().LoadTexture("Player/Jump.png", false), false));
 	// 
 	mpPlayer->mPos = Vector2(200, 0);
-	mpPlayer->mPos = Vector2(12950, 430);// **DEBUG
 	mAllGameObjects.push_back(std::move(upPlayer));
 
 	// **DEBUG
-	auto debugTextObj = std::make_unique<GameObject>();
-	debugTextObj->mIsInWorldSpace = false;
-	mpDebugText = debugTextObj->addComponent<Text>();
-	mpDebugText->setFont(*FontCache::get().LoadSpriteFont("courier.spritefont"));
-	mAllGameObjects.push_back(std::move(debugTextObj));
+	//auto debugTextObj = std::make_unique<GameObject>();
+	//debugTextObj->mIsInWorldSpace = false;
+	//mpDebugText = debugTextObj->addComponent<Text>();
+	//mpDebugText->setFont(*FontCache::get().LoadSpriteFont("courier.spritefont"));
+	//mAllGameObjects.push_back(std::move(debugTextObj));
 	// ***
 
 	for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
@@ -255,10 +244,6 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 
 PlayState::~PlayState()
 {
-	//for (unsigned int i = 0; i < mAllGameObjects.size(); i++)
-	//{
-	//	delete mAllGameObjects.at(i);
-	//}
 	mAllGameObjects.clear();
 }
 
@@ -297,7 +282,7 @@ void PlayState::update(const float deltaTime)
 
 	// **DEBUG
 	//mpDebugText->mString = std::to_string(mpPlayer->getComponent<PhysicsBody>()->mVelocity.x) + "\n" + std::to_string(mpPlayer->getComponent<PhysicsBody>()->mVelocity.y);
-	mpDebugText->mString = std::to_string(static_cast<int>(mpPlayer->mPos.x / 64)) + ": " + std::to_string(mpPlayer->mPos.x) + "\n" + std::to_string(static_cast<int>(mpPlayer->mPos.y / 64)) + ": " + std::to_string(mpPlayer->mPos.y);
+	//mpDebugText->mString = std::to_string(static_cast<int>(mpPlayer->mPos.x / 64)) + ": " + std::to_string(mpPlayer->mPos.x) + "\n" + std::to_string(static_cast<int>(mpPlayer->mPos.y / 64)) + ": " + std::to_string(mpPlayer->mPos.y);
 }
 
 void PlayState::render(Camera& camera)

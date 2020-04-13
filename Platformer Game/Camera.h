@@ -3,9 +3,10 @@
 #include "SpriteBatch.h"
 #include "SpriteFont.h"
 
+
+// Handles rendering, to be passed in render functions (additional abstraction instead of just passing the sprite batch), also has a position and can be moved
 class Camera
 {
-
 public:
 	DirectX::SimpleMath::Vector2 mPos; // The top left corner of the camera
 

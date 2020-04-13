@@ -4,6 +4,7 @@
 #include "Helpers.h"
 
 
+// Renders a sprite with specified details
 class Sprite : public Component
 {
 public:

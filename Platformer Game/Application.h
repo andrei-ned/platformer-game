@@ -8,7 +8,8 @@
 #include "Mouse.h"
 #include <memory>
 
-// Boilerplate setup for handling the game
+
+// Boilerplate setup for handling the game and directX logic
 class Application
 {
 public:

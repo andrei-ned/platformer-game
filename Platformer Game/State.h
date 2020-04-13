@@ -3,6 +3,8 @@
 
 class StateMachine;
 
+
+// Base state that all other states inherit from
 class State
 {
 public:

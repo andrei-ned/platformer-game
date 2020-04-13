@@ -6,6 +6,8 @@
 #include "D3DHelpers.h"
 #include "Constants.h"
 
+
+// Conveniently stores all required textures
 class TextureCache : public Singleton<TextureCache>
 {
 public:

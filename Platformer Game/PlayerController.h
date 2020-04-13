@@ -3,6 +3,8 @@
 #include "PhysicsBody.h"
 #include "SpriteAnimator.h"
 
+
+// Applies player input to game object and updates velocity and animations
 class PlayerController : public Component
 {
 public:

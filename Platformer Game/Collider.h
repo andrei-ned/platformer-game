@@ -4,7 +4,7 @@
 #include "Helpers.h"
 #include "Event.h"
 
-
+// To give an object a box of a certain size (to be used for collisions etc)
 class Collider : public Component
 {
 public:

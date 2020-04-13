@@ -4,6 +4,8 @@
 #include <typeindex>
 #include <memory>
 
+
+// Boilerplate setup for a state machine, to be used for e.g. game states
 class StateMachine
 {
 public:

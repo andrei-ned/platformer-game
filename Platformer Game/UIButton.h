@@ -7,6 +7,8 @@
 
 class GameObject;
 
+
+// Handles mouse input on an UI element, triggering an event and changing color on hover/click
 class UIButton : public Component
 {
 public:

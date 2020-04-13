@@ -108,12 +108,6 @@
     <ClCompile Include="UIButton.cpp">
       <Filter>Source Files\GameObjects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EventFunction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameObjectUtils.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>

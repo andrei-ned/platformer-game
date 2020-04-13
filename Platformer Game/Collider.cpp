@@ -31,11 +31,6 @@ void Collider::start()
 
 RECTF Collider::getBounds() const
 {
-	//float minX = mpGameObject->mPos.x - mOrigin.x;
-	//float minY = mpGameObject->mPos.y - mOrigin.y;
-	//float maxX = mpGameObject->mPos.x - mOrigin.x + mpGameObject->mScale.x * mSize.x;
-	//float maxY = mpGameObject->mPos.y - mOrigin.y + mpGameObject->mScale.y * mSize.y;
-
 	Vector2 rotationOrigin = mpGameObject->mPos - mOrigin;
 
 	Vector2 p1 = rotate(mpGameObject->mPos - mOrigin, rotationOrigin, mpGameObject->mRotation);

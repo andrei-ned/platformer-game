@@ -9,10 +9,6 @@ StateMachine::StateMachine()
 
 StateMachine::~StateMachine()
 {
-	//for (auto& pair : mStates)
-	//{
-	//	delete pair.second;
-	//}
 	mStates.clear();
 }
 

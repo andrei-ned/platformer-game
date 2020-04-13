@@ -4,6 +4,7 @@
 #include "SpriteFont.h"
 
 
+// Conveniently stores all required fonts
 class FontCache : public Singleton<FontCache>
 {
 public:

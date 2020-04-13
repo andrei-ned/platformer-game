@@ -225,11 +225,6 @@ void Application::run(HINSTANCE hInstance) {
 		deltaTime = (float)(time2.QuadPart - time1.QuadPart) / cpuFrequency.QuadPart;
 		time1 = time2;
 	}
-	
-	//delete mpD3D;
-	//delete mpGame;
-	//delete kb;
-	//delete mouse;
 }
 
 bool Application::InitMainWindow(int width, int height, HINSTANCE hInstance, const std::string& appName, WNDPROC mssgHandler, bool centred)

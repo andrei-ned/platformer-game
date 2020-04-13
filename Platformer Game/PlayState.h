@@ -7,6 +7,8 @@
 #include <memory>
 #include "Level.h"
 
+
+// State containing the player and the levels
 class PlayState : public State
 {
 public:
@@ -25,9 +27,7 @@ private:
 	// Levels
 	std::vector<Level> mLevels;
 	int mCurrentLevelIndex;
-	//std::vector<RECTF> mLevelBounds;
-	//RECTF mLevelBoundsCurrent;
 	// **DEBUG
-	Text* mpDebugText;
+	//Text* mpDebugText;
 };
 

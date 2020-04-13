@@ -28,7 +28,10 @@ void PhysicsBody::updateLate(const float deltaTime) {
 }
 
 void PhysicsBody::resolveCollision(Collider& other) {
-	assert(mpCollider);
+	if (!mpCollider)
+	{
+		return; // There's no collider on this PhysiscsBody
+	}
 
 	if (&other == mpCollider)
 	{

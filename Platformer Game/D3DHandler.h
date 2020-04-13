@@ -5,6 +5,8 @@
 #include "WinData.h"
 #include "Event.h"
 
+
+// DirectX logic
 class D3DHandler
 {
 public:

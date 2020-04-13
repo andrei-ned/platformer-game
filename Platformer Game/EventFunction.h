@@ -1,6 +1,8 @@
 #pragma once
 #include <functional>
 
+
+// Wrapper for an std::function with a unique id
 template <class... Args>
 class EventFunction
 {

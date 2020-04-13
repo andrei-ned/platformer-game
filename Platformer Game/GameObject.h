@@ -54,7 +54,6 @@ void GameObject::removeComponent()
 	auto search = mComponents.find(typeid(T));
 	if (search != mComponents.end())
 	{
-		//delete (*search).second;
 		mComponents.erase(search);
 	}
 }
@@ -65,7 +64,6 @@ T* GameObject::getComponent()
 	auto search = mComponents.find(typeid(T));
 	if (search != mComponents.end())
 	{
-		//return (*search).second.g;
 		return dynamic_cast<T*>((*search).second.get());
 	}
 	return nullptr;

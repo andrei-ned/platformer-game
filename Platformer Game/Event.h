@@ -2,6 +2,8 @@
 #include "EventFunction.h"
 #include <forward_list>
 
+
+// Holds EventFunctions to be invoked when something happens (e.g. a UI button is clicked)
 template <typename... Args>
 class Event
 {
