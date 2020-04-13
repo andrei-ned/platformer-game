@@ -102,7 +102,7 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	pit->mPos = Vector2(64 * 135, 64 * 3);
 	pitCol = pit->addComponent<Collider>();
 	pitCol->mIsTrigger = true;
-	pitCol->mSize = Vector2(64 * 48, 1);
+	pitCol->mSize = Vector2(64 * 27, 1);
 	pitCol->mOnTrigger += playerDeathEvent;
 	mAllGameObjects.push_back(std::move(pit));
 	addGameObjects(tilemap.fillTiles({ 142,0 }, { 147,0 }));
@@ -118,8 +118,57 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(163 * 64, 64 * -2)));
 	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(163 * 64, 64 * -3)));
 	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(163 * 64, 64 * -4)));
-	//for (int i = 6; i < 11; i++)
-	//	mAllGameObjects.push_back(tilemap.addTile(7, i));
+	// Level 5
+	addGameObjects(tilemap.fillTiles({ 171,-5 }, { 188,-3 }));
+	addGameObjects(tilemap.fillTiles({ 161,3 }, { 170,14 }));
+	addGameObjects(tilemap.fillTiles({ 174,-2 }, { 188,10 }));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Right, Vector2(171 * 64, 64 * 2)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Right, Vector2(171 * 64, 64 * 3)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Right, Vector2(171 * 64, 64 * 4)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(174 * 64, 64 * 9)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(174 * 64, 64 * 10)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Left, Vector2(174 * 64, 64 * 11)));
+	addGameObjects(tilemap.fillTiles({ 161,15 }, { 191,16 }));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(176 * 64, 64 * 15)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(177 * 64, 64 * 15)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Down, Vector2(181 * 64, 64 * 11)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Down, Vector2(182 * 64, 64 * 11)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(183 * 64, 64 * 15)));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(184 * 64, 64 * 15)));
+	addGameObjects(tilemap.fillTiles({ 187,10 }, { 191,10 }));
+	addGameObjects(tilemap.fillTiles({ 195,7 }, { 201,16 }));
+	mAllGameObjects.push_back(makeSpike(playerDeathEvent, SpikeDirection::Up, Vector2(189 * 64, 64 * 10)));
+	pit = std::make_unique<GameObject>();
+	pit->mPos = Vector2(64 * 190, 64 * 19);
+	pitCol = pit->addComponent<Collider>();
+	pitCol->mIsTrigger = true;
+	pitCol->mSize = Vector2(64 * 5, 1);
+	pitCol->mOnTrigger += playerDeathEvent;
+	mAllGameObjects.push_back(std::move(pit));
+	// Level 6 (win screen)
+	addGameObjects(tilemap.fillTiles({ 202,7 }, { 221,11 }));
+	addGameObjects(tilemap.fillTiles({ 202,-3 }, { 202,-4 }));
+	addGameObjects(tilemap.fillTiles({ 203,-2 }, { 203,-1 }));
+	addGameObjects(tilemap.fillTiles({ 204,-3 }, { 204,-4 }));
+	addGameObjects(tilemap.fillTiles({ 206,-2 }, { 206,-3 }));
+	addGameObjects(tilemap.fillTiles({ 207,-4 }, { 207,-4 }));
+	addGameObjects(tilemap.fillTiles({ 207,-1 }, { 207,-1 }));
+	addGameObjects(tilemap.fillTiles({ 208,-2 }, { 208,-3 }));
+	addGameObjects(tilemap.fillTiles({ 210,-4 }, { 210,-2 }));
+	addGameObjects(tilemap.fillTiles({ 211,-1 }, { 211,-1 }));
+	addGameObjects(tilemap.fillTiles({ 212,-4 }, { 212,-2 }));
+	addGameObjects(tilemap.fillTiles({ 204,1 }, { 204,3 }));
+	addGameObjects(tilemap.fillTiles({ 205,4 }, { 205,4 }));
+	addGameObjects(tilemap.fillTiles({ 206,1 }, { 206,3 }));
+	addGameObjects(tilemap.fillTiles({ 207,4 }, { 207,4 }));
+	addGameObjects(tilemap.fillTiles({ 208,1 }, { 208,3 }));
+	addGameObjects(tilemap.fillTiles({ 210,4 }, { 212,4 }));
+	addGameObjects(tilemap.fillTiles({ 210,1 }, { 212,1 }));
+	addGameObjects(tilemap.fillTiles({ 211,2 }, { 211,3 }));
+	addGameObjects(tilemap.fillTiles({ 214,1 }, { 214,4 }));
+	addGameObjects(tilemap.fillTiles({ 215,2 }, { 215,2 }));
+	addGameObjects(tilemap.fillTiles({ 216,3 }, { 216,3 }));
+	addGameObjects(tilemap.fillTiles({ 217,1 }, { 217,4 }));
 	tilemap.updateTilemap();
 
 
@@ -132,11 +181,11 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	mapLeftBound->mPos.x = -10;
 	mapLeftBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
 	mAllGameObjects.push_back(std::move(mapLeftBound));
-	//auto mapRightBound = std::make_unique<GameObject>();
-	//mapRightBound->mPos.x = 64 * 45;
-	//mapRightBound->mPos.y = -500;
-	//mapRightBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
-	//mAllGameObjects.push_back(std::move(mapRightBound));
+	auto mapRightBound = std::make_unique<GameObject>();
+	mapRightBound->mPos.x = 64 * 220;
+	mapRightBound->mPos.y = -500;
+	mapRightBound->addComponent<Collider>()->mSize = Vector2(10, 1000);
+	mAllGameObjects.push_back(std::move(mapRightBound));
 
 	// Set up levels
 	mCurrentLevelIndex = 0;
@@ -145,7 +194,8 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 		Level({ 64 * 25, -64 * 10, 64 * 85, 64 * 4}, Vector2(1770,60)),
 		Level({ 64 * 85, -64 * 10, 64 * 125, 64 * 4}, Vector2(5530,-70)),
 		Level({ 64 * 125, -64 * 12, 64 * 168, 64 * 2}, Vector2(8140,-330)),
-		Level({ 64 * 168, -64 * 12, 64 * 200, 64 * 2}, Vector2(10850,0))
+		Level({ 64 * 168, -64 * 4, 64 * 200, 64 * 17}, Vector2(10850,0)),
+		Level({ 64 * 200, -64 * 4, 64 * 220, 64 * 9}, Vector2(12950,430))
 	});
 
 	// Set up player
@@ -177,7 +227,7 @@ PlayState::PlayState(StateMachine& stateMachine) : State(stateMachine)
 	animator->addAnimation("Fall", SpriteAnimator::Animation({ {152, 25, 152 + 67,25 + 78} }, 1.0f, TextureCache::get().LoadTexture("Player/Jump.png", false), false));
 	// 
 	mpPlayer->mPos = Vector2(200, 0);
-	mpPlayer->mPos = Vector2(10850, 0);// **DEBUG
+	mpPlayer->mPos = Vector2(12950, 430);// **DEBUG
 	mAllGameObjects.push_back(std::move(upPlayer));
 
 	// **DEBUG

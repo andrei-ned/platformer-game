@@ -89,7 +89,9 @@ void PhysicsBody::resolveCollision(Collider& other) {
 		else
 		{
 			if (nearTimeY < 0)
+			{
 				return;
+			}
 			// Collision happening in direction of signY
 			mMaxVelDelta.y = min(mMaxVelDelta.y, nearTimeY);
 			mMaxVelDelta.y = max(mMaxVelDelta.y, 0.0f);
